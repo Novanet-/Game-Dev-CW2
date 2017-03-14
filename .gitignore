@@ -28,3 +28,37 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+Robbers/Assets/Standard Assets/
+
+Robbers/Library/
+
+Assets/Standard Assets/
+
+Assets/2D Dev Sprites/
+
+Assets/Sprites/lpc_entry/
+
+Assets/Sprites/expansion_pack-0\.04/
+
+*.DotSettings
+
+Assets/Sprites/Thumbs\.db\.meta
+
+Assets/OutlineEffect/Demo/
+
+Build-x86-Dev/
+
+packages/
+
+Assets/CasualGameSounds/
+
+Assets/SoundBits_FreeSFX/
+
+Assets/CasualGameSounds\.meta
+
+Assets/SoundBits_FreeSFX\.meta
+
+Assets/Assets/Free/
+
+Assets/Assets/Free\.meta
