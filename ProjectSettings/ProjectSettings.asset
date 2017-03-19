@@ -470,7 +470,7 @@ PlayerSettings:
   vrEditorSettings: {}
   cloudServicesEnabled:
     Build: 1
-    Collab: 1
+    Collab: 0
     UNet: 1
   cloudProjectId: 19275e5b-9725-4d4c-85de-3cec4b9e9d64
   projectName: Gruff
