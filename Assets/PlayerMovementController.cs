@@ -1,32 +1,48 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class PlayerMovementController : MonoBehaviour
 {
-    private bool isFalling;
     public float HorizontalForceMagnitude;
     public float VerticalForceMagnitude;
+    public float maxSpeed;
+    private bool isGrounded;
     // Use this for initialization
     void Start()
     {
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-//        var x = Input.GetAxis("Horizontal") * Time.deltaTime * 10.0f;
-        //        var y = transform.position.y <= -19 ? Input.GetAxis("Vertical") * Time.deltaTime * 400.0f : transform.position.y;
-
-        if (Input.GetKeyDown("space")){
-            GetComponent<Rigidbody>().AddForce(new Vector3(0, 20, 0), ForceMode.Impulse);
+        if (isGrounded)
+        {
+            GetComponent<Rigidbody>().AddForce(Input.GetAxis("Horizontal") * transform.right * HorizontalForceMagnitude, ForceMode.VelocityChange);
+            GetComponent<Rigidbody>().AddForce(Input.GetAxis("Vertical") * transform.up * VerticalForceMagnitude, ForceMode.Impulse);
         }
-        GetComponent<Rigidbody>().AddForce(Input.GetAxis("Horizontal") * transform.right * HorizontalForceMagnitude, ForceMode.VelocityChange);
-        GetComponent<Rigidbody>().AddForce(Input.GetAxis("Vertical") * transform.up * HorizontalForceMagnitude, ForceMode.Impulse);
 
-        //        isFalling = true;
-
-//        transform.Translate(x, 0, 0);
+        if (GetComponent<Rigidbody>().velocity.magnitude > maxSpeed)
+        {
+            GetComponent<Rigidbody>().velocity = GetComponent<Rigidbody>().velocity.normalized * maxSpeed;
+        }
     }
 
+    void OnCollisionEnter([NotNull] Collision collision)
+    {
+        if (collision.gameObject.tag.Contains("Ground"))
+        {
+            isGrounded = true;
+        }
+    }
+
+    //consider when character is jumping .. it will exit collision.
+    void OnCollisionExit([NotNull] Collision collision)
+    {
+        if (collision.gameObject.tag.Contains("Ground"))
+        {
+            isGrounded = false;
+        }
+    }
 }
