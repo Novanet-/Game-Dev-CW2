@@ -12,27 +12,24 @@ public class PlayerMovementController : MonoBehaviour
     //    private bool isGrounded;
 
     [HideInInspector] public bool jump;
-    public float moveForce = 365f;
-    public float maxHorizontalSpeed = 5f;
-    public float maxVerticalSpeed = 5f;
-    public float jumpForce = 1000f;
+    public float moveForce;
+    public float maxHorizontalSpeed;
+    public float maxVerticalSpeed;
+    public float jumpForce;
     public Transform groundCheck;
     private bool grounded = true;
+    private float distToGround;
 
     // Use this for initialization
     void Start()
     {
+        distToGround = GetComponent<Collider>().bounds.extents.y;
     }
 
     void Update()
     {
-        int layerMask = 1 << LayerMask.NameToLayer("Foreground");
-//        layerMask = ~layerMask;
-
-        RaycastHit hit;
-
-        grounded = Physics.Linecast(transform.position, groundCheck.position, out hit, layerMask);
-//        Debug.Log(grounded);
+        grounded = Physics.Raycast(transform.position, -Vector3.up, distToGround + 0.1f);
+        //        Debug.Log(grounded);
 
         if (Input.GetKeyDown(KeyCode.W) && grounded)
         {
@@ -101,8 +98,8 @@ public class PlayerMovementController : MonoBehaviour
         if (Mathf.Abs(rb2d.velocity.x) > maxHorizontalSpeed)
             rb2d.velocity = new Vector2(Mathf.Sign(rb2d.velocity.x) * maxHorizontalSpeed, rb2d.velocity.y);
 
-        if ((rb2d.velocity.y) > maxHorizontalSpeed)
-            rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Sign(rb2d.velocity.y) * maxHorizontalSpeed);
+        if (rb2d.velocity.y > maxVerticalSpeed)
+            rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Sign(rb2d.velocity.y) * maxVerticalSpeed);
 
 
 
@@ -112,6 +109,11 @@ public class PlayerMovementController : MonoBehaviour
             jump = false;
             Debug.Log("Jump is false");
 
+        }
+
+        if (!grounded)
+        {
+            rb2d.AddForce(new Vector2(0f, -9.81f * 2));
         }
     }
 
