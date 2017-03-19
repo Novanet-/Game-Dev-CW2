@@ -5,44 +5,33 @@ using UnityEngine;
 
 public class LightController : MonoBehaviour
 {
-    [SerializeField] private Transform _orbitCentre;
-    [SerializeField] private int _daySpeedMultiplier;
+    [SerializeField] private GameObject orbitCentre;
 
-    private float _timeElapsed;
-
-    private float _arc;
+    private OrbitController orbitController;
 
     // Use this for initialization
     void Start()
     {
+        orbitController = orbitCentre.GetComponent<OrbitController>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        float angle = _daySpeedMultiplier * Time.deltaTime;
-        transform.RotateAround(_orbitCentre.position, Vector3.down, angle);
-
-
-        _arc += angle;
-
-        if (_arc > 180)
+        float orbitArc = orbitController.OrbitArc;
+        if (orbitArc >= 180)
         {
             GetComponent<Light>().intensity = 0;
-            Debug.Log(string.Format("Arc = {0}", _arc));
+            Debug.Log(string.Format("OrbitArc = {0}", orbitArc));
 
         }
-        if (_arc > 360)
+        if (orbitArc >= 359)
         {
-            _arc = 0;
             GetComponent<Light>().intensity = 1;
-            Debug.Log(string.Format("Arc = {0}", _arc));
-            Debug.Log(string.Format("Time for full rotation = {0}", _timeElapsed));
+            Debug.Log(string.Format("OrbitArc = {0}", orbitArc));
             //28666
-            _timeElapsed = 0;
         }
 
-        _timeElapsed++;
 
     }
 }
