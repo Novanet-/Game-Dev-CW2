@@ -469,11 +469,11 @@ PlayerSettings:
   XboxOnePersistentLocalStorageSize: 0
   vrEditorSettings: {}
   cloudServicesEnabled:
-    Build: 0
+    Build: 1
     Collab: 0
     ErrorHub: 0
     Hub: 0
-    UNet: 0
+    UNet: 1
   cloudProjectId: 19275e5b-9725-4d4c-85de-3cec4b9e9d64
   projectName: Gruff
   organizationId: gamemaster8888-gmail-com
