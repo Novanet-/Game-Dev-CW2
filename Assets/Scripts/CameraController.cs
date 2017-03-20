@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    // Use this for initialization
+	public Transform currentTarget;
+
     void Start()
     {
     }
@@ -12,6 +13,7 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.rotation = Quaternion.Euler(Vector3.zero);
+		Vector3 newPosition = new Vector3(currentTarget.transform.position.x, currentTarget.transform.position.y + 6, transform.position.z);
+		transform.position = newPosition;
     }
 }
