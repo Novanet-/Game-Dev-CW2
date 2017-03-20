@@ -273,7 +273,7 @@ GameObject:
   - component: {fileID: 631578350}
   - component: {fileID: 631578349}
   m_Layer: 0
-  m_Name: Object (1)
+  m_Name: Goat (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -484,7 +484,7 @@ GameObject:
   - component: {fileID: 776305488}
   - component: {fileID: 776305489}
   m_Layer: 10
-  m_Name: Object
+  m_Name: Goat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -675,7 +675,7 @@ GameObject:
   - component: {fileID: 931061392}
   - component: {fileID: 931061391}
   m_Layer: 0
-  m_Name: Object (2)
+  m_Name: Goat (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
