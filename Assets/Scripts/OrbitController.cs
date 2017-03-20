@@ -25,6 +25,6 @@ public class OrbitController : MonoBehaviour {
         transform.position = q * vOffset;
         transform.rotation = q;
 
-        Debug.Log(elapsedTime);
+//        Debug.Log(elapsedTime);
     }
 }

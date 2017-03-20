@@ -17,56 +17,59 @@ public class PlayerMovementController : MonoBehaviour
     public float maxVerticalSpeed;
     public float jumpForce;
     public Transform groundCheck;
-    private bool grounded = true;
-    private float distToGround;
+	[HideInInspector] public bool isActivePlayer = false;
+	[HideInInspector] public bool isFollowing = true;
+    private bool grounded = false;
 
     // Use this for initialization
     void Start()
     {
-        distToGround = GetComponent<Collider>().bounds.extents.y;
+		
     }
 
     void Update()
     {
-        grounded = Physics.Raycast(transform.position, -Vector3.up, distToGround + 0.1f);
-        //        Debug.Log(grounded);
-
-        if (Input.GetKeyDown(KeyCode.W) && grounded)
+        if (isActivePlayer && Input.GetKey(KeyCode.W) && grounded)
         {
             jump = true;
             Debug.Log("Jump is true");
         }
     }
 
+	void OnCollisionEnter(Collision collision) {
+		if (collision.transform.position.y < transform.position.y) {
+			grounded = true;
+		}
+	}
+
+	void OnCollisionExit(Collision collision) {
+		grounded = false;
+	}
+
     // Update is called once per frame
     void FixedUpdate()
     {
-        float h = Input.GetAxis("Horizontal");
-        var rb2d = GetComponent<Rigidbody>();
+		float h = Input.GetAxis("Horizontal");
+		var rigidBody = GetComponent<Rigidbody>();
 
+		if (isActivePlayer && h * rigidBody.velocity.x < maxHorizontalSpeed)
+			rigidBody.AddForce(Vector2.right * h * moveForce);
 
-        if (h * rb2d.velocity.x < maxHorizontalSpeed)
-            rb2d.AddForce(Vector2.right * h * moveForce);
+		if (Mathf.Abs(rigidBody.velocity.x) > maxHorizontalSpeed)
+			rigidBody.velocity = new Vector2(Mathf.Sign(rigidBody.velocity.x) * maxHorizontalSpeed, rigidBody.velocity.y);
 
-        if (Mathf.Abs(rb2d.velocity.x) > maxHorizontalSpeed)
-            rb2d.velocity = new Vector2(Mathf.Sign(rb2d.velocity.x) * maxHorizontalSpeed, rb2d.velocity.y);
+		if (rigidBody.velocity.y > maxVerticalSpeed)
+			rigidBody.velocity = new Vector2(rigidBody.velocity.x, Mathf.Sign(rigidBody.velocity.y) * maxVerticalSpeed);
+		if (isActivePlayer && jump)
+		{
+			rigidBody.AddForce(new Vector2(0f, jumpForce));
+			jump = false;
+			Debug.Log("Jump is false");
 
-        if (rb2d.velocity.y > maxVerticalSpeed)
-            rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Sign(rb2d.velocity.y) * maxVerticalSpeed);
-
-
-
-        if (jump)
-        {
-            rb2d.AddForce(new Vector2(0f, jumpForce));
-            jump = false;
-            Debug.Log("Jump is false");
-
-        }
-
-        if (!grounded)
-        {
-            rb2d.AddForce(new Vector2(0f, -9.81f * 2));
-        }
+		}
+		if (!grounded)
+		{
+			rigidBody.AddForce(new Vector2(0f, -9.81f * 2));
+		}
     }
 }
