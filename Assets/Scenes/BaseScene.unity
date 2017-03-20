@@ -243,6 +243,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentTarget: {fileID: 739573451}
+  travelTime: 0.5
+  cameraDistance: -10
 --- !u!1 &660724189
 GameObject:
   m_ObjectHideFlags: 0
