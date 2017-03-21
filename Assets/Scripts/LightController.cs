@@ -22,13 +22,13 @@ public class LightController : MonoBehaviour
         if (orbitArc >= 180)
         {
             GetComponent<Light>().intensity = 0;
-            Debug.Log(string.Format("OrbitArc = {0}", orbitArc));
+//            Debug.Log(string.Format("OrbitArc = {0}", orbitArc));
 
         }
         if (orbitArc >= 359)
         {
             GetComponent<Light>().intensity = 1;
-            Debug.Log(string.Format("OrbitArc = {0}", orbitArc));
+//            Debug.Log(string.Format("OrbitArc = {0}", orbitArc));
             //28666
         }
 

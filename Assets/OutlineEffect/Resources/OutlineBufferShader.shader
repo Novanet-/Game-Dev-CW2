@@ -34,7 +34,6 @@ Shader "Hidden/OutlineBufferEffect" {
 	{
 		Tags
 		{ 
-			"RenderType" = "Outline" 
 			"Queue"="Transparent" 
 			"IgnoreProjector"="True" 
 			"RenderType"="Transparent" 
@@ -42,7 +41,7 @@ Shader "Hidden/OutlineBufferEffect" {
 			"CanUseSpriteAtlas"="True"
 		}
 
-		Cull Off
+		//Cull Off
 		Lighting Off
 		//ZWrite Off
 		Blend One OneMinusSrcAlpha

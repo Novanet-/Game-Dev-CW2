@@ -47,6 +47,7 @@ namespace cakeslice
         private OutlineEffect() { }
 
         private readonly List<Outline> outlines = new List<Outline>();
+        private const int outlineLayer = 6;
 
         [Range(1.0f, 6.0f)]
         public float lineThickness = 1.25f;
@@ -83,15 +84,20 @@ namespace cakeslice
         Material outlineShaderMaterial;
         RenderTexture renderTexture;
         RenderTexture extraRenderTexture;
+        
+        Material[] outline1MaterialBuffer = new Material[20];
+        Material[] outline2MaterialBuffer = new Material[20];
+        Material[] outline3MaterialBuffer = new Material[20];
+        Material[] eraseMaterialBuffer = new Material[20];
 
-        Material GetMaterialFromID(int ID)
+        Material[] GetMaterialBufferFromID(int ID)
         {
             if(ID == 0)
-                return outline1Material;
+                return outline1MaterialBuffer;
             else if(ID == 1)
-                return outline2Material;
+                return outline2MaterialBuffer;
             else
-                return outline3Material;
+                return outline3MaterialBuffer;
         }
 
         Material CreateMaterial(Color emissionColor)
@@ -169,25 +175,18 @@ namespace cakeslice
 
                         outlines[i].originalLayer = outlines[i].gameObject.layer;
 
-                        Material[] outlineMaterials = new Material[outlines[i].originalMaterials.Length];
-                        for(int j = 0; j < outlineMaterials.Length; j++)
-                        {
-                            if(outlines[i].eraseRenderer)
-                                outlineMaterials[j] = outlineEraseMaterial;
-                            else
-                                outlineMaterials[j] = GetMaterialFromID(outlines[i].color);
-                        }
+                        if(outlines[i].eraseRenderer)
+                            outlines[i].Renderer.sharedMaterials = eraseMaterialBuffer;
+                        else
+                            outlines[i].Renderer.sharedMaterials = GetMaterialBufferFromID(outlines[i].color);
 
-
-                        outlines[i].Renderer.sharedMaterials = outlineMaterials;
-
-                        for(int m = 0; m < outlines[i].Renderer.materials.Length; m++)
+                        for(int m = 0; m < outlines[i].originalMaterials.Length; m++)
                         {
                             if(outlines[i].Renderer is MeshRenderer)
-                                outlines[i].Renderer.materials[m].mainTexture = outlines[i].originalMaterials[m].mainTexture;
+                                outlines[i].Renderer.sharedMaterials[m].mainTexture = outlines[i].originalMaterials[m].mainTexture;
                         }
 
-                        outlines[i].gameObject.layer = 5;
+                        outlines[i].gameObject.layer = outlineLayer;
                     }
                 }
             }
@@ -249,6 +248,23 @@ namespace cakeslice
                 outline2Material = CreateMaterial(new Color(0, 1, 0, 0));
             if(outline3Material == null)
                 outline3Material = CreateMaterial(new Color(0, 0, 1, 0));
+
+            for(int i = 0; i < outline1MaterialBuffer.Length; i++)
+            {
+                outline1MaterialBuffer[i] = outline1Material;
+            }
+            for(int i = 0; i < outline2MaterialBuffer.Length; i++)
+            {
+                outline2MaterialBuffer[i] = outline2Material;
+            }
+            for(int i = 0; i < outline3MaterialBuffer.Length; i++)
+            {
+                outline3MaterialBuffer[i] = outline3Material;
+            }
+            for(int i = 0; i < eraseMaterialBuffer.Length; i++)
+            {
+                eraseMaterialBuffer[i] = outlineEraseMaterial;
+            }
         }
 
         private void DestroyMaterials()
@@ -319,7 +335,7 @@ namespace cakeslice
             outlineCamera.clearFlags = CameraClearFlags.SolidColor;
             outlineCamera.rect = new Rect(0, 0, 1, 1);
             outlineCamera.enabled = true;
-            outlineCamera.cullingMask = 1 << 5; // UI layer
+            outlineCamera.cullingMask = 1 << outlineLayer; // UI layer
             outlineCamera.targetTexture = renderTexture;
         }
 
