@@ -5,13 +5,6 @@ using UnityEngine;
 
 public class PlayerMovementController : MonoBehaviour
 {
-    //    public float HorizontalForceMagnitude;
-    //    public float VerticalForceMagnitude;
-    //    public float maxHorizontalSpeed;
-    //    public float maxVerticalSpeed;
-    //    private bool isGrounded;
-
-    private bool jump;
     public float moveForce;
     public float maxHorizontalSpeed;
     public float maxVerticalSpeed;
@@ -19,7 +12,9 @@ public class PlayerMovementController : MonoBehaviour
     public Transform groundCheck;
 	[HideInInspector] public bool isActivePlayer = false;
 	[HideInInspector] public bool isFollowing = true;
-    private bool grounded = false;
+	private Vector2 jumpDirection;
+	private bool isJumpQueued;
+	private bool isFlying = false;
 
     // Use this for initialization
     void Start()
@@ -29,24 +24,21 @@ public class PlayerMovementController : MonoBehaviour
 
     void Update()
     {
-        if (isActivePlayer && Input.GetKey(KeyCode.W) && grounded)
+		if (isActivePlayer && !isFlying && Input.GetKey(KeyCode.W))
         {
-            jump = true;
-            Debug.Log("Jump is true");
+            isJumpQueued = true;
         }
     }
 
 	void OnCollisionEnter(Collision collision) {
-		if (collision.transform.position.y < transform.position.y) {
-			grounded = true;
-		}
+		jumpDirection = new Vector2(collision.contacts[0].normal.x, collision.contacts[0].normal.y);
+		isFlying = false;
 	}
 
 	void OnCollisionExit(Collision collision) {
-		grounded = false;
+		isFlying = true;
 	}
-
-    // Update is called once per frame
+		
     void FixedUpdate()
     {
 		float h = Input.GetAxis("Horizontal");
@@ -60,16 +52,12 @@ public class PlayerMovementController : MonoBehaviour
 
 		if (rigidBody.velocity.y > maxVerticalSpeed)
 			rigidBody.velocity = new Vector2(rigidBody.velocity.x, Mathf.Sign(rigidBody.velocity.y) * maxVerticalSpeed);
-		if (isActivePlayer && jump)
+		
+		if (isActivePlayer && isJumpQueued)
 		{
-			rigidBody.AddForce(new Vector2(0f, jumpForce));
-			jump = false;
-			Debug.Log("Jump is false");
+			rigidBody.AddForce(jumpDirection * jumpForce);
+			isJumpQueued = false;
+		}
 
-		}
-		if (!grounded)
-		{
-			rigidBody.AddForce(new Vector2(0f, -9.81f * 2));
-		}
     }
 }
