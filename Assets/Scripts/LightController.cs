@@ -1,37 +1,32 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class LightController : MonoBehaviour
 {
-    [SerializeField] private GameObject orbitCentre;
+    #region Private Fields
 
-    private OrbitController orbitController;
+    [SerializeField] private GameObject _orbitCentre;
+
+    private OrbitController _orbitController;
+
+    #endregion Private Fields
+
+    #region Private Methods
 
     // Use this for initialization
-    void Start()
+    private void Start()
     {
-        orbitController = orbitCentre.GetComponent<OrbitController>();
+        _orbitController = _orbitCentre.GetComponent<OrbitController>();
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        float orbitArc = orbitController.OrbitArc;
+        float orbitArc = _orbitController.OrbitArc;
         if (orbitArc >= 180)
-        {
             GetComponent<Light>().intensity = 0;
-//            Debug.Log(string.Format("OrbitArc = {0}", orbitArc));
-
-        }
         if (orbitArc >= 359)
-        {
             GetComponent<Light>().intensity = 1;
-//            Debug.Log(string.Format("OrbitArc = {0}", orbitArc));
-            //28666
-        }
-
-
     }
+
+    #endregion Private Methods
 }

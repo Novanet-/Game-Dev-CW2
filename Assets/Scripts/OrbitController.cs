@@ -1,30 +1,39 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class OrbitController : MonoBehaviour {
+public class OrbitController : MonoBehaviour
+{
+    #region Private Fields
 
-    private Vector3 vOffset;
-    private float timestamp;
     [SerializeField] private float _timeForFullRotation;
+    private float _timestamp;
+    private Vector3 _vOffset;
+
+    #endregion Private Fields
+
+    #region Public Properties
+
     [HideInInspector] public float OrbitArc { get; set; }
 
-    void Start()
+    #endregion Public Properties
+
+    #region Private Methods
+
+    private void Start()
     {
-        vOffset = transform.position;
-        timestamp = Time.time;
+        _vOffset = transform.position;
+        _timestamp = Time.time;
     }
 
-    void Update()
+    private void Update()
     {
-        float elapsedTime = (Time.time - timestamp) % _timeForFullRotation;
+        float elapsedTime = (Time.time - _timestamp) % _timeForFullRotation;
         OrbitArc = elapsedTime / _timeForFullRotation * 360.0f;
 
         float angle = elapsedTime / _timeForFullRotation * 360.0f;
         Quaternion q = Quaternion.AngleAxis(angle, Vector3.down);
-        transform.position = q * vOffset;
+        transform.position = q * _vOffset;
         transform.rotation = q;
-
-//        Debug.Log(elapsedTime);
     }
+
+    #endregion Private Methods
 }

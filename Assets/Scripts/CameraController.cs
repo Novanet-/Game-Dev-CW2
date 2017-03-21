@@ -1,22 +1,27 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-	public Transform currentTarget;
-	public float travelTime;
-	public float cameraDistance;
+    #region Public Fields
 
-	void Start()
-	{
-	}
+    public float CameraDistance;
+    public Transform CurrentTarget;
+    public float TravelTime;
 
-	// Update is called once per frame
-	void Update()
-	{
-		Vector3 newPosition = new Vector3(currentTarget.transform.position.x, currentTarget.transform.position.y + 6, cameraDistance);
-		transform.position = Vector3.Lerp(transform.position, newPosition, 1/travelTime * Time.deltaTime);
-//		transform.position = newPosition;
-	}
+    #endregion Public Fields
+
+    #region Private Methods
+
+    private void Start()
+    {
+    }
+
+    // Update is called once per frame
+    private void Update()
+    {
+        var newPosition = new Vector3(CurrentTarget.transform.position.x, CurrentTarget.transform.position.y + 6, CameraDistance);
+        transform.position = Vector3.Lerp(transform.position, newPosition, 1 / TravelTime * Time.deltaTime);
+    }
+
+    #endregion Private Methods
 }

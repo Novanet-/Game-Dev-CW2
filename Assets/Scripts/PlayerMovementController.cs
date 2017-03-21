@@ -1,75 +1,111 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using UnityEngine;
 
 public class PlayerMovementController : MonoBehaviour
 {
-    //    public float HorizontalForceMagnitude;
-    //    public float VerticalForceMagnitude;
-    //    public float maxHorizontalSpeed;
-    //    public float maxVerticalSpeed;
-    //    private bool isGrounded;
+    #region Public Fields
 
-    private bool jump;
-    public float moveForce;
-    public float maxHorizontalSpeed;
-    public float maxVerticalSpeed;
-    public float jumpForce;
-    public Transform groundCheck;
-	[HideInInspector] public bool isActivePlayer = false;
-	[HideInInspector] public bool isFollowing = true;
-    private bool grounded = false;
+    public Transform GroundCheck;
+    [HideInInspector] public bool IsActivePlayer = false;
+    [HideInInspector] public bool IsFollowing = true;
+    public float JumpForce;
+    public float MaxHorizontalSpeed;
+    public float MaxVerticalSpeed;
+    public float MoveForce;
 
-    // Use this for initialization
-    void Start()
+    #endregion Public Fields
+
+    #region Private Fields
+
+    private bool _grounded;
+    private bool _jump;
+
+    #endregion Private Fields
+
+    #region Private Methods
+
+    private static void AddGravity([NotNull] Rigidbody rigidBody)
     {
-		
+        rigidBody.AddForce(new Vector2(0f, -9.81f * 2));
     }
 
-    void Update()
+    private void AddVerticalJumpMovement([NotNull] Rigidbody rigidBody)
     {
-        if (isActivePlayer && Input.GetKey(KeyCode.W) && grounded)
+        rigidBody.AddForce(new Vector2(0f, JumpForce));
+        _jump = false;
+        Debug.Log("Jump is false");
+    }
+
+    private void CheckForAndAddHorizontalMovement(float horizontalInput, [NotNull] Rigidbody rigidBody)
+    {
+        if (IsActivePlayer && horizontalInput * rigidBody.velocity.x < MaxHorizontalSpeed)
         {
-            jump = true;
-            Debug.Log("Jump is true");
+            rigidBody.AddForce(Vector2.right * horizontalInput * MoveForce);
         }
     }
 
-	void OnCollisionEnter(Collision collision) {
-		if (collision.transform.position.y < transform.position.y) {
-			grounded = true;
-		}
-	}
-
-	void OnCollisionExit(Collision collision) {
-		grounded = false;
-	}
-
     // Update is called once per frame
-    void FixedUpdate()
+    private void FixedUpdate()
     {
-		float h = Input.GetAxis("Horizontal");
-		var rigidBody = GetComponent<Rigidbody>();
+        float horizontalInput = Input.GetAxis("Horizontal");
+        var rigidBody = GetComponent<Rigidbody>();
 
-		if (isActivePlayer && h * rigidBody.velocity.x < maxHorizontalSpeed)
-			rigidBody.AddForce(Vector2.right * h * moveForce);
+        CheckForAndAddHorizontalMovement(horizontalInput, rigidBody);
+        LimitHorizontalSpeed(rigidBody);
+        LimitVerticalSpeed(rigidBody);
 
-		if (Mathf.Abs(rigidBody.velocity.x) > maxHorizontalSpeed)
-			rigidBody.velocity = new Vector2(Mathf.Sign(rigidBody.velocity.x) * maxHorizontalSpeed, rigidBody.velocity.y);
+        if (IsActivePlayer && _jump)
+        {
+            AddVerticalJumpMovement(rigidBody);
+        }
 
-		if (rigidBody.velocity.y > maxVerticalSpeed)
-			rigidBody.velocity = new Vector2(rigidBody.velocity.x, Mathf.Sign(rigidBody.velocity.y) * maxVerticalSpeed);
-		if (isActivePlayer && jump)
-		{
-			rigidBody.AddForce(new Vector2(0f, jumpForce));
-			jump = false;
-			Debug.Log("Jump is false");
-
-		}
-		if (!grounded)
-		{
-			rigidBody.AddForce(new Vector2(0f, -9.81f * 2));
-		}
+        if (!_grounded)
+        {
+            AddGravity(rigidBody);
+        }
     }
+
+    private void LimitHorizontalSpeed([NotNull] Rigidbody rigidBody)
+    {
+        if (Mathf.Abs(rigidBody.velocity.x) > MaxHorizontalSpeed)
+        {
+            rigidBody.velocity = new Vector2(Mathf.Sign(rigidBody.velocity.x) * MaxHorizontalSpeed, rigidBody.velocity.y);
+        }
+    }
+
+    private void LimitVerticalSpeed([NotNull] Rigidbody rigidBody)
+    {
+        if (rigidBody.velocity.y > MaxVerticalSpeed)
+        {
+            rigidBody.velocity = new Vector2(rigidBody.velocity.x, Mathf.Sign(rigidBody.velocity.y) * MaxVerticalSpeed);
+        }
+    }
+
+    private void OnCollisionEnter([NotNull] Collision collision)
+    {
+        if (collision.transform.position.y < transform.position.y)
+            _grounded = true;
+    }
+
+    private void OnCollisionExit([NotNull] Collision collision)
+    {
+        _grounded = false;
+    }
+
+    // Use this for initialization
+    private void Start()
+    {
+    }
+
+    private void Update()
+    {
+        if (!IsActivePlayer) return;
+        if (!Input.GetKey(KeyCode.W)) return;
+        if (!_grounded) return;
+
+        _jump = true;
+        Debug.Log("Jump is true");
+    }
+
+    #endregion Private Methods
 }
