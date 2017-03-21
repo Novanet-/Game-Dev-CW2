@@ -139,7 +139,7 @@ MonoBehaviour:
   moveForce: 365
   maxHorizontalSpeed: 10
   maxVerticalSpeed: 20
-  jumpForce: 1000
+  jumpForce: 3000
   groundCheck: {fileID: 0}
   isActivePlayer: 0
   isFollowing: 1

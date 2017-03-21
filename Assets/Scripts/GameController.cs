@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,7 +18,9 @@ public class GameController : MonoBehaviour {
 	public Hooks hooks = new Hooks();
 	private PlayerMovementController[] goatControllerArray;
 	private int currentGoatIndex = 0;
-	private PlayerMovementController currentGoat { get { return goatControllerArray[currentGoatIndex]; } }
+    private float _timeStart
+        ;
+    private PlayerMovementController currentGoat { get { return goatControllerArray[currentGoatIndex]; } }
 
 	void Start () {
 		Physics.gravity = new Vector3(0f, -gravityStrength, 0f);
@@ -26,6 +29,8 @@ public class GameController : MonoBehaviour {
 			hooks.goatMed.GetComponent<PlayerMovementController>(),
 			hooks.goatLarge.GetComponent<PlayerMovementController>() };
 		currentGoat.isActivePlayer = true;
+
+	    _timeStart = Time.time;
 	}
 
 	void Update() {
@@ -39,6 +44,11 @@ public class GameController : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.F)) {
 			ToggleFollowing();
 		}
+
+	    if (Math.Abs((Time.time - _timeStart) % 5) < 0.1)
+	    {
+	        Debug.Log("Current Goat = " + currentGoat.gameObject.name + ", Is Flying = " + currentGoat.IsFlying + ", Is Wall Climbing = " + currentGoat.IsWallClimbing);
+	    }
 	}
 
 	void ChangeCurrentTarget(bool isRight) {
@@ -55,7 +65,7 @@ public class GameController : MonoBehaviour {
 	}
 
 	void ToggleFollowing() {
-		
+
 	}
 
 
