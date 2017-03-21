@@ -27,7 +27,7 @@ GameObject:
   - component: {fileID: 114079962045011500}
   m_Layer: 10
   m_Name: Goat Medium
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -91,7 +91,7 @@ Rigidbody:
   m_GameObject: {fileID: 1882881478989660}
   serializedVersion: 2
   m_Mass: 3
-  m_Drag: 1
+  m_Drag: 0
   m_AngularDrag: 0.2
   m_UseGravity: 1
   m_IsKinematic: 0

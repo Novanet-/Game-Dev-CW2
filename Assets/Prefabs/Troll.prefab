@@ -23,10 +23,8 @@ GameObject:
   - component: {fileID: 65348773693919784}
   - component: {fileID: 23216702539920576}
   - component: {fileID: 54142440282320894}
-  - component: {fileID: 114843921385903762}
-  - component: {fileID: 114343701295897750}
   m_Layer: 10
-  m_Name: Goat Small
+  m_Name: Troll
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -40,7 +38,7 @@ Transform:
   m_GameObject: {fileID: 1100359597751406}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2.2, y: 2.2, z: 2}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -58,7 +56,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: d207dc50254e8b340880fae0950d1f9e, type: 2}
+  - {fileID: 2100000, guid: 6d30783cd6cf7ce4c888a9c07277b1c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -90,7 +88,7 @@ Rigidbody:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1100359597751406}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 4.84
   m_Drag: 0
   m_AngularDrag: 0.2
   m_UseGravity: 1
@@ -110,36 +108,3 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114343701295897750
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1100359597751406}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  color: 0
-  eraseRenderer: 0
-  originalLayer: 0
-  originalMaterials: []
---- !u!114 &114843921385903762
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1100359597751406}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f2e6f0fa34ab3d46aa539c8266fafcc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveForce: 365
-  maxHorizontalSpeed: 10
-  maxVerticalSpeed: 20
-  jumpForce: 1000
-  groundCheck: {fileID: 0}
-  isActivePlayer: 1
-  isFollowing: 1

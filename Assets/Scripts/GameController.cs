@@ -13,12 +13,14 @@ public class Hooks {
 
 public class GameController : MonoBehaviour {
 
+	public float gravityStrength;
 	public Hooks hooks = new Hooks();
 	private PlayerMovementController[] goatControllerArray;
 	private int currentGoatIndex = 0;
 	private PlayerMovementController currentGoat { get { return goatControllerArray[currentGoatIndex]; } }
 
 	void Start () {
+		Physics.gravity = new Vector3(0f, -gravityStrength, 0f);
 		goatControllerArray = new PlayerMovementController[] {
 			hooks.goatSmall.GetComponent<PlayerMovementController>(),
 			hooks.goatMed.GetComponent<PlayerMovementController>(),
