@@ -118,13 +118,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df9126afc05c3a74f99d2f8b4dc2e979, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gravityStrength: 25
-  hooks:
-    camera: {fileID: 113044307}
-    goatSmall: {fileID: 739573445}
-    goatMed: {fileID: 680270000}
-    goatLarge: {fileID: 745866358}
-    troll: {fileID: 0}
+  GravityStrength: 25
+  Hooks:
+    Camera: {fileID: 113044307}
+    GoatLarge: {fileID: 745866358}
+    GoatMed: {fileID: 680270000}
+    GoatSmall: {fileID: 739573445}
+    Troll: {fileID: 1100359597751406, guid: 67ad25145ccb5d041a2124b3b4c9905b, type: 2}
 --- !u!4 &12447999
 Transform:
   m_ObjectHideFlags: 0
@@ -179,7 +179,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f81e81873391a540948ca255559d633, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  orbitCentre: {fileID: 1330216154}
+  _orbitCentre: {fileID: 1330216154}
 --- !u!108 &67120509
 Light:
   m_ObjectHideFlags: 0
@@ -832,7 +832,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f81e81873391a540948ca255559d633, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  orbitCentre: {fileID: 1330216154}
+  _orbitCentre: {fileID: 1330216154}
 --- !u!108 &926766817
 Light:
   m_ObjectHideFlags: 0
