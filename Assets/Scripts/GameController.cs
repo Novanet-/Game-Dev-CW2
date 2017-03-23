@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 
 [System.Serializable]
@@ -20,7 +21,8 @@ public class GameController : MonoBehaviour {
 	private int currentGoatIndex = 0;
     private float _timeStart
         ;
-    private PlayerMovementController currentGoat { get { return goatControllerArray[currentGoatIndex]; } }
+
+    [NotNull] private PlayerMovementController currentGoat { get { return goatControllerArray[currentGoatIndex]; } }
 
 	void Start () {
 		Physics.gravity = new Vector3(0f, -gravityStrength, 0f);

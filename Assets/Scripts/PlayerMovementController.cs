@@ -1,15 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PlayerMovementController : MonoBehaviour
 {
-    public float moveForce;
-    public float maxHorizontalSpeed;
-    public float maxVerticalSpeed;
-    public float jumpForce;
-    public Transform groundCheck;
+    [FormerlySerializedAs("moveForce")] public float moveForce;
+    [FormerlySerializedAs("maxHorizontalSpeed")] public float maxHorizontalSpeed;
+    [FormerlySerializedAs("maxVerticalSpeed")] public float maxVerticalSpeed;
+    [FormerlySerializedAs("jumpForce")] public float jumpForce;
+    [FormerlySerializedAs("groundCheck")] public Transform groundCheck;
     [HideInInspector] public bool isActivePlayer = false;
     [HideInInspector] public bool isFollowing = true;
     private Vector2 jumpDirection;
@@ -19,11 +18,11 @@ public class PlayerMovementController : MonoBehaviour
     private Vector3 _horizontalClamp;
 
     // Use this for initialization
-    void Start()
+    private void Start()
     {
     }
 
-    void Update()
+    private void Update()
     {
         if (isActivePlayer && !IsFlying && Input.GetKey(KeyCode.W))
         {
@@ -31,50 +30,54 @@ public class PlayerMovementController : MonoBehaviour
         }
     }
 
-    void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter([NotNull] Collision collision)
     {
         var newJumpDirection = new Vector2(collision.contacts[0].normal.x, collision.contacts[0].normal.y);
-        var upVector = Vector2.up;
-        var angle = Vector2.Angle(upVector, newJumpDirection);
+        Vector2 upVector = Vector2.up;
+        float angle = Vector2.Angle(upVector, newJumpDirection);
 
 
-        if ((angle <= 45 || !collision.gameObject.tag.Equals("Ground")))
+        CheckMovementState(collision, angle, newJumpDirection);
+    }
+
+    private void CheckMovementState([NotNull] Collision collision, float normalAngleFromUpVector, Vector2 newJumpDirection)
+    {
+        IsWallClimbing = !(normalAngleFromUpVector <= 45)
+                         && collision.gameObject.tag.Equals("Ground");
+
+        _horizontalClamp = IsWallClimbing ? (Vector3) (jumpDirection * -1) : _horizontalClamp;
+        IsFlying = false;
+        jumpDirection = newJumpDirection;
+    }
+
+    private void OnCollisionStay([NotNull] Collision collision)
+    {
+        var newJumpDirection = new Vector2(collision.contacts[0].normal.x, collision.contacts[0].normal.y);
+        Vector2 upVector = Vector2.up;
+        float angle = Vector2.Angle(upVector, newJumpDirection);
+
+        if (!IsWallClimbing)
         {
-            jumpDirection = newJumpDirection;
-            IsWallClimbing = false;
-            IsFlying = false;
+            if (newJumpDirection == Vector2.up)
+            {
+                jumpDirection = Vector2.up;
+            }
 
+            CheckMovementState(collision, angle, newJumpDirection);
         }
         else
         {
-            jumpDirection = newJumpDirection * -1;
-            IsWallClimbing = true;
-            _horizontalClamp = jumpDirection;
             IsFlying = false;
-
-        }
-
-
-    }
-
-    void OnCollisionStay(Collision collision)
-    {
-        var newJumpDirection = new Vector2(collision.contacts[0].normal.x, collision.contacts[0].normal.y);
-        var upVector = Vector2.up;
-
-        if (newJumpDirection == Vector2.up)
-        {
-            jumpDirection = Vector2.up;
         }
     }
 
-    void OnCollisionExit(Collision collision)
+    private void OnCollisionExit([NotNull] Collision collision)
     {
         IsFlying = true;
-
+        IsWallClimbing = false;
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         float h = Input.GetAxis("Horizontal");
         var rigidBody = GetComponent<Rigidbody>();
@@ -84,14 +87,13 @@ public class PlayerMovementController : MonoBehaviour
         bool isAboveVerticalSpeedLimit = rigidBody.velocity.y > maxVerticalSpeed;
 
         float clampAngle = Vector3.Angle(_horizontalClamp, h * Vector2.right);
-        bool walkingIntoWall = (clampAngle < 90);
+        bool walkingIntoWall = clampAngle < 90;
 
 //        Debug.Log("IsWallClimbing = " + IsWallClimbing + ", ClampAngle = " + clampAngle);
 
 
         if (isActivePlayer)
         {
-
             if (IsWallClimbing && walkingIntoWall)
             {
                 IsFlying = false;
