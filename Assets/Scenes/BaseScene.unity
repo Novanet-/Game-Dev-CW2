@@ -25,7 +25,7 @@ RenderSettings:
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
   m_AmbientMode: 0
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: e7625a173e3a646b18b40bf5f02aff99, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44970727, g: 0.4997756, b: 0.5756324, a: 1}
+  m_IndirectSpecularColor: {r: 0.5882854, g: 0.66203076, b: 0.8475847, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -230,6 +230,7 @@ GameObject:
   - component: {fileID: 113044313}
   - component: {fileID: 113044314}
   - component: {fileID: 113044315}
+  - component: {fileID: 113044316}
   m_Layer: 10
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -270,7 +271,7 @@ Camera:
   m_GameObject: {fileID: 113044307}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
+  m_ClearFlags: 1
   m_BackGroundColor: {r: 0.266409, g: 0.6868032, b: 0.897, a: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
@@ -375,6 +376,156 @@ MonoBehaviour:
   shaderFXAAPreset3: {fileID: 4800000, guid: c182fa94a5a0a4c02870641efcd38cd5, type: 3}
   shaderFXAAII: {fileID: 4800000, guid: cd5b323dcc592457790ff18b528f5e67, type: 3}
   shaderFXAAIII: {fileID: 4800000, guid: c547503fff0e8482ea5793727057041c, type: 3}
+--- !u!114 &113044316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 113044307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fd999d1b2cf94a45a5b0a47ce074bef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  redChannel:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  greenChannel:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  blueChannel:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  useDepthCorrection: 0
+  zCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  depthRedChannel:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  depthGreenChannel:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  depthBlueChannel:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  saturation: 1
+  selectiveCc: 0
+  selectiveFromColor: {r: 1, g: 1, b: 1, a: 1}
+  selectiveToColor: {r: 1, g: 1, b: 1, a: 1}
+  mode: 0
+  updateTextures: 1
+  colorCorrectionCurvesShader: {fileID: 4800000, guid: 62bcade1028c24ca1a39760ed84b9487,
+    type: 3}
+  simpleColorCorrectionCurvesShader: {fileID: 4800000, guid: 438ddd58d82c84d9eb1fdc56111702e1,
+    type: 3}
+  colorCorrectionSelectiveShader: {fileID: 4800000, guid: e515e0f94cefc4c0db54b45cba621544,
+    type: 3}
 --- !u!1001 &260049277
 Prefab:
   m_ObjectHideFlags: 0
@@ -412,7 +563,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4801983049357034, guid: b7b848252f196ef43adf24d65a47684a, type: 2}
       propertyPath: m_RootOrder
-      value: 9
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1054236160966510, guid: b7b848252f196ef43adf24d65a47684a, type: 2}
       propertyPath: m_Name
@@ -451,7 +602,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4801983049357034, guid: b7b848252f196ef43adf24d65a47684a, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -40
+      value: -42
       objectReference: {fileID: 0}
     - target: {fileID: 4801983049357034, guid: b7b848252f196ef43adf24d65a47684a, type: 2}
       propertyPath: m_LocalPosition.z
@@ -479,7 +630,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1054236160966510, guid: b7b848252f196ef43adf24d65a47684a, type: 2}
       propertyPath: m_Name
-      value: Foreground
+      value: Foreground Bottom
       objectReference: {fileID: 0}
     - target: {fileID: 4801983049357034, guid: b7b848252f196ef43adf24d65a47684a, type: 2}
       propertyPath: m_LocalScale.x
@@ -493,6 +644,11 @@ Prefab:
       propertyPath: m_LocalScale.z
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 23494099751877792, guid: b7b848252f196ef43adf24d65a47684a,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c884f47d8bac2f44fa4aec7b8a446493, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b7b848252f196ef43adf24d65a47684a, type: 2}
   m_IsPrefabParent: 0
@@ -609,7 +765,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4801983049357034, guid: b7b848252f196ef43adf24d65a47684a, type: 2}
       propertyPath: m_RootOrder
-      value: 12
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 4801983049357034, guid: b7b848252f196ef43adf24d65a47684a, type: 2}
       propertyPath: m_LocalScale.y
@@ -764,6 +920,11 @@ Prefab:
       propertyPath: m_Interpolate
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114079962045011500, guid: 6959f90ef756407448e5ec58558e79b3,
+        type: 2}
+      propertyPath: eraseRenderer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6959f90ef756407448e5ec58558e79b3, type: 2}
   m_IsPrefabParent: 0
@@ -804,7 +965,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4801983049357034, guid: b7b848252f196ef43adf24d65a47684a, type: 2}
       propertyPath: m_RootOrder
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 1054236160966510, guid: b7b848252f196ef43adf24d65a47684a, type: 2}
       propertyPath: m_Name
@@ -913,7 +1074,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4195901004374870, guid: 67ad25145ccb5d041a2124b3b4c9905b, type: 2}
       propertyPath: m_RootOrder
-      value: 11
+      value: 12
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 67ad25145ccb5d041a2124b3b4c9905b, type: 2}
@@ -960,6 +1121,93 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9d1262925c1470f4697198d1c878cf63, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1633252810 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1100359597751406, guid: 67ad25145ccb5d041a2124b3b4c9905b,
+    type: 2}
+  m_PrefabInternal: {fileID: 1409578443}
+--- !u!114 &1633252816
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1633252810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: 0
+  eraseRenderer: 0
+  originalLayer: 0
+  originalMaterials: []
+--- !u!1001 &1819089976
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4801983049357034, guid: b7b848252f196ef43adf24d65a47684a, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4801983049357034, guid: b7b848252f196ef43adf24d65a47684a, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4801983049357034, guid: b7b848252f196ef43adf24d65a47684a, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4801983049357034, guid: b7b848252f196ef43adf24d65a47684a, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4801983049357034, guid: b7b848252f196ef43adf24d65a47684a, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4801983049357034, guid: b7b848252f196ef43adf24d65a47684a, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4801983049357034, guid: b7b848252f196ef43adf24d65a47684a, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4801983049357034, guid: b7b848252f196ef43adf24d65a47684a, type: 2}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1054236160966510, guid: b7b848252f196ef43adf24d65a47684a, type: 2}
+      propertyPath: m_Name
+      value: Foreground Top
+      objectReference: {fileID: 0}
+    - target: {fileID: 4801983049357034, guid: b7b848252f196ef43adf24d65a47684a, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 4801983049357034, guid: b7b848252f196ef43adf24d65a47684a, type: 2}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4801983049357034, guid: b7b848252f196ef43adf24d65a47684a, type: 2}
+      propertyPath: m_LocalScale.z
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 23494099751877792, guid: b7b848252f196ef43adf24d65a47684a,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: b890ba2fbcaa0ad4bbcc57511030e1ef, type: 2}
+    - target: {fileID: 1054236160966510, guid: b7b848252f196ef43adf24d65a47684a, type: 2}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: b7b848252f196ef43adf24d65a47684a, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1001 &2055533101
 Prefab:
   m_ObjectHideFlags: 0
@@ -997,7 +1245,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4801983049357034, guid: b7b848252f196ef43adf24d65a47684a, type: 2}
       propertyPath: m_RootOrder
-      value: 10
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 4801983049357034, guid: b7b848252f196ef43adf24d65a47684a, type: 2}
       propertyPath: m_LocalScale.y
