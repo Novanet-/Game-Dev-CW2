@@ -117,12 +117,12 @@ public class PlayerMovementController : MonoBehaviour
                 _jumpDirection = Vector2.up;
             }
 
-            CheckMovementState(collision, angle, newJumpDirection);
         }
         else
         {
             IsFlying = false;
         }
+        CheckMovementState(collision, angle, newJumpDirection);
     }
 
     // Use this for initialization
@@ -132,7 +132,7 @@ public class PlayerMovementController : MonoBehaviour
 
     private void Update()
     {
-        if (IsActivePlayer && !IsFlying && Input.GetKey(KeyCode.W))
+        if (IsActivePlayer && !IsFlying && Input.GetKeyDown(KeyCode.W))
         {
             _isJumpQueued = true;
         }
