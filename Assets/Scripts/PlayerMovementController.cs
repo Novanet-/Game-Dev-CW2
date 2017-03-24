@@ -8,10 +8,6 @@ public class PlayerMovementController : MonoBehaviour
     public Transform GroundCheck;
     [HideInInspector] public bool IsActivePlayer = false;
     [HideInInspector] public bool IsFollowing = true;
-    public float JumpForce;
-    public float MaxHorizontalSpeed;
-    public float MaxVerticalSpeed;
-    public float MoveForce;
 
     #endregion Public Fields
 
@@ -20,6 +16,13 @@ public class PlayerMovementController : MonoBehaviour
     private Vector3 _horizontalClamp;
     private bool _isJumpQueued;
     private Vector2 _jumpDirection;
+	private bool _isFollowing;
+	private PlayerMovementController _followTarget;
+	private float _jumpForce;
+	private float _maxHorizontalSpeed;
+	private float _maxVerticalSpeed;
+	private float _moveForce;
+	private float _followDistance = 10;
 
     #endregion Private Fields
 
@@ -31,6 +34,15 @@ public class PlayerMovementController : MonoBehaviour
     #endregion Public Properties
 
     #region Private Methods
+
+	private void Start()
+	{
+		float mass = GetComponent<Rigidbody> ().mass;
+		_moveForce = mass * 400;
+		_jumpForce = mass * 1000;
+		_maxHorizontalSpeed = 15 / mass;
+		_maxVerticalSpeed = 50 / mass;
+	}
 
     private void CheckMovementState([NotNull] Collision collision, float normalAngleFromUpVector, Vector2 newJumpDirection)
     {
@@ -47,9 +59,9 @@ public class PlayerMovementController : MonoBehaviour
         float h = Input.GetAxis("Horizontal");
         var rigidBody = GetComponent<Rigidbody>();
 
-        bool isUnderHorizontalSpeedLimit = h * rigidBody.velocity.x < MaxHorizontalSpeed;
-        bool isAboveHorizontalSpeedLimit = Mathf.Abs(rigidBody.velocity.x) > MaxHorizontalSpeed;
-        bool isAboveVerticalSpeedLimit = rigidBody.velocity.y > MaxVerticalSpeed;
+        bool isUnderHorizontalSpeedLimit = h * rigidBody.velocity.x < _maxHorizontalSpeed;
+        bool isAboveHorizontalSpeedLimit = Mathf.Abs(rigidBody.velocity.x) > _maxHorizontalSpeed;
+        bool isAboveVerticalSpeedLimit = rigidBody.velocity.y > _maxVerticalSpeed;
 
         float clampAngle = Vector3.Angle(_horizontalClamp, h * Vector2.right);
         bool walkingIntoWall = clampAngle < 90;
@@ -66,24 +78,41 @@ public class PlayerMovementController : MonoBehaviour
             {
                 if (isUnderHorizontalSpeedLimit)
                 {
-                    rigidBody.AddForce(Vector2.right * h * MoveForce);
+                    rigidBody.AddForce(Vector2.right * h * _moveForce);
                 }
             }
-        }
+		}
+		else if (_isFollowing)
+		{
+			float distance = Vector3.Distance(transform.position, _followTarget.transform.position);
+			if (Mathf.Abs(distance) > _followDistance) {
+				if (IsWallClimbing && walkingIntoWall) {
+					IsFlying = false;
+				} else {
+					if (isUnderHorizontalSpeedLimit) {
+						if (transform.position.x < _followTarget.transform.position.x) {
+							rigidBody.AddForce(Vector2.right * _moveForce);
+						} else {
+							rigidBody.AddForce(Vector2.left * _moveForce);
+						}
+					}
+				}
+			}
+		}
 
         if (isAboveHorizontalSpeedLimit)
         {
-            rigidBody.velocity = new Vector2(Mathf.Sign(rigidBody.velocity.x) * MaxHorizontalSpeed, rigidBody.velocity.y);
+            rigidBody.velocity = new Vector2(Mathf.Sign(rigidBody.velocity.x) * _maxHorizontalSpeed, rigidBody.velocity.y);
         }
 
         if (isAboveVerticalSpeedLimit)
         {
-            rigidBody.velocity = new Vector2(rigidBody.velocity.x, Mathf.Sign(rigidBody.velocity.y) * MaxVerticalSpeed);
+            rigidBody.velocity = new Vector2(rigidBody.velocity.x, Mathf.Sign(rigidBody.velocity.y) * _maxVerticalSpeed);
         }
 
         if (IsActivePlayer && _isJumpQueued)
         {
-            rigidBody.AddForce(_jumpDirection * JumpForce);
+            rigidBody.AddForce(_jumpDirection * _jumpForce);
             IsFlying = true;
             _isJumpQueued = false;
         }
@@ -125,11 +154,6 @@ public class PlayerMovementController : MonoBehaviour
         CheckMovementState(collision, angle, newJumpDirection);
     }
 
-    // Use this for initialization
-    private void Start()
-    {
-    }
-
     private void Update()
     {
         if (IsActivePlayer && !IsFlying && Input.GetKeyDown(KeyCode.W))
@@ -139,4 +163,18 @@ public class PlayerMovementController : MonoBehaviour
     }
 
     #endregion Private Methods
+
+	#region Public Methods
+
+	public void EnableFollowing(PlayerMovementController goatToFollow) {
+		_isFollowing = true;
+		_followTarget = goatToFollow;
+	}
+
+	public void DisableFollowing() {
+		_isFollowing = false;
+		_followTarget = null;
+	}
+
+	#endregion
 }

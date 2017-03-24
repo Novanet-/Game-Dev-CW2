@@ -17,6 +17,7 @@ public class GameController : MonoBehaviour
     private int _currentGoatIndex;
     private PlayerMovementController[] _goatControllerArray;
     private float _timeStart;
+	private bool _followingEnabled;
 
     #endregion Private Fields
 
@@ -39,11 +40,15 @@ public class GameController : MonoBehaviour
 
     private void SetCurrentTarget(int newIndex)
     {
+		DisableFollowing ();
         CurrentGoat.IsActivePlayer = false;
         _currentGoatIndex = newIndex;
         CurrentGoat.IsActivePlayer = true;
         Hooks.Camera.GetComponent<CameraController>().CurrentTarget = CurrentGoat.transform;
         Debug.Log(_goatControllerArray[0].IsActivePlayer + " " + _goatControllerArray[1].IsActivePlayer + " " + _goatControllerArray[2].IsActivePlayer);
+		if (_followingEnabled) {
+			EnableFollowing ();
+		}
     }
 
     private void Start()
@@ -56,31 +61,50 @@ public class GameController : MonoBehaviour
             Hooks.GoatLarge.GetComponent<PlayerMovementController>()
         };
         CurrentGoat.IsActivePlayer = true;
-
+		EnableFollowing();
         _timeStart = Time.time;
     }
 
     private void ToggleFollowing()
     {
+		_followingEnabled = !_followingEnabled;
+		if (_followingEnabled) {
+			EnableFollowing();
+		} else {
+			DisableFollowing ();
+		}
     }
+
+	private void EnableFollowing() {
+		for (int indexCount = 0; indexCount < _goatControllerArray.Length; indexCount++) {
+			if (indexCount != _currentGoatIndex) {
+				_goatControllerArray[indexCount].EnableFollowing(CurrentGoat);
+			}
+		}
+	}
+
+	private void DisableFollowing() {
+		for (int indexCount = 0; indexCount < _goatControllerArray.Length; indexCount++) {
+			if (indexCount != _currentGoatIndex) {
+				_goatControllerArray[indexCount].DisableFollowing();
+			}
+		}
+	}
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            Debug.Log("E Pressed.");
             ChangeCurrentTarget(true);
         }
         else if (Input.GetKeyDown(KeyCode.Q))
         {
-            Debug.Log("Q Pressed.");
             ChangeCurrentTarget(false);
         }
         if (Input.GetKeyDown(KeyCode.F))
         {
             ToggleFollowing();
         }
-
         if (Math.Abs((Time.time - _timeStart) % 5) < 0.1)
         {
             Debug.Log("Current Goat = " + CurrentGoat.gameObject.name + ", Is Flying = " + CurrentGoat.IsFlying + ", Is Wall Climbing = " +
