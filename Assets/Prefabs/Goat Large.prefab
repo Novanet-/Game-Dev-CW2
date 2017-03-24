@@ -121,13 +121,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f2e6f0fa34ab3d46aa539c8266fafcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveForce: 1000
-  maxHorizontalSpeed: 10
-  maxVerticalSpeed: 20
-  jumpForce: 8000
-  groundCheck: {fileID: 0}
-  isActivePlayer: 0
-  isFollowing: 1
+  GroundCheck: {fileID: 0}
+  IsActivePlayer: 0
+  IsFollowing: 1
+  JumpForce: 2500
+  MaxHorizontalSpeed: 10
+  MaxVerticalSpeed: 20
+  MoveForce: 365
 --- !u!114 &114984005619397502
 MonoBehaviour:
   m_ObjectHideFlags: 1

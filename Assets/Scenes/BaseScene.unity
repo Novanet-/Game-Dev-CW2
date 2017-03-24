@@ -279,7 +279,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 7
   far clip plane: 1000
   field of view: 90
   orthographic: 1
@@ -322,9 +322,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18448ec3f506fae47b7ca1c62a5ff8da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentTarget: {fileID: 739573451}
-  travelTime: 0.5
-  cameraDistance: -10
+  CameraDistance: -10
+  CurrentTarget: {fileID: 739573451}
+  TravelTime: 0.5
 --- !u!114 &113044314
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -696,20 +696,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
-    - target: {fileID: 114843921385903762, guid: 39f8265ef98101a458614c7676f02938,
-        type: 2}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1100359597751406, guid: 39f8265ef98101a458614c7676f02938, type: 2}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 54142440282320894, guid: 39f8265ef98101a458614c7676f02938,
-        type: 2}
-      propertyPath: m_Interpolate
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 39f8265ef98101a458614c7676f02938, type: 2}
   m_IsPrefabParent: 0
@@ -905,25 +891,6 @@ Prefab:
     - target: {fileID: 4690584168664012, guid: 6959f90ef756407448e5ec58558e79b3, type: 2}
       propertyPath: m_RootOrder
       value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 114421462298545434, guid: 6959f90ef756407448e5ec58558e79b3,
-        type: 2}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1882881478989660, guid: 6959f90ef756407448e5ec58558e79b3, type: 2}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 54182042763543212, guid: 6959f90ef756407448e5ec58558e79b3,
-        type: 2}
-      propertyPath: m_Interpolate
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114079962045011500, guid: 6959f90ef756407448e5ec58558e79b3,
-        type: 2}
-      propertyPath: eraseRenderer
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6959f90ef756407448e5ec58558e79b3, type: 2}
