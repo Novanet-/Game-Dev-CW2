@@ -6,8 +6,21 @@ namespace Backend
 {
     public class StoryController : MonoBehaviour
     {
+        #region Private Fields
+
         [SerializeField] private Canvas _uiCanvas;
         private UIController _uiController;
+
+        #endregion Private Fields
+
+        #region Private Methods
+
+        private IEnumerable DisplayStoryMessage(string message, float delay)
+        {
+            yield return new WaitForSeconds(delay);
+
+            _uiController.DisplayMessage(message, MessageLocation.TopPanel);
+        }
 
         // Use this for initialization
         private void Start()
@@ -20,11 +33,6 @@ namespace Backend
         {
         }
 
-        private IEnumerable DisplayStoryMessage(string message, float delay)
-        {
-            yield return new WaitForSeconds(delay);
-
-            _uiController.DisplayMessage(message, MessageLocation.TopPanel);
-        }
+        #endregion Private Methods
     }
 }
