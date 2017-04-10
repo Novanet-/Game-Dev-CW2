@@ -1,48 +1,16 @@
-﻿using JetBrains.Annotations;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class PlayerMovementController : MonoBehaviour
+public class PlayerMovementController : EntityMovementControllerBase
 {
     #region Public Fields
 
-    public Transform GroundCheck;
-    [HideInInspector] public bool IsActivePlayer = false;
     [HideInInspector] public bool IsFollowing = true;
-    public float JumpForce;
-    public float MaxHorizontalSpeed;
-    public float MaxVerticalSpeed;
-    public float MoveForce;
 
     #endregion Public Fields
 
-    #region Private Fields
+    #region Protected Methods
 
-    private Vector3 _horizontalClamp;
-    private bool _isJumpQueued;
-    private Vector2 _jumpDirection;
-
-    #endregion Private Fields
-
-    #region Public Properties
-
-    public bool IsFlying { get; private set; }
-    public bool IsWallClimbing { get; private set; }
-
-    #endregion Public Properties
-
-    #region Private Methods
-
-    private void CheckMovementState([NotNull] Collision collision, float normalAngleFromUpVector, Vector2 newJumpDirection)
-    {
-        IsWallClimbing = !(normalAngleFromUpVector <= 45)
-                         && collision.gameObject.tag.Equals("Ground");
-
-        _horizontalClamp = IsWallClimbing ? (Vector3) (_jumpDirection * -1) : _horizontalClamp;
-        IsFlying = false;
-        _jumpDirection = newJumpDirection;
-    }
-
-    private void FixedUpdate()
+    protected override void FixedUpdate()
     {
         float h = Input.GetAxis("Horizontal");
         var rigidBody = GetComponent<Rigidbody>();
@@ -51,90 +19,109 @@ public class PlayerMovementController : MonoBehaviour
         bool isAboveHorizontalSpeedLimit = Mathf.Abs(rigidBody.velocity.x) > MaxHorizontalSpeed;
         bool isAboveVerticalSpeedLimit = rigidBody.velocity.y > MaxVerticalSpeed;
 
-        float clampAngle = Vector3.Angle(_horizontalClamp, h * Vector2.right);
+        float clampAngle = Vector3.Angle(HorizontalClamp, h * Vector2.right);
         bool walkingIntoWall = clampAngle < 90;
 
         //        Debug.Log("IsWallClimbing = " + IsWallClimbing + ", ClampAngle = " + clampAngle);
 
-        if (IsActivePlayer)
-        {
-            if (IsWallClimbing && walkingIntoWall)
-            {
-                IsFlying = false;
-            }
-            else
-            {
-                if (isUnderHorizontalSpeedLimit)
-                {
-                    rigidBody.AddForce(Vector2.right * h * MoveForce);
-                }
-            }
-        }
-
-        if (isAboveHorizontalSpeedLimit)
-        {
-            rigidBody.velocity = new Vector2(Mathf.Sign(rigidBody.velocity.x) * MaxHorizontalSpeed, rigidBody.velocity.y);
-        }
-
-        if (isAboveVerticalSpeedLimit)
-        {
-            rigidBody.velocity = new Vector2(rigidBody.velocity.x, Mathf.Sign(rigidBody.velocity.y) * MaxVerticalSpeed);
-        }
-
-        if (IsActivePlayer && _isJumpQueued)
-        {
-            rigidBody.AddForce(_jumpDirection * JumpForce);
-            IsFlying = true;
-            _isJumpQueued = false;
-        }
+        CheckPlayerSpecificMovement(walkingIntoWall, isUnderHorizontalSpeedLimit, rigidBody, h);
+        CheckSpeeds(isAboveHorizontalSpeedLimit, rigidBody, isAboveVerticalSpeedLimit);
+        ApplyJumpForce(rigidBody);
     }
 
-    private void OnCollisionEnter([NotNull] Collision collision)
-    {
-        var newJumpDirection = new Vector2(collision.contacts[0].normal.x, collision.contacts[0].normal.y);
-        Vector2 upVector = Vector2.up;
-        float angle = Vector2.Angle(upVector, newJumpDirection);
+    #endregion Protected Methods
 
-        CheckMovementState(collision, angle, newJumpDirection);
+    #region Private Fields
+
+    private const float FollowDistance = 10;
+
+    private PlayerMovementController _followTarget;
+
+    private bool _isFollowing;
+
+    #endregion Private Fields
+
+    #region Public Methods
+
+    public void DisableFollowing()
+    {
+        _isFollowing = false;
+        _followTarget = null;
     }
 
-    private void OnCollisionExit([NotNull] Collision collision)
+    public void EnableFollowing(PlayerMovementController goatToFollow)
     {
-        IsFlying = true;
-        IsWallClimbing = false;
+        _isFollowing = true;
+        _followTarget = goatToFollow;
     }
 
-    private void OnCollisionStay([NotNull] Collision collision)
+    #endregion Public Methods
+
+    #region Private Methods
+
+    private void ApplyActivePlayerMovementInput(bool walkingIntoWall, bool isUnderHorizontalSpeedLimit, Rigidbody rigidBody, float h)
     {
-        var newJumpDirection = new Vector2(collision.contacts[0].normal.x, collision.contacts[0].normal.y);
-        Vector2 upVector = Vector2.up;
-        float angle = Vector2.Angle(upVector, newJumpDirection);
+        if (!IsActivePlayer) return;
 
-        if (!IsWallClimbing)
-        {
-            if (newJumpDirection == Vector2.up)
-            {
-                _jumpDirection = Vector2.up;
-            }
-
-        }
-        else
+        if (IsWallClimbing && walkingIntoWall)
         {
             IsFlying = false;
         }
-        CheckMovementState(collision, angle, newJumpDirection);
+        else
+        {
+            if (isUnderHorizontalSpeedLimit)
+            {
+                rigidBody.AddForce(Vector2.right * h * MoveForce);
+            }
+        }
     }
 
-    // Use this for initialization
-    private void Start()
+    private void ApplyFollowForce(bool walkingIntoWall, bool isUnderHorizontalSpeedLimit, Rigidbody rigidBody)
     {
+        if (!_isFollowing || IsActivePlayer) return;
+
+        float distance = Vector3.Distance(transform.position, _followTarget.transform.position);
+        if (Mathf.Abs(distance) <= FollowDistance) return;
+
+        if (IsWallClimbing && walkingIntoWall)
+        {
+            IsFlying = false;
+        }
+        else
+        {
+            if (!isUnderHorizontalSpeedLimit) return;
+
+            if (transform.position.x < _followTarget.transform.position.x)
+            {
+                rigidBody.AddForce(Vector2.right * MoveForce);
+            }
+            else
+            {
+                rigidBody.AddForce(Vector2.left * MoveForce);
+            }
+        }
     }
 
-    private void Update()
+    private void CheckPlayerSpecificMovement(bool walkingIntoWall, bool isUnderHorizontalSpeedLimit, Rigidbody rigidBody, float h)
+    {
+        ApplyActivePlayerMovementInput(walkingIntoWall, isUnderHorizontalSpeedLimit, rigidBody, h);
+        ApplyFollowForce(walkingIntoWall, isUnderHorizontalSpeedLimit, rigidBody);
+    }
+
+    protected override void Start()
+    {
+        float mass = GetComponent<Rigidbody>().mass;
+        MoveForce = mass * 400;
+        JumpForce = mass * 1000;
+        MaxHorizontalSpeed = 15 / mass;
+        MaxVerticalSpeed = 50 / mass;
+    }
+
+    protected override void Update()
     {
         if (IsActivePlayer && !IsFlying && Input.GetKeyDown(KeyCode.W))
         {
-            _isJumpQueued = true;
+            IsJumpQueued = true;
         }
     }
 

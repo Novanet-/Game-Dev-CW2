@@ -127,7 +127,8 @@ MonoBehaviour:
   JumpForce: 2500
   MaxHorizontalSpeed: 10
   MaxVerticalSpeed: 20
-  MoveForce: 365
+  MoveForce: 600
+  FollowDistance: 15
 --- !u!114 &114984005619397502
 MonoBehaviour:
   m_ObjectHideFlags: 1
