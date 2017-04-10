@@ -1,10 +1,17 @@
 ﻿using System;
-using JetBrains.Annotations;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class GameController : MonoBehaviour
 {
+    #region Private Properties
+
+    private PlayerMovementController CurrentGoat
+    {
+        get { return _goatControllerArray[_currentGoatIndex]; }
+    }
+
+    #endregion Private Properties
+
     #region Public Fields
 
     public float GravityStrength;
@@ -15,20 +22,11 @@ public class GameController : MonoBehaviour
     #region Private Fields
 
     private int _currentGoatIndex;
+    private bool _followingEnabled;
     private PlayerMovementController[] _goatControllerArray;
     private float _timeStart;
-	private bool _followingEnabled;
 
     #endregion Private Fields
-
-    #region Private Properties
-
-    [NotNull] private PlayerMovementController CurrentGoat
-    {
-        get { return _goatControllerArray[_currentGoatIndex]; }
-    }
-
-    #endregion Private Properties
 
     #region Private Methods
 
@@ -38,17 +36,40 @@ public class GameController : MonoBehaviour
         SetCurrentTarget(newIndex);
     }
 
+    private void DisableFollowing()
+    {
+        for (var indexCount = 0; indexCount < _goatControllerArray.Length; indexCount++)
+        {
+            if (indexCount != _currentGoatIndex)
+            {
+                _goatControllerArray[indexCount].DisableFollowing();
+            }
+        }
+    }
+
+    private void EnableFollowing()
+    {
+        for (var indexCount = 0; indexCount < _goatControllerArray.Length; indexCount++)
+        {
+            if (indexCount != _currentGoatIndex)
+            {
+                _goatControllerArray[indexCount].EnableFollowing(CurrentGoat);
+            }
+        }
+    }
+
     private void SetCurrentTarget(int newIndex)
     {
-		DisableFollowing ();
+        DisableFollowing();
         CurrentGoat.IsActivePlayer = false;
         _currentGoatIndex = newIndex;
         CurrentGoat.IsActivePlayer = true;
         Hooks.Camera.GetComponent<CameraController>().CurrentTarget = CurrentGoat.transform;
         Debug.Log(_goatControllerArray[0].IsActivePlayer + " " + _goatControllerArray[1].IsActivePlayer + " " + _goatControllerArray[2].IsActivePlayer);
-		if (_followingEnabled) {
-			EnableFollowing ();
-		}
+        if (_followingEnabled)
+        {
+            EnableFollowing();
+        }
     }
 
     private void Start()
@@ -61,35 +82,22 @@ public class GameController : MonoBehaviour
             Hooks.GoatLarge.GetComponent<PlayerMovementController>()
         };
         CurrentGoat.IsActivePlayer = true;
-		EnableFollowing();
+        EnableFollowing();
         _timeStart = Time.time;
     }
 
     private void ToggleFollowing()
     {
-		_followingEnabled = !_followingEnabled;
-		if (_followingEnabled) {
-			EnableFollowing();
-		} else {
-			DisableFollowing ();
-		}
+        _followingEnabled = !_followingEnabled;
+        if (_followingEnabled)
+        {
+            EnableFollowing();
+        }
+        else
+        {
+            DisableFollowing();
+        }
     }
-
-	private void EnableFollowing() {
-		for (int indexCount = 0; indexCount < _goatControllerArray.Length; indexCount++) {
-			if (indexCount != _currentGoatIndex) {
-				_goatControllerArray[indexCount].EnableFollowing(CurrentGoat);
-			}
-		}
-	}
-
-	private void DisableFollowing() {
-		for (int indexCount = 0; indexCount < _goatControllerArray.Length; indexCount++) {
-			if (indexCount != _currentGoatIndex) {
-				_goatControllerArray[indexCount].DisableFollowing();
-			}
-		}
-	}
 
     private void Update()
     {

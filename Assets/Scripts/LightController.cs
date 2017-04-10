@@ -6,7 +6,7 @@ public class LightController : MonoBehaviour
 
     [SerializeField] private GameObject _orbitCentre;
 
-    private OrbitController orbitController;
+    private OrbitController _orbitController;
 
     #endregion Private Fields
 
@@ -15,23 +15,20 @@ public class LightController : MonoBehaviour
     // Use this for initialization
     private void Start()
     {
-        orbitController = _orbitCentre.GetComponent<OrbitController>();
+        _orbitController = _orbitCentre.GetComponent<OrbitController>();
     }
 
     // Update is called once per frame
     private void Update()
     {
-        float orbitArc = orbitController.OrbitArc;
+        float orbitArc = _orbitController.OrbitArc;
         if (orbitArc >= 180)
         {
             GetComponent<Light>().intensity = 0;
-            //            Debug.Log(string.Format("OrbitArc = {0}", orbitArc));
         }
         if (orbitArc >= 359)
         {
             GetComponent<Light>().intensity = 1;
-            //            Debug.Log(string.Format("OrbitArc = {0}", orbitArc));
-            //28666
         }
     }
 
