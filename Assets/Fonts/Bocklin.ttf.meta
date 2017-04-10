@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 3da73f0449f03894dab4b9973490a0e6
+timeCreated: 1491845300
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Bocklin
+  fontNames:
+  - Bocklin
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -26,7 +26,7 @@ public class PlayerMovementController : EntityMovementControllerBase
 
         CheckPlayerSpecificMovement(walkingIntoWall, isUnderHorizontalSpeedLimit, rigidBody, h);
         CheckSpeeds(isAboveHorizontalSpeedLimit, rigidBody, isAboveVerticalSpeedLimit);
-        CheckJumpQueue(rigidBody);
+        ApplyJumpForce(rigidBody);
     }
 
     #endregion Protected Methods
@@ -59,9 +59,7 @@ public class PlayerMovementController : EntityMovementControllerBase
 
     #region Private Methods
 
-    private void ApplyActivePlayerMovementInput(bool walkingIntoWall, bool isUnderHorizontalSpeedLimit,
-        Rigidbody rigidBody,
-        float h)
+    private void ApplyActivePlayerMovementInput(bool walkingIntoWall, bool isUnderHorizontalSpeedLimit, Rigidbody rigidBody, float h)
     {
         if (!IsActivePlayer) return;
 
@@ -104,9 +102,7 @@ public class PlayerMovementController : EntityMovementControllerBase
         }
     }
 
-    private void CheckPlayerSpecificMovement(bool walkingIntoWall, bool isUnderHorizontalSpeedLimit,
-        Rigidbody rigidBody,
-        float h)
+    private void CheckPlayerSpecificMovement(bool walkingIntoWall, bool isUnderHorizontalSpeedLimit, Rigidbody rigidBody, float h)
     {
         ApplyActivePlayerMovementInput(walkingIntoWall, isUnderHorizontalSpeedLimit, rigidBody, h);
         ApplyFollowForce(walkingIntoWall, isUnderHorizontalSpeedLimit, rigidBody);

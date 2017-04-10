@@ -2,6 +2,12 @@ using UnityEngine;
 
 public abstract class EntityMovementControllerBase : MonoBehaviour
 {
+    #region Private Fields
+
+    private Vector2 _jumpDirection;
+
+    #endregion Private Fields
+
     #region Public Fields
 
     [HideInInspector] public bool IsActivePlayer = false;
@@ -19,12 +25,6 @@ public abstract class EntityMovementControllerBase : MonoBehaviour
 
     #endregion Protected Fields
 
-    #region Private Fields
-
-    private Vector2 _jumpDirection;
-
-    #endregion Private Fields
-
     #region Public Properties
 
     public bool IsFlying { get; protected set; }
@@ -34,9 +34,16 @@ public abstract class EntityMovementControllerBase : MonoBehaviour
 
     #region Protected Methods
 
-    protected abstract void FixedUpdate();
+    protected void ApplyJumpForce(Rigidbody rigidBody)
+    {
+        if (!IsActivePlayer || !IsJumpQueued) return;
 
-    protected virtual void CheckSpeeds(bool isAboveHorizontalSpeedLimit, Rigidbody rigidBody,
+        rigidBody.AddForce(_jumpDirection * JumpForce);
+        IsFlying = true;
+        IsJumpQueued = false;
+    }
+
+    protected void CheckSpeeds(bool isAboveHorizontalSpeedLimit, Rigidbody rigidBody,
         bool isAboveVerticalSpeedLimit)
     {
         if (isAboveHorizontalSpeedLimit)
@@ -48,25 +55,19 @@ public abstract class EntityMovementControllerBase : MonoBehaviour
         {
             rigidBody.velocity = new Vector2(rigidBody.velocity.x, Mathf.Sign(rigidBody.velocity.y) * MaxVerticalSpeed);
         }
-
     }
 
-    protected void CheckJumpQueue(Rigidbody rigidBody)
-    {
-        if (IsActivePlayer && IsJumpQueued)
-        {
-            rigidBody.AddForce(_jumpDirection * JumpForce);
-            IsFlying = true;
-            IsJumpQueued = false;
-        }
-    }
+    protected abstract void FixedUpdate();
+
+    protected abstract void Start();
+
+    protected abstract void Update();
 
     #endregion Protected Methods
 
     #region Private Methods
 
-    private void CheckMovementState(Collision collision, float normalAngleFromUpVector,
-        Vector2 newJumpDirection)
+    private void UpdateMovementConstraints(Collision collision, float normalAngleFromUpVector, Vector2 newJumpDirection)
     {
         IsWallClimbing = !(normalAngleFromUpVector <= 45)
                          && collision.gameObject.tag.Equals("Ground");
@@ -82,7 +83,7 @@ public abstract class EntityMovementControllerBase : MonoBehaviour
         var upVector = Vector2.up;
         float angle = Vector2.Angle(upVector, newJumpDirection);
 
-        CheckMovementState(collision, angle, newJumpDirection);
+        UpdateMovementConstraints(collision, angle, newJumpDirection);
     }
 
     private void OnCollisionExit()
@@ -108,11 +109,8 @@ public abstract class EntityMovementControllerBase : MonoBehaviour
         {
             IsFlying = false;
         }
-        CheckMovementState(collision, angle, newJumpDirection);
+        UpdateMovementConstraints(collision, angle, newJumpDirection);
     }
 
     #endregion Private Methods
-
-    protected abstract void Start();
-    protected abstract void Update();
 }

@@ -30,11 +30,9 @@ public class OrbitController : MonoBehaviour
         OrbitArc = elapsedTime / _timeForFullRotation * 360.0f;
 
         float angle = elapsedTime / _timeForFullRotation * 360.0f;
-        Quaternion q = Quaternion.AngleAxis(angle, Vector3.down);
+        var q = Quaternion.AngleAxis(angle, Vector3.down);
         transform.position = q * _vOffset;
         transform.rotation = q;
-
-        //        Debug.Log(elapsedTime);
     }
 
     #endregion Private Methods
