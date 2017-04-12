@@ -10,14 +10,16 @@ namespace Backend
 
         [SerializeField] private Canvas _uiCanvas;
         private UIController _uiController;
+        private float _globalMessageTimestamp = 0f;
+        private float _startTime;
 
         #endregion Private Fields
 
         #region Private Methods
 
-        private IEnumerator DisplayStoryMessage(string message, float delay)
+        private IEnumerator DisplayStoryMessageCoroutine(string message, float displayTime)
         {
-            yield return new WaitForSeconds(delay);
+            yield return new WaitForSeconds(displayTime);
 
             _uiController.DisplayMessage(message, MessageLocation.TopPanel);
         }
@@ -25,6 +27,7 @@ namespace Backend
         // Use this for initialization
         private void Start()
         {
+            _startTime = Time.time;
             _uiController = _uiCanvas.GetComponent<UIController>();
             StartCoroutine(Delay(5f));
             StoryTest();
@@ -32,16 +35,30 @@ namespace Backend
 
         private void StoryTest()
         {
-            var delay = 0f;
-            StartCoroutine(DisplayStoryMessage("1. This is the beginning", delay += 1f));
-            StartCoroutine(DisplayStoryMessage("2. This is your life", delay += 5f));
-            StartCoroutine(DisplayStoryMessage("3. This is your ending", delay += 5f));
-            StartCoroutine(DisplayStoryMessage("4. The cressing of christ", delay += 5f));
+            DisplayStoryMessage("1. This is the beginning", 2f);
+            DisplayStoryMessage("2. This is your life", 4f, 5f);
+            DisplayStoryMessage("3. This is your ending", 8f, 10f);
+            DisplayStoryMessage("4. The cressing of christ", 16f, 15f);
+        }
+
+        private void DisplayStoryMessage(string message, float displayTime)
+        {
+            StartCoroutine(DisplayStoryMessageCoroutine(message, _globalMessageTimestamp));
+            StartCoroutine(DisplayStoryMessageCoroutine("", _globalMessageTimestamp += displayTime));
+        }
+
+        private void DisplayStoryMessage(string message, float displayTime, float delayTime)
+        {
+            StartCoroutine(DisplayStoryMessageCoroutine(message, _globalMessageTimestamp += delayTime));
+            StartCoroutine(DisplayStoryMessageCoroutine("", _globalMessageTimestamp += displayTime));
         }
 
         // Update is called once per frame
         private void Update()
         {
+//            _globalMessageTimestamp = _startTime + Time.deltaTime;
+            _globalMessageTimestamp = Time.time;
+            Debug.Log(Time.time);
         }
 
         #endregion Private Methods

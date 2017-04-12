@@ -47,7 +47,8 @@ namespace Frontend
             if (!success)
                 throw new GruffException("Message location not found in dictionary");
 
-            CrossfadeTextChangeDefault(targetTextBox, message);
+            targetTextBox.GetComponent<TextController>().SetText(message);
+//            CrossfadeTextChangeDefault(targetTextBox, message);
         }
 
         #endregion Public Methods
@@ -85,19 +86,19 @@ namespace Frontend
 
         #endregion Private Methods
 
-        private void CrossfadeTextChangeDefault(Text textComponent, string newMessage)
-        {
-            
-            CrossfadeTextChange(textComponent, newMessage, _defaultFadeSpeed, _defaultMaxAlpha);
-        }
-
-        private void CrossfadeTextChange(Text textComponent, string newMessage, float fadeSpeed, float maxAlpha)
-        {
-            var canvasGroupComponent = (CanvasGroup)textComponent.gameObject.GetComponentInParent(typeof(CanvasGroup));
-
-            StartCoroutine(HelperFunctions.FadeOut(canvasGroupComponent, fadeSpeed));
-            textComponent.text = newMessage;
-            StartCoroutine(HelperFunctions.FadeIn(canvasGroupComponent, fadeSpeed, maxAlpha));
-        }
+//        private void CrossfadeTextChangeDefault(Text textComponent, string newMessage)
+//        {
+//            
+//            CrossfadeTextChange(textComponent, newMessage, _defaultFadeSpeed, _defaultMaxAlpha);
+//        }
+//
+//        private void CrossfadeTextChange(Text textComponent, string newMessage, float fadeSpeed, float maxAlpha)
+//        {
+//            var canvasGroupComponent = (CanvasGroup)textComponent.gameObject.GetComponentInParent(typeof(CanvasGroup));
+//
+//            StartCoroutine(HelperFunctions.FadeOut(canvasGroupComponent, fadeSpeed));
+//            textComponent.text = newMessage;
+//            StartCoroutine(HelperFunctions.FadeIn(canvasGroupComponent, fadeSpeed, maxAlpha));
+//        }
     }
 }

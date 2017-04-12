@@ -3475,6 +3475,7 @@ MonoBehaviour:
   _pnlCentre: {fileID: 51527466}
   _pnlTop: {fileID: 128105884}
   _defaultFadeSpeed: 2
+  _defaultMaxAlpha: 0
 --- !u!1001 &1116367790
 Prefab:
   m_ObjectHideFlags: 0
@@ -4107,6 +4108,7 @@ GameObject:
   - component: {fileID: 1439794857}
   - component: {fileID: 1439794856}
   - component: {fileID: 1439794855}
+  - component: {fileID: 1439794858}
   m_Layer: 5
   m_Name: txtCentre
   m_TagString: UITextbox
@@ -4184,6 +4186,19 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1439794853}
+--- !u!114 &1439794858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1439794853}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7248752b1f8af4f4180e82df095b898e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _defaultFadeSpeed: 0.05
+  _defaultMaxAlpha: 0.8
 --- !u!43 &1447172493
 Mesh:
   m_ObjectHideFlags: 0
@@ -5228,6 +5243,7 @@ GameObject:
   - component: {fileID: 1633891784}
   - component: {fileID: 1633891783}
   - component: {fileID: 1633891782}
+  - component: {fileID: 1633891785}
   m_Layer: 5
   m_Name: txtBottom
   m_TagString: UITextbox
@@ -5305,6 +5321,19 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1633891780}
+--- !u!114 &1633891785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1633891780}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7248752b1f8af4f4180e82df095b898e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _defaultFadeSpeed: 0.05
+  _defaultMaxAlpha: 0.8
 --- !u!43 &1708769502
 Mesh:
   m_ObjectHideFlags: 0
@@ -5759,6 +5788,7 @@ GameObject:
   - component: {fileID: 1737015371}
   - component: {fileID: 1737015370}
   - component: {fileID: 1737015369}
+  - component: {fileID: 1737015372}
   m_Layer: 5
   m_Name: txtTop
   m_TagString: UITextbox
@@ -5836,6 +5866,19 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1737015367}
+--- !u!114 &1737015372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1737015367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7248752b1f8af4f4180e82df095b898e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _defaultFadeSpeed: 4
+  _defaultMaxAlpha: 0.8
 --- !u!1001 &1819089976
 Prefab:
   m_ObjectHideFlags: 0

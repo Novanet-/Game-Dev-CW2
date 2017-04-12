@@ -68,7 +68,7 @@ namespace Backend
             _currentGoatIndex = newIndex;
             CurrentGoat.IsActivePlayer = true;
             Hooks.Camera.GetComponent<CameraController>().CurrentTarget = CurrentGoat.transform;
-            Debug.Log(_goatControllerArray[0].IsActivePlayer + " " + _goatControllerArray[1].IsActivePlayer + " " + _goatControllerArray[2].IsActivePlayer);
+//            Debug.Log(_goatControllerArray[0].IsActivePlayer + " " + _goatControllerArray[1].IsActivePlayer + " " + _goatControllerArray[2].IsActivePlayer);
             if (_followingEnabled)
             {
                 EnableFollowing();
@@ -118,8 +118,8 @@ namespace Backend
             }
             if (Math.Abs((Time.time - _timeStart) % 5) < 0.1)
             {
-                Debug.Log("Current Goat = " + CurrentGoat.gameObject.name + ", Is Flying = " + CurrentGoat.IsFlying + ", Is Wall Climbing = " +
-                          CurrentGoat.IsWallClimbing);
+//                Debug.Log("Current Goat = " + CurrentGoat.gameObject.name + ", Is Flying = " + CurrentGoat.IsFlying + ", Is Wall Climbing = " +
+//                          CurrentGoat.IsWallClimbing);
             }
         }
 

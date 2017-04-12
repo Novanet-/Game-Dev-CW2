@@ -20,22 +20,22 @@ namespace Utils
 
         #endregion Internal Methods
 
-        internal static IEnumerator FadeIn(CanvasGroup canvasGroupComponent, float fadeSpeed, float maxAlpha)
+        internal static IEnumerator FadeIn(CanvasGroup canvasGroupComponent, float fadeTime, float maxAlpha)
         {
 
             while (canvasGroupComponent.alpha < maxAlpha)
             {
-                canvasGroupComponent.alpha += Time.deltaTime / fadeSpeed;
+                canvasGroupComponent.alpha += Time.deltaTime / fadeTime;
                 yield return null;
             }
         }
 
-        internal static IEnumerator FadeOut(CanvasGroup canvasGroupComponent, float fadeSpeed)
+        internal static IEnumerator FadeOut(CanvasGroup canvasGroupComponent, float fadeTime)
         {
 
             while (canvasGroupComponent.alpha > 0)
             {
-                canvasGroupComponent.alpha -= Time.deltaTime / fadeSpeed;
+                canvasGroupComponent.alpha -= Time.deltaTime / fadeTime;
                 yield return null;
             }
         }
