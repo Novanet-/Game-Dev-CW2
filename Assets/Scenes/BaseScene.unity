@@ -125,6 +125,7 @@ MonoBehaviour:
     GoatMed: {fileID: 680270000}
     GoatSmall: {fileID: 739573445}
     Troll: {fileID: 1100359597751406, guid: 67ad25145ccb5d041a2124b3b4c9905b, type: 2}
+  _storyControllerObject: {fileID: 2029659037}
 --- !u!4 &12447999
 Transform:
   m_ObjectHideFlags: 0
@@ -3474,8 +3475,6 @@ MonoBehaviour:
   _pnlBottom: {fileID: 1598034184}
   _pnlCentre: {fileID: 51527466}
   _pnlTop: {fileID: 128105884}
-  _defaultFadeSpeed: 2
-  _defaultMaxAlpha: 0
 --- !u!1001 &1116367790
 Prefab:
   m_ObjectHideFlags: 0

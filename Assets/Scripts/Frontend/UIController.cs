@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils;
@@ -16,9 +13,6 @@ namespace Frontend
         [SerializeField] private GameObject _pnlBottom;
         [SerializeField] private GameObject _pnlCentre;
         [SerializeField] private GameObject _pnlTop;
-
-        [SerializeField] private float _defaultFadeSpeed = 2f; //500ms
-        [SerializeField] private float _defaultMaxAlpha = 0.8f;
 
         #endregion Private Fields
 
@@ -42,13 +36,14 @@ namespace Frontend
                 throw new GruffException("Message Location enum and textbox dictionary do not match");
 
             Text targetTextBox;
-            bool success = TextBoxDictionary.TryGetValue(location, out targetTextBox);
 
-            if (!success)
+            bool fetchTextboxSuccess = TextBoxDictionary.TryGetValue(location, out targetTextBox);
+
+            if (!fetchTextboxSuccess)
                 throw new GruffException("Message location not found in dictionary");
 
-            targetTextBox.GetComponent<TextController>().SetText(message);
-//            CrossfadeTextChangeDefault(targetTextBox, message);
+            var targetTextController = targetTextBox.GetComponent<TextController>();
+            targetTextController.SetText(message);
         }
 
         #endregion Public Methods
@@ -85,20 +80,5 @@ namespace Frontend
         }
 
         #endregion Private Methods
-
-//        private void CrossfadeTextChangeDefault(Text textComponent, string newMessage)
-//        {
-//            
-//            CrossfadeTextChange(textComponent, newMessage, _defaultFadeSpeed, _defaultMaxAlpha);
-//        }
-//
-//        private void CrossfadeTextChange(Text textComponent, string newMessage, float fadeSpeed, float maxAlpha)
-//        {
-//            var canvasGroupComponent = (CanvasGroup)textComponent.gameObject.GetComponentInParent(typeof(CanvasGroup));
-//
-//            StartCoroutine(HelperFunctions.FadeOut(canvasGroupComponent, fadeSpeed));
-//            textComponent.text = newMessage;
-//            StartCoroutine(HelperFunctions.FadeIn(canvasGroupComponent, fadeSpeed, maxAlpha));
-//        }
     }
 }

@@ -4,6 +4,8 @@ namespace Utils
 {
     public class GruffException : Exception
     {
+        #region Public Constructors
+
         public GruffException()
         {
         }
@@ -15,5 +17,7 @@ namespace Utils
         public GruffException(string message, Exception inner): base(message, inner)
         {
         }
+
+        #endregion Public Constructors
     }
 }

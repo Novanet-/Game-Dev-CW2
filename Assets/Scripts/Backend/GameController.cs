@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Frontend;
 using UnityEngine;
 
@@ -6,15 +7,6 @@ namespace Backend
 {
     public class GameController : MonoBehaviour
     {
-        #region Private Properties
-
-        private PlayerMovementController CurrentGoat
-        {
-            get { return _goatControllerArray[_currentGoatIndex]; }
-        }
-
-        #endregion Private Properties
-
         #region Public Fields
 
         public float GravityStrength;
@@ -25,11 +17,22 @@ namespace Backend
         #region Private Fields
 
         private int _currentGoatIndex;
-        private bool _followingEnabled;
+        private bool _globalFollowingEnabled;
         private PlayerMovementController[] _goatControllerArray;
+        private StoryController _storyController;
+        [SerializeField] private GameObject _storyControllerObject;
         private float _timeStart;
 
         #endregion Private Fields
+
+        #region Private Properties
+
+        private PlayerMovementController CurrentGoat
+        {
+            get { return _goatControllerArray[_currentGoatIndex]; }
+        }
+
+        #endregion Private Properties
 
         #region Private Methods
 
@@ -41,38 +44,38 @@ namespace Backend
 
         private void DisableFollowing()
         {
-            for (var indexCount = 0; indexCount < _goatControllerArray.Length; indexCount++)
+            foreach (var goatController in _goatControllerArray)
             {
-                if (indexCount != _currentGoatIndex)
-                {
-                    _goatControllerArray[indexCount].DisableFollowing();
-                }
+                if (goatController != CurrentGoat) goatController.DisableFollowing();
             }
         }
 
         private void EnableFollowing()
         {
-            for (var indexCount = 0; indexCount < _goatControllerArray.Length; indexCount++)
+            foreach (var goatController in _goatControllerArray)
             {
-                if (indexCount != _currentGoatIndex)
-                {
-                    _goatControllerArray[indexCount].EnableFollowing(CurrentGoat);
-                }
+                if (goatController != CurrentGoat) goatController.EnableFollowing(CurrentGoat);
+            }
+        }
+
+        private void SetCurrentGoatAsActivePlayer()
+        {
+            foreach (var goatController in _goatControllerArray)
+            {
+                goatController.IsActivePlayer = goatController == CurrentGoat;
             }
         }
 
         private void SetCurrentTarget(int newIndex)
         {
             DisableFollowing();
-            CurrentGoat.IsActivePlayer = false;
+
             _currentGoatIndex = newIndex;
-            CurrentGoat.IsActivePlayer = true;
+            SetCurrentGoatAsActivePlayer();
+
             Hooks.Camera.GetComponent<CameraController>().CurrentTarget = CurrentGoat.transform;
-//            Debug.Log(_goatControllerArray[0].IsActivePlayer + " " + _goatControllerArray[1].IsActivePlayer + " " + _goatControllerArray[2].IsActivePlayer);
-            if (_followingEnabled)
-            {
-                EnableFollowing();
-            }
+
+            if (_globalFollowingEnabled) EnableFollowing();
         }
 
         private void Start()
@@ -84,22 +87,14 @@ namespace Backend
                 Hooks.GoatMed.GetComponent<PlayerMovementController>(),
                 Hooks.GoatLarge.GetComponent<PlayerMovementController>()
             };
-            CurrentGoat.IsActivePlayer = true;
-            EnableFollowing();
-            _timeStart = Time.time;
-        }
+            _storyController = _storyControllerObject.GetComponent<StoryController>();
+            _globalFollowingEnabled = true;
+            _currentGoatIndex = 0;
 
-        private void ToggleFollowing()
-        {
-            _followingEnabled = !_followingEnabled;
-            if (_followingEnabled)
-            {
-                EnableFollowing();
-            }
-            else
-            {
-                DisableFollowing();
-            }
+            SetCurrentGoatAsActivePlayer();
+            EnableFollowing();
+
+            _timeStart = Time.time;
         }
 
         private void Update()
@@ -112,14 +107,10 @@ namespace Backend
             {
                 ChangeCurrentTarget(false);
             }
+
             if (Input.GetKeyDown(KeyCode.F))
             {
-                ToggleFollowing();
-            }
-            if (Math.Abs((Time.time - _timeStart) % 5) < 0.1)
-            {
-//                Debug.Log("Current Goat = " + CurrentGoat.gameObject.name + ", Is Flying = " + CurrentGoat.IsFlying + ", Is Wall Climbing = " +
-//                          CurrentGoat.IsWallClimbing);
+                if (_globalFollowingEnabled) DisableFollowing(); else EnableFollowing();
             }
         }
 

@@ -8,17 +8,8 @@ namespace Utils
 {
     internal static class HelperFunctions
     {
+
         #region Internal Methods
-
-        [CanBeNull]
-        internal static GameObject GetChildUITextboxFromPanel(GameObject panel)
-        {
-            return (from Transform child in panel.GetComponent<Transform>()
-                where child.tag.Equals("UITextbox")
-                select child.gameObject).FirstOrDefault();
-        }
-
-        #endregion Internal Methods
 
         internal static IEnumerator FadeIn(CanvasGroup canvasGroupComponent, float fadeTime, float maxAlpha)
         {
@@ -38,6 +29,21 @@ namespace Utils
                 canvasGroupComponent.alpha -= Time.deltaTime / fadeTime;
                 yield return null;
             }
+        }
+
+        [CanBeNull]
+        internal static GameObject GetChildUITextboxFromPanel(GameObject panel)
+        {
+            return (from Transform child in panel.GetComponent<Transform>()
+                where child.tag.Equals("UITextbox")
+                select child.gameObject).FirstOrDefault();
+        }
+
+        #endregion Internal Methods
+
+        internal static IEnumerator Delay(float delay)
+        {
+            yield return new WaitForSeconds(delay);
         }
     }
 }
