@@ -1,5 +1,6 @@
 ﻿using System;
 using Backend.StoryEngine;
+using frontend.SoundEngine;
 using Frontend;
 using UnityEngine;
 
@@ -94,6 +95,7 @@ namespace Backend
 
             SetCurrentGoatAsActivePlayer();
             EnableFollowing();
+            SoundController.Instance.PlayMusic(Music.Instance.ExampleMusicClip);
         }
 
         private void Update()
@@ -109,6 +111,7 @@ namespace Backend
 
             if (Input.GetKeyDown(KeyCode.F))
             {
+                SoundController.Instance.PlaySingle(Sounds.Instance.ExampleSoundClip);
                 if (GlobalFollowingEnabled)
                 {
                     DisableFollowing();
