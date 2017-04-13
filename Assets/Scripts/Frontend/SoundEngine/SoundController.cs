@@ -28,6 +28,12 @@ namespace frontend.SoundEngine
             _soundSource.clip = clip;
             _soundSource.Play();
         }
+        //Used to play single sound clips.
+        public void PlayMusic(AudioClip clip)
+        {
+            _musicSource.clip = clip;
+            _musicSource.Play();
+        }
 
         //RandomizeSfx chooses randomly between various audio clips and slightly changes their pitch.
         public void RandomizeSfx(params AudioClip[] clips)
