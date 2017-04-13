@@ -22,10 +22,10 @@
 //  THE SOFTWARE.
 */
 
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 
-namespace cakeslice
+namespace OutlineEffect
 {
     [DisallowMultipleComponent]
     [RequireComponent(typeof(Camera))]

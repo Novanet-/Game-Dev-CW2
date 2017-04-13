@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Utils;
 
-namespace frontend
+namespace Frontend.UIEngine
 {
     public class UIController : MonoBehaviour
     {

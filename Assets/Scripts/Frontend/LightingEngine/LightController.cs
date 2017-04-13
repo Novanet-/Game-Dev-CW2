@@ -1,7 +1,7 @@
 ﻿using Backend;
 using UnityEngine;
 
-namespace frontend
+namespace Frontend
 {
     public class LightController : MonoBehaviour
     {

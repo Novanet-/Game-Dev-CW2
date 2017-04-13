@@ -1,12 +1,13 @@
 ﻿using System;
-using System.Linq;
-using frontend;
+using Backend.StoryEngine;
+using Frontend;
 using UnityEngine;
 
 namespace Backend
 {
     public class GameController : MonoBehaviour
     {
+
         #region Public Fields
 
         public float GravityStrength;
@@ -16,10 +17,6 @@ namespace Backend
 
         #region Private Fields
 
-        private int _currentGoatIndex;
-        private bool _globalFollowingEnabled;
-        private PlayerMovementController[] _goatControllerArray;
-        private StoryController _storyController;
         [SerializeField] private GameObject _storyControllerObject;
 
         #endregion Private Fields
@@ -28,8 +25,13 @@ namespace Backend
 
         private PlayerMovementController CurrentGoat
         {
-            get { return _goatControllerArray[_currentGoatIndex]; }
+            get { return GoatControllerArray[CurrentGoatIndex]; }
         }
+
+        private int CurrentGoatIndex { get; set; }
+        private bool GlobalFollowingEnabled { get; set; }
+        private PlayerMovementController[] GoatControllerArray { get; set; }
+        private StoryController StoryController { get; set; }
 
         #endregion Private Properties
 
@@ -37,13 +39,13 @@ namespace Backend
 
         private void ChangeCurrentTarget(bool isRight)
         {
-            int newIndex = (isRight ? _currentGoatIndex + 1 : _currentGoatIndex + 2) % _goatControllerArray.Length;
+            int newIndex = (isRight ? CurrentGoatIndex + 1 : CurrentGoatIndex + 2) % GoatControllerArray.Length;
             SetCurrentTarget(newIndex);
         }
 
         private void DisableFollowing()
         {
-            foreach (var goatController in _goatControllerArray)
+            foreach (var goatController in GoatControllerArray)
             {
                 if (goatController != CurrentGoat) goatController.DisableFollowing();
             }
@@ -51,7 +53,7 @@ namespace Backend
 
         private void EnableFollowing()
         {
-            foreach (var goatController in _goatControllerArray)
+            foreach (var goatController in GoatControllerArray)
             {
                 if (goatController != CurrentGoat) goatController.EnableFollowing(CurrentGoat);
             }
@@ -59,7 +61,7 @@ namespace Backend
 
         private void SetCurrentGoatAsActivePlayer()
         {
-            foreach (var goatController in _goatControllerArray)
+            foreach (var goatController in GoatControllerArray)
             {
                 goatController.IsActivePlayer = goatController == CurrentGoat;
             }
@@ -69,26 +71,26 @@ namespace Backend
         {
             DisableFollowing();
 
-            _currentGoatIndex = newIndex;
+            CurrentGoatIndex = newIndex;
             SetCurrentGoatAsActivePlayer();
 
             Hooks.Camera.GetComponent<CameraController>().CurrentTarget = CurrentGoat.transform;
 
-            if (_globalFollowingEnabled) EnableFollowing();
+            if (GlobalFollowingEnabled) EnableFollowing();
         }
 
         private void Start()
         {
             Physics.gravity = new Vector3(0f, -GravityStrength, 0f);
-            _goatControllerArray = new[]
+            GoatControllerArray = new[]
             {
                 Hooks.GoatSmall.GetComponent<PlayerMovementController>(),
                 Hooks.GoatMed.GetComponent<PlayerMovementController>(),
                 Hooks.GoatLarge.GetComponent<PlayerMovementController>()
             };
-            _storyController = _storyControllerObject.GetComponent<StoryController>();
-            _globalFollowingEnabled = true;
-            _currentGoatIndex = 0;
+            StoryController = _storyControllerObject.GetComponent<StoryController>();
+            GlobalFollowingEnabled = true;
+            CurrentGoatIndex = 0;
 
             SetCurrentGoatAsActivePlayer();
             EnableFollowing();
@@ -107,32 +109,31 @@ namespace Backend
 
             if (Input.GetKeyDown(KeyCode.F))
             {
-                if (_globalFollowingEnabled)
+                if (GlobalFollowingEnabled)
                 {
                     DisableFollowing();
-                    _globalFollowingEnabled = false;
-                    Debug.Log(string.Format("Global following: {0}", _globalFollowingEnabled));
-//                    _storyController.DisplayGameMessage("DDDDD Following has been disabled", 0f, 2f);
-                    _storyController.StoryEvents.FollowingDisabled();
+                    GlobalFollowingEnabled = false;
+                    Debug.Log(string.Format("Global following: {0}", GlobalFollowingEnabled));
+                    StoryController.Events.Game.FollowingDisabled();
                 }
                 else
                 {
                     EnableFollowing();
-                    _globalFollowingEnabled = true;
-                    Debug.Log(string.Format("Global following: {0}", _globalFollowingEnabled));
-                    //                    _storyController.DisplayGameMessage("EEEEE Following has been enabled", 0f, 2f);
-                    _storyController.StoryEvents.FollowingEnabled();
-
+                    GlobalFollowingEnabled = true;
+                    Debug.Log(string.Format("Global following: {0}", GlobalFollowingEnabled));
+                    StoryController.Events.Game.FollowingEnabled();
                 }
             }
         }
 
         #endregion Private Methods
+
     }
 
     [Serializable]
     public class Hooks
     {
+
         #region Public Fields
 
         public GameObject Camera;
@@ -142,5 +143,6 @@ namespace Backend
         public GameObject Troll;
 
         #endregion Public Fields
+
     }
 }

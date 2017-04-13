@@ -1,13 +1,12 @@
 #define PROTOTYPE
 #if UNITY_EDITOR || UNITY_STANDALONE
-using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using ProBuilder2.Common;
 using ProBuilder2.MeshOperations;
+using UnityEngine;
 
-namespace ProBuilder2.Examples
+namespace ProCore.ProBuilder.API_Examples.Icosphere_FFT.Scripts
 {
 
 	[RequireComponent(typeof(AudioSource))]

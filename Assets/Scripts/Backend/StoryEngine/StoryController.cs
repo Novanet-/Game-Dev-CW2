@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections;
-using Constants;
-using frontend;
-using JetBrains.Annotations;
+﻿using System.Collections;
+using Backend.StoryEngine.Events;
+using Frontend;
+using Frontend.UIEngine;
 using UnityEngine;
 
-namespace Backend
+namespace Backend.StoryEngine
 {
     public class StoryController : MonoBehaviour
     {
@@ -21,7 +20,7 @@ namespace Backend
 
         #region Public Properties
 
-        public StoryEventController StoryEvents { get; private set; }
+        public EventController Events { get; private set; }
 
         #endregion Public Properties
 
@@ -29,14 +28,10 @@ namespace Backend
 
         private void StoryTest()
         {
-            StoryEvents.Example1();
-            StoryEvents.Example2();
-            StoryEvents.Example3();
-            StoryEvents.Example4();
-//            DisplayStoryMessage(StoryMessage.Example1, 0f, 4f);
-//            DisplayStoryMessage(StoryMessage.Example2, 6f, 10f);
-//            DisplayStoryMessage(StoryMessage.Example3, 12f, 16f);
-//            DisplayStoryMessage(StoryMessage.Example4, 18f, 22f);
+            Events.Story.Example1();
+            Events.Story.Example2();
+            Events.Story.Example3();
+            Events.Story.Example4();
         }
 
         #endregion Public Methods
@@ -83,7 +78,7 @@ namespace Backend
         {
             _startTime = Time.time;
             _uiController = _uiCanvas.GetComponent<UIController>();
-            StoryEvents = new StoryEventController(this);
+            Events = new EventController(this);
             StoryTest();
         }
 

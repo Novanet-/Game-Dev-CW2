@@ -1,4 +1,4 @@
-﻿namespace frontend
+﻿namespace Frontend.UIEngine
 {
     public enum MessageLocation
     {
