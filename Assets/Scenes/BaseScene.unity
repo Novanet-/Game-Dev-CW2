@@ -5379,7 +5379,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19ef6e40dbd143a9b5674b282ce0b42e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ExampleMusicClip: {fileID: 8300000, guid: e7377f886ba09f1469d96e69b1d00627, type: 3}
+  ExampleMusicClip: {fileID: 8300000, guid: ebf5382ca40b38f4cb8939679fd6b427, type: 3}
 --- !u!114 &1533948273
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5391,7 +5391,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f214dc3bef1d6a4b8939440e71b26ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ExampleSoundClip: {fileID: 8300000, guid: e7377f886ba09f1469d96e69b1d00627, type: 3}
+  ExampleSoundClip: {fileID: 8300000, guid: 42b91959436fb9e4a857dca5a1d17e4b, type: 3}
 --- !u!114 &1533948274
 MonoBehaviour:
   m_ObjectHideFlags: 0
