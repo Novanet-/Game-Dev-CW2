@@ -29,8 +29,8 @@ namespace Backend
 
         #region Public Properties
 
-        public bool IsFlying { get; protected set; }
-        public bool IsWallClimbing { get; private set; }
+        protected bool IsFlying { get; set; }
+        protected bool IsWallClimbing { get; private set; }
 
         #endregion Public Properties
 

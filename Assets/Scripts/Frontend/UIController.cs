@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Utils;
 
-namespace Frontend
+namespace frontend
 {
     public class UIController : MonoBehaviour
     {
@@ -43,7 +43,7 @@ namespace Frontend
                 throw new GruffException("Message location not found in dictionary");
 
             var targetTextController = targetTextBox.GetComponent<TextController>();
-            targetTextController.SetText(message);
+            if (message != null) targetTextController.SetText(message);
         }
 
         #endregion Public Methods

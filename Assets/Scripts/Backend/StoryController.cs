@@ -1,5 +1,8 @@
-﻿using System.Collections;
-using Frontend;
+﻿using System;
+using System.Collections;
+using Constants;
+using frontend;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Backend
@@ -8,7 +11,8 @@ namespace Backend
     {
         #region Private Fields
 
-        private float _globalMessageTimestamp = 0f;
+        private float _storyMessageTimestamp = 0f;
+        private float _gameMessageTimestamp = 0f;
         private float _startTime;
         [SerializeField] private Canvas _uiCanvas;
         private UIController _uiController;
@@ -23,37 +27,54 @@ namespace Backend
 
         #region Public Methods
 
-        public void StoryTest()
+        private void StoryTest()
         {
-            DisplayStoryMessage("1. This is the beginning", 2f);
-            DisplayStoryMessage("2. This is your life", 4f, 5f);
-            DisplayStoryMessage("3. This is your ending", 8f, 10f);
-            DisplayStoryMessage("4. The cressing of christ", 16f, 15f);
+            StoryEvents.Example1();
+            StoryEvents.Example2();
+            StoryEvents.Example3();
+            StoryEvents.Example4();
+//            DisplayStoryMessage(StoryMessage.Example1, 0f, 4f);
+//            DisplayStoryMessage(StoryMessage.Example2, 6f, 10f);
+//            DisplayStoryMessage(StoryMessage.Example3, 12f, 16f);
+//            DisplayStoryMessage(StoryMessage.Example4, 18f, 22f);
         }
 
         #endregion Public Methods
 
         #region Internal Methods
 
-        internal void DisplayStoryMessage(string message, float displayTime)
-        {
-            StartCoroutine(DisplayStoryMessageCoroutine(message, _globalMessageTimestamp));
-            StartCoroutine(DisplayStoryMessageCoroutine("", _globalMessageTimestamp += displayTime));
-        }
 
         #endregion Internal Methods
 
         #region Private Methods
 
-        private void DisplayStoryMessage(string message, float displayTime, float delayTime)
+        public float DisplayGameMessage(string message, float displayStartTime, float displayEndTime)
         {
-            StartCoroutine(DisplayStoryMessageCoroutine(message, _globalMessageTimestamp += delayTime));
-            StartCoroutine(DisplayStoryMessageCoroutine("", _globalMessageTimestamp += displayTime));
+            Debug.Log(string.Format("{0}, DisplayStart = {1}, DisplayEnd = {2}", message, displayStartTime, displayEndTime));
+
+            StartCoroutine(DisplayGameMessageCoroutine(message, displayStartTime));
+            StartCoroutine(DisplayGameMessageCoroutine("", displayEndTime));
+            return displayEndTime;
         }
 
-        private IEnumerator DisplayStoryMessageCoroutine(string message, float displayTime)
+        private IEnumerator DisplayGameMessageCoroutine(string message, float displayStartTime)
         {
-            yield return new WaitForSeconds(displayTime);
+            yield return new WaitForSeconds(displayStartTime);
+            _uiController.DisplayMessage(message, MessageLocation.BottomPanel);
+        }
+
+        public float DisplayStoryMessage(string message, float displayStartTime, float displayEndTime)
+        {
+            Debug.Log(string.Format("{0}, DisplayStart = {1}, DisplayEnd = {2}", message, displayStartTime, displayEndTime));
+
+            StartCoroutine(DisplayStoryMessageCoroutine(message, displayStartTime));
+            StartCoroutine(DisplayStoryMessageCoroutine("", displayEndTime));
+            return displayEndTime;
+        }
+
+        private IEnumerator DisplayStoryMessageCoroutine(string message, float displayStartTime)
+        {
+            yield return new WaitForSeconds(displayStartTime);
             _uiController.DisplayMessage(message, MessageLocation.TopPanel);
         }
 
@@ -69,8 +90,9 @@ namespace Backend
         // Update is called once per frame
         private void Update()
         {
-            _globalMessageTimestamp = Time.time;
-            Debug.Log(Time.time);
+            _storyMessageTimestamp = Time.time;
+            _gameMessageTimestamp = Time.time;
+//            Debug.Log(Time.time);
         }
 
         #endregion Private Methods

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Frontend;
+using frontend;
 using UnityEngine;
 
 namespace Backend
@@ -21,7 +21,6 @@ namespace Backend
         private PlayerMovementController[] _goatControllerArray;
         private StoryController _storyController;
         [SerializeField] private GameObject _storyControllerObject;
-        private float _timeStart;
 
         #endregion Private Fields
 
@@ -93,8 +92,6 @@ namespace Backend
 
             SetCurrentGoatAsActivePlayer();
             EnableFollowing();
-
-            _timeStart = Time.time;
         }
 
         private void Update()
@@ -110,7 +107,23 @@ namespace Backend
 
             if (Input.GetKeyDown(KeyCode.F))
             {
-                if (_globalFollowingEnabled) DisableFollowing(); else EnableFollowing();
+                if (_globalFollowingEnabled)
+                {
+                    DisableFollowing();
+                    _globalFollowingEnabled = false;
+                    Debug.Log(string.Format("Global following: {0}", _globalFollowingEnabled));
+//                    _storyController.DisplayGameMessage("DDDDD Following has been disabled", 0f, 2f);
+                    _storyController.StoryEvents.FollowingDisabled();
+                }
+                else
+                {
+                    EnableFollowing();
+                    _globalFollowingEnabled = true;
+                    Debug.Log(string.Format("Global following: {0}", _globalFollowingEnabled));
+                    //                    _storyController.DisplayGameMessage("EEEEE Following has been enabled", 0f, 2f);
+                    _storyController.StoryEvents.FollowingEnabled();
+
+                }
             }
         }
 
