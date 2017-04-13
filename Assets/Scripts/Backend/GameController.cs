@@ -1,0 +1,148 @@
+﻿using System;
+using Backend.StoryEngine;
+using Frontend;
+using UnityEngine;
+
+namespace Backend
+{
+    public class GameController : MonoBehaviour
+    {
+
+        #region Public Fields
+
+        public float GravityStrength;
+        public Hooks Hooks = new Hooks();
+
+        #endregion Public Fields
+
+        #region Private Fields
+
+        [SerializeField] private GameObject _storyControllerObject;
+
+        #endregion Private Fields
+
+        #region Private Properties
+
+        private PlayerMovementController CurrentGoat
+        {
+            get { return GoatControllerArray[CurrentGoatIndex]; }
+        }
+
+        private int CurrentGoatIndex { get; set; }
+        private bool GlobalFollowingEnabled { get; set; }
+        private PlayerMovementController[] GoatControllerArray { get; set; }
+        private StoryController StoryController { get; set; }
+
+        #endregion Private Properties
+
+        #region Private Methods
+
+        private void ChangeCurrentTarget(bool isRight)
+        {
+            int newIndex = (isRight ? CurrentGoatIndex + 1 : CurrentGoatIndex + 2) % GoatControllerArray.Length;
+            SetCurrentTarget(newIndex);
+        }
+
+        private void DisableFollowing()
+        {
+            foreach (var goatController in GoatControllerArray)
+            {
+                if (goatController != CurrentGoat) goatController.DisableFollowing();
+            }
+        }
+
+        private void EnableFollowing()
+        {
+            foreach (var goatController in GoatControllerArray)
+            {
+                if (goatController != CurrentGoat) goatController.EnableFollowing(CurrentGoat);
+            }
+        }
+
+        private void SetCurrentGoatAsActivePlayer()
+        {
+            foreach (var goatController in GoatControllerArray)
+            {
+                goatController.IsActivePlayer = goatController == CurrentGoat;
+            }
+        }
+
+        private void SetCurrentTarget(int newIndex)
+        {
+            DisableFollowing();
+
+            CurrentGoatIndex = newIndex;
+            SetCurrentGoatAsActivePlayer();
+
+            Hooks.Camera.GetComponent<CameraController>().CurrentTarget = CurrentGoat.transform;
+
+            if (GlobalFollowingEnabled) EnableFollowing();
+        }
+
+        private void Start()
+        {
+            Physics.gravity = new Vector3(0f, -GravityStrength, 0f);
+            GoatControllerArray = new[]
+            {
+                Hooks.GoatSmall.GetComponent<PlayerMovementController>(),
+                Hooks.GoatMed.GetComponent<PlayerMovementController>(),
+                Hooks.GoatLarge.GetComponent<PlayerMovementController>()
+            };
+            StoryController = _storyControllerObject.GetComponent<StoryController>();
+            GlobalFollowingEnabled = true;
+            CurrentGoatIndex = 0;
+
+            SetCurrentGoatAsActivePlayer();
+            EnableFollowing();
+        }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                ChangeCurrentTarget(true);
+            }
+            else if (Input.GetKeyDown(KeyCode.Q))
+            {
+                ChangeCurrentTarget(false);
+            }
+
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                if (GlobalFollowingEnabled)
+                {
+                    DisableFollowing();
+                    GlobalFollowingEnabled = false;
+                    Debug.Log(string.Format("Global following: {0}", GlobalFollowingEnabled));
+                    StoryController.Events.Game.FollowingDisabled();
+                }
+                else
+                {
+                    EnableFollowing();
+                    GlobalFollowingEnabled = true;
+                    Debug.Log(string.Format("Global following: {0}", GlobalFollowingEnabled));
+                    StoryController.Events.Game.FollowingEnabled();
+                }
+            }
+        }
+
+        #endregion Private Methods
+
+    }
+
+    [Serializable]
+    public class Hooks
+    {
+
+        #region Public Fields
+
+        public GameObject Camera;
+        public GameObject GoatLarge;
+        public GameObject GoatMed;
+        public GameObject GoatSmall;
+        public GameObject Troll;
+
+        #endregion Public Fields
+
+    }
+}

@@ -24,7 +24,7 @@
 
 using UnityEngine;
 
-namespace cakeslice
+namespace OutlineEffect
 {
     [RequireComponent(typeof(Renderer))]
     public class Outline : MonoBehaviour
