@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Fire
   - Ground
+  - UITextbox
   layers:
   - Default
   - TransparentFX

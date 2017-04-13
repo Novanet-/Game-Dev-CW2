@@ -30,7 +30,7 @@ GameObject:
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &4195901004374870
 Transform:
@@ -136,10 +136,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f2e6f0fa34ab3d46aa539c8266fafcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveForce: 365
-  maxHorizontalSpeed: 10
-  maxVerticalSpeed: 20
-  jumpForce: 1000
-  groundCheck: {fileID: 0}
-  isActivePlayer: 1
-  isFollowing: 1
+  GroundCheck: {fileID: 0}
+  IsActivePlayer: 0
+  IsFollowing: 1
+  JumpForce: 1000
+  MaxHorizontalSpeed: 10
+  MaxVerticalSpeed: 20
+  MoveForce: 365
