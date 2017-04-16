@@ -35,6 +35,17 @@ namespace Backend.StoryEngine.Events
                 _eventController.StoryController.DisplayGameMessage(GruffMessage.FollowingEnabled, 0f, 4f);
             }
 
+            public void StartGameTimer()
+            {
+                _eventController.StoryController.StartTimer();
+            }
+
+            public void EndGame()
+            {
+                _eventController.StoryController.EndGame();
+
+            }
+
             #endregion Public Methods
         }
 

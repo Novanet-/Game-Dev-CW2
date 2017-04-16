@@ -21,6 +21,7 @@ namespace Backend.StoryEngine
         #region Public Properties
 
         public EventController Events { get; private set; }
+        public GameController Game { get; private set; }
 
         #endregion Public Properties
 
@@ -32,6 +33,7 @@ namespace Backend.StoryEngine
             Events.Story.Example2();
             Events.Story.Example3();
             Events.Story.Example4();
+            Events.Game.EndGame();
         }
 
         #endregion Public Methods
@@ -88,6 +90,16 @@ namespace Backend.StoryEngine
             _storyMessageTimestamp = Time.time;
             _gameMessageTimestamp = Time.time;
 //            Debug.Log(Time.time);
+        }
+
+        public void StartTimer()
+        {
+           Game.StartGameTimer();
+        }
+
+        public void EndGame()
+        {
+           GameController.EndGame();
         }
 
         #endregion Private Methods
