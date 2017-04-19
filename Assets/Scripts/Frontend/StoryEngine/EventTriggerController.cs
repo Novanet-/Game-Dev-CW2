@@ -14,6 +14,7 @@ namespace Frontend.StoryEngine
         private void Start()
         {
             TriggerCount = 0;
+            gameObject.GetComponent<MeshRenderer>().enabled = false;
         }
 
         private void OnTriggerEnter(Collider other)

@@ -25,6 +25,16 @@ namespace Backend.StoryEngine.Events
 
             #region Public Methods
 
+            public void Intro()
+            {
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.Example1, 0f, 4f);
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.Example2, 6f, 10f);
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.Example3, 12f, 16f);
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.Example4, 18f, 22f);
+                _eventController.Game.Tutorial();
+
+            }
+
             public void Example1()
             {
                 _eventController.StoryController.DisplayStoryMessage(StoryMessage.Example1, 0f, 4f);

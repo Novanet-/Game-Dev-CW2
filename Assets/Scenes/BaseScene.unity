@@ -15065,34 +15065,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 114935782342260762, guid: 2d82b83a380d10746be7599750f92189,
-        type: 2}
-      propertyPath: _triggerAmountLimit
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114935782342260762, guid: 2d82b83a380d10746be7599750f92189,
-        type: 2}
-      propertyPath: _targetEventName
-      value: Example4
-      objectReference: {fileID: 0}
-    - target: {fileID: 1564821768222248, guid: 2d82b83a380d10746be7599750f92189, type: 2}
-      propertyPath: m_TagString
-      value: Untagged
-      objectReference: {fileID: 0}
-    - target: {fileID: 23839700272105698, guid: 2d82b83a380d10746be7599750f92189,
-        type: 2}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1564821768222248, guid: 2d82b83a380d10746be7599750f92189, type: 2}
-      propertyPath: m_Icon
-      value: 
-      objectReference: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000,
-        type: 0}
-    - target: {fileID: 4049695532090152, guid: 2d82b83a380d10746be7599750f92189, type: 2}
-      propertyPath: m_LocalScale.x
-      value: 13.93442
-      objectReference: {fileID: 0}
     - target: {fileID: 1564821768222248, guid: 2d82b83a380d10746be7599750f92189, type: 2}
       propertyPath: m_Name
       value: Example4
@@ -22064,7 +22036,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4049695532090152, guid: 2d82b83a380d10746be7599750f92189, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 18.7
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 4049695532090152, guid: 2d82b83a380d10746be7599750f92189, type: 2}
       propertyPath: m_LocalPosition.z
@@ -22089,34 +22061,6 @@ Prefab:
     - target: {fileID: 4049695532090152, guid: 2d82b83a380d10746be7599750f92189, type: 2}
       propertyPath: m_RootOrder
       value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114935782342260762, guid: 2d82b83a380d10746be7599750f92189,
-        type: 2}
-      propertyPath: _triggerAmountLimit
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114935782342260762, guid: 2d82b83a380d10746be7599750f92189,
-        type: 2}
-      propertyPath: _targetEventName
-      value: Example3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1564821768222248, guid: 2d82b83a380d10746be7599750f92189, type: 2}
-      propertyPath: m_TagString
-      value: Untagged
-      objectReference: {fileID: 0}
-    - target: {fileID: 23839700272105698, guid: 2d82b83a380d10746be7599750f92189,
-        type: 2}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1564821768222248, guid: 2d82b83a380d10746be7599750f92189, type: 2}
-      propertyPath: m_Icon
-      value: 
-      objectReference: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000,
-        type: 0}
-    - target: {fileID: 4049695532090152, guid: 2d82b83a380d10746be7599750f92189, type: 2}
-      propertyPath: m_LocalScale.x
-      value: 13.93442
       objectReference: {fileID: 0}
     - target: {fileID: 1564821768222248, guid: 2d82b83a380d10746be7599750f92189, type: 2}
       propertyPath: m_Name
@@ -29149,34 +29093,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 114935782342260762, guid: 2d82b83a380d10746be7599750f92189,
-        type: 2}
-      propertyPath: _triggerAmountLimit
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114935782342260762, guid: 2d82b83a380d10746be7599750f92189,
-        type: 2}
-      propertyPath: _targetEventName
-      value: Example2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1564821768222248, guid: 2d82b83a380d10746be7599750f92189, type: 2}
-      propertyPath: m_TagString
-      value: Untagged
-      objectReference: {fileID: 0}
-    - target: {fileID: 23839700272105698, guid: 2d82b83a380d10746be7599750f92189,
-        type: 2}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1564821768222248, guid: 2d82b83a380d10746be7599750f92189, type: 2}
-      propertyPath: m_Icon
-      value: 
-      objectReference: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000,
-        type: 0}
-    - target: {fileID: 4049695532090152, guid: 2d82b83a380d10746be7599750f92189, type: 2}
-      propertyPath: m_LocalScale.x
-      value: 13.93442
-      objectReference: {fileID: 0}
     - target: {fileID: 1564821768222248, guid: 2d82b83a380d10746be7599750f92189, type: 2}
       propertyPath: m_Name
       value: Example2
@@ -31538,7 +31454,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4049695532090152, guid: 2d82b83a380d10746be7599750f92189, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -482.8
+      value: -488.2
       objectReference: {fileID: 0}
     - target: {fileID: 4049695532090152, guid: 2d82b83a380d10746be7599750f92189, type: 2}
       propertyPath: m_LocalPosition.y
@@ -31568,33 +31484,14 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 114935782342260762, guid: 2d82b83a380d10746be7599750f92189,
-        type: 2}
-      propertyPath: _triggerAmountLimit
-      value: 1
+    - target: {fileID: 1564821768222248, guid: 2d82b83a380d10746be7599750f92189, type: 2}
+      propertyPath: m_Name
+      value: IntroTrigger
       objectReference: {fileID: 0}
     - target: {fileID: 114935782342260762, guid: 2d82b83a380d10746be7599750f92189,
         type: 2}
       propertyPath: _targetEventName
-      value: Example1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1564821768222248, guid: 2d82b83a380d10746be7599750f92189, type: 2}
-      propertyPath: m_TagString
-      value: Untagged
-      objectReference: {fileID: 0}
-    - target: {fileID: 23839700272105698, guid: 2d82b83a380d10746be7599750f92189,
-        type: 2}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1564821768222248, guid: 2d82b83a380d10746be7599750f92189, type: 2}
-      propertyPath: m_Icon
-      value: 
-      objectReference: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000,
-        type: 0}
-    - target: {fileID: 1564821768222248, guid: 2d82b83a380d10746be7599750f92189, type: 2}
-      propertyPath: m_Name
-      value: Example1
+      value: Intro
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2d82b83a380d10746be7599750f92189, type: 2}

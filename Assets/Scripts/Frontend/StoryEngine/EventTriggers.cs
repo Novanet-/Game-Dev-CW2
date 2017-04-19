@@ -27,7 +27,7 @@ namespace Frontend.StoryEngine
             _storyEvents = storyControllerEvents.Story;
             EventTriggerDictionary = new Dictionary<string, Action>()
             {
-                {"Example1", _storyEvents.Example1},
+                {"Intro", _storyEvents.Intro},
                 {"Example2", _storyEvents.Example2},
                 {"Example3", _storyEvents.Example3},
                 {"Example4", _storyEvents.Example4}
