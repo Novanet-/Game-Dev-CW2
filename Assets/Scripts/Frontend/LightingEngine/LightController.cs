@@ -7,9 +7,7 @@ namespace Frontend
     {
         #region Private Fields
 
-        [SerializeField] private GameObject _orbitCentre;
-
-        private OrbitController _orbitController;
+		[SerializeField] private float _cycleSpeed;
 
         #endregion Private Fields
 
@@ -18,21 +16,21 @@ namespace Frontend
         // Use this for initialization
         private void Start()
         {
-            _orbitController = _orbitCentre.GetComponent<OrbitController>();
+			
         }
 
         // Update is called once per frame
         private void Update()
         {
-            float orbitArc = _orbitController.OrbitArc;
-            if (orbitArc >= 180)
-            {
-                GetComponent<Light>().intensity = 0;
-            }
-            if (orbitArc >= 359)
-            {
-                GetComponent<Light>().intensity = 1;
-            }
+//            float orbitArc = _orbitController.OrbitArc;
+//            if (orbitArc >= 180)
+//            {
+//                GetComponent<Light>().intensity = 0;
+//            }
+//            if (orbitArc >= 359)
+//            {
+//                GetComponent<Light>().intensity = 1;
+//            }
         }
 
         #endregion Private Methods
