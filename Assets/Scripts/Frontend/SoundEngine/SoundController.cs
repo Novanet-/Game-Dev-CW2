@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace frontend.SoundEngine
+namespace Frontend.SoundEngine
 {
     public class SoundController : MonoBehaviour
     {

@@ -32,17 +32,17 @@ namespace Backend.StoryEngine.Events
 
             public void Example2()
             {
-                _eventController.StoryController.DisplayStoryMessage(StoryMessage.Example2, 6f, 10f);
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.Example2, 0f, 4f);
             }
 
             public void Example3()
             {
-                _eventController.StoryController.DisplayStoryMessage(StoryMessage.Example3, 12f, 16f);
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.Example3, 0f, 4f);
             }
 
             public void Example4()
             {
-                _eventController.StoryController.DisplayStoryMessage(StoryMessage.Example4, 18f, 22f);
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.Example4, 0f, 4f);
             }
 
             #endregion Public Methods

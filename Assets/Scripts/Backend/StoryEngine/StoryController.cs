@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using Backend.StoryEngine.Events;
+using com.kleberswf.lib.core;
 using Frontend;
 using Frontend.UIEngine;
 using UnityEngine;
 
 namespace Backend.StoryEngine
 {
-    public class StoryController : MonoBehaviour
+    public class StoryController : Singleton<StoryController>
     {
         #region Private Fields
 
@@ -29,11 +30,11 @@ namespace Backend.StoryEngine
 
         private void StoryTest()
         {
-            Events.Story.Example1();
-            Events.Story.Example2();
-            Events.Story.Example3();
-            Events.Story.Example4();
-            Events.Game.EndGame();
+//            Events.Story.Example1();
+//            Events.Story.Example2();
+//            Events.Story.Example3();
+//            Events.Story.Example4();
+//            Events.Game.EndGame();
         }
 
         #endregion Public Methods
@@ -82,6 +83,11 @@ namespace Backend.StoryEngine
             _uiController = _uiCanvas.GetComponent<UIController>();
             Events = new EventController(this);
             StoryTest();
+        }
+
+        private void Awake()
+        {
+            
         }
 
         // Update is called once per frame
