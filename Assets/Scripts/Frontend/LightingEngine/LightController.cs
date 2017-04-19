@@ -7,7 +7,9 @@ namespace Frontend
     {
         #region Private Fields
 
-		[SerializeField] private float _cycleSpeed;
+		[SerializeField] private float _daylength;
+		private Light[] _lights;
+		private float _timeOfDay;
 
         #endregion Private Fields
 
@@ -16,21 +18,16 @@ namespace Frontend
         // Use this for initialization
         private void Start()
         {
-			
+			_lights = GetComponentsInChildren<Light>();
         }
 
         // Update is called once per frame
         private void Update()
         {
-//            float orbitArc = _orbitController.OrbitArc;
-//            if (orbitArc >= 180)
-//            {
-//                GetComponent<Light>().intensity = 0;
-//            }
-//            if (orbitArc >= 359)
-//            {
-//                GetComponent<Light>().intensity = 1;
-//            }
+			_timeOfDay = Time.time / _daylength;
+			transform.rotation = Quaternion.Euler(new Vector3(0, 0, _timeOfDay * 360));
+			_lights[0].intensity = Mathf.Sin(_timeOfDay * Mathf.PI);
+			_lights[1].intensity = 1 - Mathf.Sin(_timeOfDay * Mathf.PI);
         }
 
         #endregion Private Methods
