@@ -1,13 +1,14 @@
 ﻿using System;
 using Backend.StoryEngine;
+using com.kleberswf.lib.core;
+using Frontend.SoundEngine;
 using Frontend;
 using UnityEngine;
 
 namespace Backend
 {
-    public class GameController : MonoBehaviour
+    public class GameController : Singleton<GameController>
     {
-
         #region Public Fields
 
         public float GravityStrength;
@@ -18,8 +19,15 @@ namespace Backend
         #region Private Fields
 
         [SerializeField] private GameObject _storyControllerObject;
+        [SerializeField] private float _timeLeft;
 
         #endregion Private Fields
+
+        #region Public Properties
+
+        private bool TimerStarted { get; set; }
+
+        #endregion Public Properties
 
         #region Private Properties
 
@@ -34,6 +42,20 @@ namespace Backend
         private StoryController StoryController { get; set; }
 
         #endregion Private Properties
+
+        #region Public Methods
+
+        public static void EndGame()
+        {
+            Application.Quit();
+        }
+
+        public void StartGameTimer()
+        {
+            TimerStarted = true;
+        }
+
+        #endregion Public Methods
 
         #region Private Methods
 
@@ -94,6 +116,7 @@ namespace Backend
 
             SetCurrentGoatAsActivePlayer();
             EnableFollowing();
+            SoundController.Instance.PlayMusic(Music.Instance.ExampleMusicClip);
         }
 
         private void Update()
@@ -109,6 +132,7 @@ namespace Backend
 
             if (Input.GetKeyDown(KeyCode.F))
             {
+                SoundController.Instance.PlaySingle(Sounds.Instance.ExampleSoundClip);
                 if (GlobalFollowingEnabled)
                 {
                     DisableFollowing();
@@ -124,16 +148,23 @@ namespace Backend
                     StoryController.Events.Game.FollowingEnabled();
                 }
             }
+
+            if (TimerStarted)
+            {
+                _timeLeft -= Time.deltaTime;
+                if (_timeLeft < 0)
+                {
+                    StoryController.Events.Game.EndGame();
+                }
+            }
         }
 
         #endregion Private Methods
-
     }
 
     [Serializable]
     public class Hooks
     {
-
         #region Public Fields
 
         public GameObject Camera;
@@ -143,6 +174,5 @@ namespace Backend
         public GameObject Troll;
 
         #endregion Public Fields
-
     }
 }

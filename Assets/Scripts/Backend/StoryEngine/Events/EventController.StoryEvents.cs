@@ -25,6 +25,16 @@ namespace Backend.StoryEngine.Events
 
             #region Public Methods
 
+            public void Intro()
+            {
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.Example1, 0f, 4f);
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.Example2, 6f, 10f);
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.Example3, 12f, 16f);
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.Example4, 18f, 22f);
+                _eventController.Game.Tutorial();
+
+            }
+
             public void Example1()
             {
                 _eventController.StoryController.DisplayStoryMessage(StoryMessage.Example1, 0f, 4f);
@@ -32,20 +42,95 @@ namespace Backend.StoryEngine.Events
 
             public void Example2()
             {
-                _eventController.StoryController.DisplayStoryMessage(StoryMessage.Example2, 6f, 10f);
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.Example2, 0f, 4f);
             }
 
             public void Example3()
             {
-                _eventController.StoryController.DisplayStoryMessage(StoryMessage.Example3, 12f, 16f);
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.Example3, 0f, 4f);
             }
 
             public void Example4()
             {
-                _eventController.StoryController.DisplayStoryMessage(StoryMessage.Example4, 18f, 22f);
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.Example4, 0f, 4f);
             }
 
             #endregion Public Methods
+
+            public void YouAreTheBrothersGruff()
+            {
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.YouAreTheBrothersGruff, 0f, 4f);
+            }
+
+            public void YourLandIsDying()
+            {
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.YourLandIsDying, 0f, 4f);
+            }
+
+            public void YouMustFindANewHome()
+            {
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.YouMustFindANewHome, 0f, 4f);
+            }
+
+            public void YouDoNotHaveMuchTime()
+            {
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.YouDoNotHaveMuchTime, 0f, 4f);
+            }
+
+            public void YouHaveHeardOfALushHillside()
+            {
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.YouHaveHeardOfALushHillside, 0f, 4f);
+            }
+
+            public void FarToTheEastOfHere()
+            {
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.FarToTheEastOfHere, 0f, 4f);
+            }
+
+            public void TheJourneyIsNotEasy()
+            {
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.TheJourneyIsNotEasy, 0f, 4f);
+            }
+
+            public void ItRequiresAgilityAndSkill()
+            {
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.ItRequiresAgilityAndSkill, 0f, 4f);
+            }
+
+            public void YouAndYourBrothersMustWorkTogether()
+            {
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.YouAndYourBrothersMustWorkTogether, 0f, 4f);
+            }
+
+            public void ForInTheShadows()
+            {
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.ForInTheShadows, 0f, 4f);
+            }
+
+            public void AreCreaturesWhoWishYouHarm()
+            {
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.AreCreaturesWhoWishYouHarm, 0f, 4f);
+            }
+
+            public void RunFromThemMyChildren()
+            {
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.RunFromThemMyChildren, 0f, 4f);
+            }
+
+            public void AndLeaveTheDarkBehind()
+            {
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.AndLeaveTheDarkBehind, 0f, 4f);
+            }
+
+            public void ANewDawnAwaitsYou()
+            {
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.ANewDawnAwaitsYou, 0f, 4f);
+            }
+
+            public void RiseUpAndShine()
+            {
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.RiseUpAndShine, 0f, 4f);
+            }
         }
 
         #endregion Public Classes

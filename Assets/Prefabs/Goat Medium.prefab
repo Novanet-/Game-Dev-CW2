@@ -90,7 +90,7 @@ Rigidbody:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1882881478989660}
   serializedVersion: 2
-  m_Mass: 3
+  m_Mass: 2
   m_Drag: 0
   m_AngularDrag: 0.2
   m_UseGravity: 1
@@ -136,10 +136,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f2e6f0fa34ab3d46aa539c8266fafcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GroundCheck: {fileID: 0}
   IsActivePlayer: 0
   IsFollowing: 1
-  JumpForce: 1000
-  MaxHorizontalSpeed: 10
-  MaxVerticalSpeed: 20
-  MoveForce: 365
+  _followForceMult: 1.2

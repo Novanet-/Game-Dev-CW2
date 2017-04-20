@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using Backend.StoryEngine.Events;
+using com.kleberswf.lib.core;
 using Frontend;
 using Frontend.UIEngine;
 using UnityEngine;
 
 namespace Backend.StoryEngine
 {
-    public class StoryController : MonoBehaviour
+    public class StoryController : Singleton<StoryController>
     {
         #region Private Fields
 
@@ -21,6 +22,7 @@ namespace Backend.StoryEngine
         #region Public Properties
 
         public EventController Events { get; private set; }
+        public GameController Game { get; private set; }
 
         #endregion Public Properties
 
@@ -28,10 +30,11 @@ namespace Backend.StoryEngine
 
         private void StoryTest()
         {
-            Events.Story.Example1();
-            Events.Story.Example2();
-            Events.Story.Example3();
-            Events.Story.Example4();
+//            Events.Story.Example1();
+//            Events.Story.Example2();
+//            Events.Story.Example3();
+//            Events.Story.Example4();
+//            Events.Game.EndGame();
         }
 
         #endregion Public Methods
@@ -82,12 +85,27 @@ namespace Backend.StoryEngine
             StoryTest();
         }
 
+        private void Awake()
+        {
+            
+        }
+
         // Update is called once per frame
         private void Update()
         {
             _storyMessageTimestamp = Time.time;
             _gameMessageTimestamp = Time.time;
 //            Debug.Log(Time.time);
+        }
+
+        public void StartTimer()
+        {
+           Game.StartGameTimer();
+        }
+
+        public void EndGame()
+        {
+           GameController.EndGame();
         }
 
         #endregion Private Methods

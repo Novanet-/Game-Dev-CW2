@@ -7,6 +7,7 @@ namespace Backend
         #region Public Fields
 
         [HideInInspector] public bool IsFollowing = true;
+        [SerializeField] private float _followForceMult = 1.0f;
 
         #endregion Public Fields
 
@@ -95,11 +96,11 @@ namespace Backend
 
                 if (transform.position.x < _followTarget.transform.position.x)
                 {
-                    rigidBody.AddForce(Vector2.right * MoveForce);
+                    rigidBody.AddForce(Vector2.right * MoveForce * _followForceMult);
                 }
                 else
                 {
-                    rigidBody.AddForce(Vector2.left * MoveForce);
+                    rigidBody.AddForce(Vector2.left * MoveForce * _followForceMult);
                 }
             }
         }

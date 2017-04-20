@@ -1,5 +1,4 @@
-﻿using Backend;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Frontend
 {
@@ -7,9 +6,11 @@ namespace Frontend
     {
         #region Private Fields
 
-        [SerializeField] private GameObject _orbitCentre;
-
-        private OrbitController _orbitController;
+        [SerializeField] private float _daylength;
+        [SerializeField] private float _daylightStrengthMult = 2.0f;
+        private Light[] _lights;
+        [SerializeField] private float _nightlightStrengthMult = 2.0f;
+        private float _timeOfDay;
 
         #endregion Private Fields
 
@@ -18,21 +19,16 @@ namespace Frontend
         // Use this for initialization
         private void Start()
         {
-            _orbitController = _orbitCentre.GetComponent<OrbitController>();
+            _lights = GetComponentsInChildren<Light>();
         }
 
         // Update is called once per frame
         private void Update()
         {
-            float orbitArc = _orbitController.OrbitArc;
-            if (orbitArc >= 180)
-            {
-                GetComponent<Light>().intensity = 0;
-            }
-            if (orbitArc >= 359)
-            {
-                GetComponent<Light>().intensity = 1;
-            }
+            _timeOfDay = Time.time / _daylength;
+            transform.rotation = Quaternion.Euler(new Vector3(0, 0, _timeOfDay * 360));
+            _lights[0].intensity = Mathf.Sin(_timeOfDay * Mathf.PI) * _daylightStrengthMult;
+            _lights[1].intensity = 1 - Mathf.Sin(_timeOfDay * Mathf.PI) * _nightlightStrengthMult;
         }
 
         #endregion Private Methods
