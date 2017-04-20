@@ -54,6 +54,21 @@ namespace Backend.StoryEngine.Events
             }
 
             #endregion Public Methods
+
+            public void WASDToMove()
+            {
+                _eventController.StoryController.DisplayGameMessage(GameMessage.WASDToMove, 0f, 4f);
+            }
+
+            public void GoatSwitch()
+            {
+                _eventController.StoryController.DisplayGameMessage(GameMessage.GoatSwitch, 0f, 4f);
+            }
+
+            public void FollowToggle()
+            {
+                _eventController.StoryController.DisplayGameMessage(GameMessage.FollowToggle, 0f, 4f);
+            }
         }
 
         #endregion Public Classes

@@ -56,6 +56,81 @@ namespace Backend.StoryEngine.Events
             }
 
             #endregion Public Methods
+
+            public void YouAreTheBrothersGruff()
+            {
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.YouAreTheBrothersGruff, 0f, 4f);
+            }
+
+            public void YourLandIsDying()
+            {
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.YourLandIsDying, 0f, 4f);
+            }
+
+            public void YouMustFindANewHome()
+            {
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.YouMustFindANewHome, 0f, 4f);
+            }
+
+            public void YouDoNotHaveMuchTime()
+            {
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.YouDoNotHaveMuchTime, 0f, 4f);
+            }
+
+            public void YouHaveHeardOfALushHillside()
+            {
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.YouHaveHeardOfALushHillside, 0f, 4f);
+            }
+
+            public void FarToTheEastOfHere()
+            {
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.FarToTheEastOfHere, 0f, 4f);
+            }
+
+            public void TheJourneyIsNotEasy()
+            {
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.TheJourneyIsNotEasy, 0f, 4f);
+            }
+
+            public void ItRequiresAgilityAndSkill()
+            {
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.ItRequiresAgilityAndSkill, 0f, 4f);
+            }
+
+            public void YouAndYourBrothersMustWorkTogether()
+            {
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.YouAndYourBrothersMustWorkTogether, 0f, 4f);
+            }
+
+            public void ForInTheShadows()
+            {
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.ForInTheShadows, 0f, 4f);
+            }
+
+            public void AreCreaturesWhoWishYouHarm()
+            {
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.AreCreaturesWhoWishYouHarm, 0f, 4f);
+            }
+
+            public void RunFromThemMyChildren()
+            {
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.RunFromThemMyChildren, 0f, 4f);
+            }
+
+            public void AndLeaveTheDarkBehind()
+            {
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.AndLeaveTheDarkBehind, 0f, 4f);
+            }
+
+            public void ANewDawnAwaitsYou()
+            {
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.ANewDawnAwaitsYou, 0f, 4f);
+            }
+
+            public void RiseUpAndShine()
+            {
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.RiseUpAndShine, 0f, 4f);
+            }
         }
 
         #endregion Public Classes
