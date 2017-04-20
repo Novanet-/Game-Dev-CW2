@@ -4,7 +4,6 @@ using Backend.StoryEngine;
 using Backend.StoryEngine.Events;
 using com.kleberswf.lib.core;
 using UnityEngine;
-using Zios.Event;
 
 namespace Frontend.StoryEngine
 {
