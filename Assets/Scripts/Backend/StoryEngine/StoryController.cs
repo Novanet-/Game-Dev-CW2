@@ -24,6 +24,9 @@ namespace Backend.StoryEngine
         public EventController Events { get; private set; }
         public GameController Game { get; private set; }
 
+        public bool StoryBusy { get; set; }
+        public bool GameBusy { get; set; }
+
         #endregion Public Properties
 
         #region Public Methods
@@ -57,6 +60,7 @@ namespace Backend.StoryEngine
 
         private IEnumerator DisplayGameMessageCoroutine(string message, float displayStartTime)
         {
+            yield return new WaitUntil(() => !GameBusy);
             yield return new WaitForSeconds(displayStartTime);
             _uiController.DisplayMessage(message, MessageLocation.BottomPanel);
         }
@@ -72,6 +76,7 @@ namespace Backend.StoryEngine
 
         private IEnumerator DisplayStoryMessageCoroutine(string message, float displayStartTime)
         {
+            yield return new WaitUntil(() => !StoryBusy);
             yield return new WaitForSeconds(displayStartTime);
             _uiController.DisplayMessage(message, MessageLocation.TopPanel);
         }
@@ -82,7 +87,9 @@ namespace Backend.StoryEngine
             _startTime = Time.time;
             _uiController = _uiCanvas.GetComponent<UIController>();
             Events = new EventController(this);
-            StoryTest();
+            StoryBusy = false;
+            GameBusy = false;
+//            StoryTest();
         }
 
         private void Awake()

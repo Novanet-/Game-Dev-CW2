@@ -80,5 +80,10 @@ namespace Frontend.UIEngine
         }
 
         #endregion Private Methods
+
+        public void ClearMessage(string message, MessageLocation bottomPanel)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
