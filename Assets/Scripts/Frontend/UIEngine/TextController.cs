@@ -25,7 +25,7 @@ namespace Frontend.UIEngine
 
         public void SetText(string newText)
         {
-            Debug.Log(string.Format("Setting {0} textbox to {1} at {2}", _parentPanel.name, newText, Mathf.Round(Time.time)));
+//            Debug.Log(string.Format("Setting {0} textbox to {1} at {2}", _parentPanel.name, newText, Mathf.Round(Time.time)));
             _targetTextString = newText;
             SetBusy(true);
         }

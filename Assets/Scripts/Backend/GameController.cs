@@ -39,7 +39,7 @@ namespace Backend
 
         private int CurrentGoatIndex { get; set; }
         private bool GlobalFollowingEnabled { get; set; }
-        private GoatMovementController[] GoatControllerArray { get; set; }
+        internal GoatMovementController[] GoatControllerArray { get; set; }
         private StoryController StoryController { get; set; }
 
         #endregion Private Properties

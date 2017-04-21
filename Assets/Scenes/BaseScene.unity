@@ -30182,9 +30182,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 10
       objectReference: {fileID: 0}
-    - target: {fileID: 4195901004374870, guid: 67ad25145ccb5d041a2124b3b4c9905b, type: 2}
-      propertyPath: m_LocalScale.z
-      value: 1
+    - target: {fileID: 114574366690507566, guid: 67ad25145ccb5d041a2124b3b4c9905b,
+        type: 2}
+      propertyPath: _distanceThreshold
+      value: 10000000
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 67ad25145ccb5d041a2124b3b4c9905b, type: 2}
@@ -34744,26 +34745,6 @@ Mesh:
   m_BakedConvexCollisionMesh: 
   m_BakedTriangleCollisionMesh: 
   m_MeshOptimized: 0
---- !u!1 &1633252810 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1100359597751406, guid: 67ad25145ccb5d041a2124b3b4c9905b,
-    type: 2}
-  m_PrefabInternal: {fileID: 1409578443}
---- !u!114 &1633252816
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1633252810}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  color: 0
-  eraseRenderer: 0
-  originalLayer: 0
-  originalMaterials: []
 --- !u!1 &1633891780
 GameObject:
   m_ObjectHideFlags: 0
