@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace Backend
+namespace Backend.EntityEngine
 {
-    public class PlayerMovementController : EntityMovementControllerBase
+    public class GoatMovementController : EntityMovementControllerBase
     {
         #region Public Fields
 
@@ -38,7 +38,7 @@ namespace Backend
 
         private const float FollowDistance = 10;
 
-        private PlayerMovementController _followTarget;
+        private GoatMovementController _followTarget;
 
         private bool _isFollowing;
 
@@ -52,7 +52,7 @@ namespace Backend
             _followTarget = null;
         }
 
-        public void EnableFollowing(PlayerMovementController goatToFollow)
+        public void EnableFollowing(GoatMovementController goatToFollow)
         {
             _isFollowing = true;
             _followTarget = goatToFollow;

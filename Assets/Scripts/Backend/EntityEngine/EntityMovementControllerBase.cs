@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Backend
+namespace Backend.EntityEngine
 {
     public abstract class EntityMovementControllerBase : MonoBehaviour
     {

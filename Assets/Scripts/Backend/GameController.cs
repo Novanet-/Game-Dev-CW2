@@ -1,4 +1,5 @@
 ﻿using System;
+using Backend.EntityEngine;
 using Backend.StoryEngine;
 using com.kleberswf.lib.core;
 using Frontend.SoundEngine;
@@ -31,14 +32,14 @@ namespace Backend
 
         #region Private Properties
 
-        private PlayerMovementController CurrentGoat
+        private GoatMovementController CurrentGoat
         {
             get { return GoatControllerArray[CurrentGoatIndex]; }
         }
 
         private int CurrentGoatIndex { get; set; }
         private bool GlobalFollowingEnabled { get; set; }
-        private PlayerMovementController[] GoatControllerArray { get; set; }
+        private GoatMovementController[] GoatControllerArray { get; set; }
         private StoryController StoryController { get; set; }
 
         #endregion Private Properties
@@ -106,9 +107,9 @@ namespace Backend
             Physics.gravity = new Vector3(0f, -GravityStrength, 0f);
             GoatControllerArray = new[]
             {
-                Hooks.GoatSmall.GetComponent<PlayerMovementController>(),
-                Hooks.GoatMed.GetComponent<PlayerMovementController>(),
-                Hooks.GoatLarge.GetComponent<PlayerMovementController>()
+                Hooks.GoatSmall.GetComponent<GoatMovementController>(),
+                Hooks.GoatMed.GetComponent<GoatMovementController>(),
+                Hooks.GoatLarge.GetComponent<GoatMovementController>()
             };
             StoryController = _storyControllerObject.GetComponent<StoryController>();
             GlobalFollowingEnabled = true;
