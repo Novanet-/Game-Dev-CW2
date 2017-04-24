@@ -1837,7 +1837,7 @@ GameObject:
   m_Layer: 0
   m_Name: Day Light
   m_TagString: Untagged
-  m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -31067,6 +31067,10 @@ Prefab:
       propertyPath: _triggerAmountLimit
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1564821768222248, guid: 2d82b83a380d10746be7599750f92189, type: 2}
+      propertyPath: m_Icon
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2d82b83a380d10746be7599750f92189, type: 2}
   m_IsPrefabParent: 0
@@ -33751,6 +33755,14 @@ Prefab:
         type: 2}
       propertyPath: _triggerAmountLimit
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1564821768222248, guid: 2d82b83a380d10746be7599750f92189, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1564821768222248, guid: 2d82b83a380d10746be7599750f92189, type: 2}
+      propertyPath: m_Icon
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2d82b83a380d10746be7599750f92189, type: 2}
@@ -36905,7 +36917,7 @@ GameObject:
   m_Layer: 0
   m_Name: Night Light
   m_TagString: Untagged
-  m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
