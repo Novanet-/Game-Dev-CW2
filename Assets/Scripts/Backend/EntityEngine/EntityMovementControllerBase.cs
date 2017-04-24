@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Backend.EntityEngine
@@ -36,7 +37,7 @@ namespace Backend.EntityEngine
 
         #region Protected Methods
 
-        protected void ApplyJumpForce(Rigidbody rigidBody)
+        protected void ApplyJumpForce([NotNull] Rigidbody rigidBody)
         {
             if (!IsActivePlayer || !IsJumpQueued) return;
 
@@ -45,7 +46,7 @@ namespace Backend.EntityEngine
             IsJumpQueued = false;
         }
 
-        protected void CheckSpeeds(bool isAboveHorizontalSpeedLimit, Rigidbody rigidBody,
+        protected void CheckSpeeds(bool isAboveHorizontalSpeedLimit, [NotNull] Rigidbody rigidBody,
             bool isAboveVerticalSpeedLimit)
         {
             if (isAboveHorizontalSpeedLimit)
@@ -69,7 +70,7 @@ namespace Backend.EntityEngine
 
         #region Private Methods
 
-        private void UpdateMovementConstraints(Collision collision, float normalAngleFromUpVector, Vector2 newJumpDirection)
+        private void UpdateMovementConstraints([NotNull] Collision collision, float normalAngleFromUpVector, Vector2 newJumpDirection)
         {
             IsWallClimbing = !(normalAngleFromUpVector <= 45)
                              && collision.gameObject.tag.Equals("Ground");
@@ -79,7 +80,7 @@ namespace Backend.EntityEngine
             _jumpDirection = newJumpDirection;
         }
 
-        private void OnCollisionEnter(Collision collision)
+        private void OnCollisionEnter([NotNull] Collision collision)
         {
             var newJumpDirection = new Vector2(collision.contacts[0].normal.x, collision.contacts[0].normal.y);
             var upVector = Vector2.up;
@@ -94,7 +95,7 @@ namespace Backend.EntityEngine
             IsWallClimbing = false;
         }
 
-        private void OnCollisionStay(Collision collision)
+        private void OnCollisionStay([NotNull] Collision collision)
         {
             var newJumpDirection = new Vector2(collision.contacts[0].normal.x, collision.contacts[0].normal.y);
             var upVector = Vector2.up;

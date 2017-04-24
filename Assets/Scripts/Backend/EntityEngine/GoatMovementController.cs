@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using JetBrains.Annotations;
+using UnityEngine;
 
 namespace Backend.EntityEngine
 {
@@ -52,7 +53,7 @@ namespace Backend.EntityEngine
             _followTarget = null;
         }
 
-        public void EnableFollowing(GoatMovementController goatToFollow)
+        public void EnableFollowing([NotNull] GoatMovementController goatToFollow)
         {
             _isFollowing = true;
             _followTarget = goatToFollow;
@@ -62,7 +63,7 @@ namespace Backend.EntityEngine
 
         #region Private Methods
 
-        private void ApplyActivePlayerMovementInput(bool walkingIntoWall, bool isUnderHorizontalSpeedLimit, Rigidbody rigidBody, float h)
+        private void ApplyActivePlayerMovementInput(bool walkingIntoWall, bool isUnderHorizontalSpeedLimit, [NotNull] Rigidbody rigidBody, float h)
         {
             if (!IsActivePlayer) return;
 
@@ -79,7 +80,7 @@ namespace Backend.EntityEngine
             }
         }
 
-        private void ApplyFollowForce(bool walkingIntoWall, bool isUnderHorizontalSpeedLimit, Rigidbody rigidBody)
+        private void ApplyFollowForce(bool walkingIntoWall, bool isUnderHorizontalSpeedLimit, [NotNull] Rigidbody rigidBody)
         {
             if (!_isFollowing || IsActivePlayer) return;
 
@@ -105,7 +106,7 @@ namespace Backend.EntityEngine
             }
         }
 
-        private void CheckPlayerSpecificMovement(bool walkingIntoWall, bool isUnderHorizontalSpeedLimit, Rigidbody rigidBody, float h)
+        private void CheckPlayerSpecificMovement(bool walkingIntoWall, bool isUnderHorizontalSpeedLimit, [NotNull] Rigidbody rigidBody, float h)
         {
             ApplyActivePlayerMovementInput(walkingIntoWall, isUnderHorizontalSpeedLimit, rigidBody, h);
             ApplyFollowForce(walkingIntoWall, isUnderHorizontalSpeedLimit, rigidBody);

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 using UnityEngine;
 using Utils;
@@ -24,7 +26,8 @@ namespace Backend.EntityEngine
 
         #region Public Constructors
 
-        public TrollAIController([NotNull] TrollMovementController troll, [NotNull] GoatMovementController[] goatControllerArray, float distanceThreshold)
+        public TrollAIController([NotNull] TrollMovementController troll, [NotNull] GoatMovementController[] goatControllerArray,
+            float distanceThreshold)
         {
             if (troll == null) throw new ArgumentNullException("troll");
             if (goatControllerArray == null) throw new ArgumentNullException("goatControllerArray");
@@ -42,11 +45,19 @@ namespace Backend.EntityEngine
 
         public float NextMove()
         {
-            var closestGoat = GetClosestGoat();
-            _closestGoatTransform = closestGoat.transform;
+            //            GoatMovementController closestGoat = GetClosestGoat();
+            //            _closestGoatTransform = closestGoat.transform;
 
-            bool isClosestGoatOutsideDistanceThreshold = Vector3.Distance(_trollTransform.position, _closestGoatTransform.position) > _distanceThreshold;
-            return isClosestGoatOutsideDistanceThreshold ? 0 : NextMoveDirection();
+            IEnumerable<GoatMovementController> goatsByDistanceAscending = SortGoatsByDistanceAscending();
+            IEnumerable<GoatMovementController> goatsByMassDescending = SortGoatsByMassDescending();
+
+            GoatMovementController closestGoat = goatsByDistanceAscending.First();
+            GoatMovementController heaviestGoat = goatsByMassDescending.First();
+
+            GoatMovementController targetGoat = heaviestGoat;
+
+            bool isGoatOutsideThreshold = Vector3.Distance(_trollTransform.position, targetGoat.transform.position) > _distanceThreshold;
+            return isGoatOutsideThreshold ? 0 : NextMoveDirection(targetGoat);
         }
 
         #endregion Public Methods
@@ -58,27 +69,37 @@ namespace Backend.EntityEngine
             if (troll == null) throw new ArgumentNullException("troll");
             if (goat == null) throw new ArgumentNullException("goat");
 
-            var trollPosition = troll.position;
-            var goatPosition = goat.position;
+            Vector3 trollPosition = troll.position;
+            Vector3 goatPosition = goat.position;
             return Vector3.Distance(trollPosition, goatPosition);
         }
 
+        [NotNull]
         private GoatMovementController GetClosestGoat()
         {
-            //            float minDistance = GoatControllerArray.Min(goat => TransformDistance(_trollTransform, goat.gameObject.transform));
-            //
-            //            var closestGoat = GoatControllerArray.Where(goat => TransformDistance(_trollTransform, goat.gameObject.transform) == minDistance);
-            //            return closestGoat.First();
-
             return GoatControllerArray.MinElement(goat => TransformDistance(_trollTransform, goat.gameObject.transform));
         }
 
-        private float NextMoveDirection()
+        [NotNull]
+        private IEnumerable<GoatMovementController> SortGoatsByDistanceAscending()
         {
-            var closestGoat = GetClosestGoat();
-            _closestGoatTransform = closestGoat.transform;
+            return GoatControllerArray.OrderBy(goat => TransformDistance(_trollTransform, goat.gameObject.transform));
+        }
 
-            return _closestGoatTransform.position.x > _trollTransform.position.x ? 1 : -1;
+        [NotNull]
+        private IEnumerable<GoatMovementController> SortGoatsByMassDescending()
+        {
+            return GoatControllerArray.OrderByDescending(goat => goat.gameObject.GetComponent<Rigidbody>().mass);
+        }
+
+        private float NextMoveDirection(GoatMovementController targetGoat)
+        {
+//            GoatMovementController closestGoat = GetClosestGoat();
+//            _closestGoatTransform = closestGoat.transform;
+
+            var targetGoatTransform = targetGoat.transform;
+
+            return targetGoatTransform.position.x > _trollTransform.position.x ? 1 : -1;
         }
 
         #endregion Private Methods

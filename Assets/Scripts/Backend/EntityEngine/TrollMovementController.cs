@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using JetBrains.Annotations;
+using UnityEngine;
 
 namespace Backend.EntityEngine
 {
@@ -33,7 +34,7 @@ namespace Backend.EntityEngine
             CheckSpeeds(isAboveHorizontalSpeedLimit, rigidBody, isAboveVerticalSpeedLimit);
         }
 
-        private void ApplyMovement(bool walkingIntoWall, bool isUnderHorizontalSpeedLimit, Rigidbody rigidBody, float h)
+        private void ApplyMovement(bool walkingIntoWall, bool isUnderHorizontalSpeedLimit, [NotNull] Rigidbody rigidBody, float h)
         {
             if (IsWallClimbing && walkingIntoWall)
             {
