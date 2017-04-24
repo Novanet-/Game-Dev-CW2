@@ -72,7 +72,7 @@ namespace Backend.EntityEngine
 
         private void UpdateMovementConstraints([NotNull] Collision collision, float normalAngleFromUpVector, Vector2 newJumpDirection)
         {
-            IsWallClimbing = !(normalAngleFromUpVector <= 45)
+            IsWallClimbing = (normalAngleFromUpVector > 45)
                              && collision.gameObject.tag.Equals("Ground");
 
             HorizontalClamp = IsWallClimbing ? (Vector3) (_jumpDirection * -1) : HorizontalClamp;

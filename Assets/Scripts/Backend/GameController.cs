@@ -140,15 +140,11 @@ namespace Backend
                 {
                     DisableFollowing();
                     GlobalFollowingEnabled = false;
-                    Debug.Log(string.Format("Global following: {0}", GlobalFollowingEnabled));
-                    StoryController.Events.Game.FollowingDisabled();
                 }
                 else
                 {
                     EnableFollowing();
                     GlobalFollowingEnabled = true;
-                    Debug.Log(string.Format("Global following: {0}", GlobalFollowingEnabled));
-                    StoryController.Events.Game.FollowingEnabled();
                 }
             }
 
