@@ -51,7 +51,7 @@ namespace Backend.StoryEngine
 
         public float DisplayGameMessage(string message, float displayStartTime, float displayEndTime)
         {
-            Debug.Log(string.Format("{0}, DisplayStart = {1}, DisplayEnd = {2}", message, displayStartTime, displayEndTime));
+//            Debug.Log(string.Format("{0}, DisplayStart = {1}, DisplayEnd = {2}", message, displayStartTime, displayEndTime));
 
             StartCoroutine(DisplayGameMessageCoroutine(message, displayStartTime));
             StartCoroutine(DisplayGameMessageCoroutine("", displayEndTime));
@@ -67,7 +67,7 @@ namespace Backend.StoryEngine
 
         public float DisplayStoryMessage(string message, float displayStartTime, float displayEndTime)
         {
-            Debug.Log(string.Format("{0}, DisplayStart = {1}, DisplayEnd = {2}", message, displayStartTime, displayEndTime));
+//            Debug.Log(string.Format("{0}, DisplayStart = {1}, DisplayEnd = {2}", message, displayStartTime, displayEndTime));
 
             StartCoroutine(DisplayStoryMessageCoroutine(message, displayStartTime));
             StartCoroutine(DisplayStoryMessageCoroutine("", displayEndTime));

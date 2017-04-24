@@ -1,4 +1,5 @@
 ﻿using System;
+using Backend.EntityEngine;
 using Backend.StoryEngine;
 using com.kleberswf.lib.core;
 using Frontend.SoundEngine;
@@ -31,14 +32,14 @@ namespace Backend
 
         #region Private Properties
 
-        private PlayerMovementController CurrentGoat
+        private GoatMovementController CurrentGoat
         {
             get { return GoatControllerArray[CurrentGoatIndex]; }
         }
 
         private int CurrentGoatIndex { get; set; }
         private bool GlobalFollowingEnabled { get; set; }
-        private PlayerMovementController[] GoatControllerArray { get; set; }
+        internal GoatMovementController[] GoatControllerArray { get; set; }
         private StoryController StoryController { get; set; }
 
         #endregion Private Properties
@@ -97,6 +98,8 @@ namespace Backend
             SetCurrentGoatAsActivePlayer();
 
             Hooks.Camera.GetComponent<CameraController>().CurrentTarget = CurrentGoat.transform;
+            SoundController.Instance.PlaySingle(Sounds.Instance.GoatSwitchSwooshClip, 0.2f);
+
 
             if (GlobalFollowingEnabled) EnableFollowing();
         }
@@ -106,9 +109,9 @@ namespace Backend
             Physics.gravity = new Vector3(0f, -GravityStrength, 0f);
             GoatControllerArray = new[]
             {
-                Hooks.GoatSmall.GetComponent<PlayerMovementController>(),
-                Hooks.GoatMed.GetComponent<PlayerMovementController>(),
-                Hooks.GoatLarge.GetComponent<PlayerMovementController>()
+                Hooks.GoatSmall.GetComponent<GoatMovementController>(),
+                Hooks.GoatMed.GetComponent<GoatMovementController>(),
+                Hooks.GoatLarge.GetComponent<GoatMovementController>()
             };
             StoryController = _storyControllerObject.GetComponent<StoryController>();
             GlobalFollowingEnabled = true;
@@ -132,20 +135,16 @@ namespace Backend
 
             if (Input.GetKeyDown(KeyCode.F))
             {
-                SoundController.Instance.PlaySingle(Sounds.Instance.ExampleSoundClip);
+                SoundController.Instance.PlaySingle(Sounds.Instance.FollowingDrumHitClip, 0.6f);
                 if (GlobalFollowingEnabled)
                 {
                     DisableFollowing();
                     GlobalFollowingEnabled = false;
-                    Debug.Log(string.Format("Global following: {0}", GlobalFollowingEnabled));
-                    StoryController.Events.Game.FollowingDisabled();
                 }
                 else
                 {
                     EnableFollowing();
                     GlobalFollowingEnabled = true;
-                    Debug.Log(string.Format("Global following: {0}", GlobalFollowingEnabled));
-                    StoryController.Events.Game.FollowingEnabled();
                 }
             }
 

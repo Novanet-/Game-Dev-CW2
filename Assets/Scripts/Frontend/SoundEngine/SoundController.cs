@@ -23,10 +23,9 @@ namespace Frontend.SoundEngine
         #region Public Methods
 
         //Used to play single sound clips.
-        public void PlaySingle(AudioClip clip)
+        public void PlaySingle(AudioClip clip, float volumeScale)
         {
-            _soundSource.clip = clip;
-            _soundSource.Play();
+            _soundSource.PlayOneShot(clip, volumeScale);
         }
         //Used to play single sound clips.
         public void PlayMusic(AudioClip clip)
