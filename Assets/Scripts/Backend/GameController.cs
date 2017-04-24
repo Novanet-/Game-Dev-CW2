@@ -98,6 +98,8 @@ namespace Backend
             SetCurrentGoatAsActivePlayer();
 
             Hooks.Camera.GetComponent<CameraController>().CurrentTarget = CurrentGoat.transform;
+            SoundController.Instance.PlaySingle(Sounds.Instance.GoatSwitchSwooshClip, 0.2f);
+
 
             if (GlobalFollowingEnabled) EnableFollowing();
         }
@@ -133,7 +135,7 @@ namespace Backend
 
             if (Input.GetKeyDown(KeyCode.F))
             {
-                SoundController.Instance.PlaySingle(Sounds.Instance.ExampleSoundClip);
+                SoundController.Instance.PlaySingle(Sounds.Instance.FollowingDrumHitClip, 0.6f);
                 if (GlobalFollowingEnabled)
                 {
                     DisableFollowing();

@@ -13,7 +13,6 @@ namespace Backend.EntityEngine
 
         private readonly float _distanceThreshold;
         private readonly Transform _trollTransform;
-        private Transform _closestGoatTransform;
 
         #endregion Private Fields
 
