@@ -20,7 +20,6 @@ namespace Backend.EntityEngine
             if (TrollAI == null) TrollAI = new TrollAIController(this, GameController.Instance.GoatControllerArray, _distanceThreshold);
 
             float h = TrollAI.NextMove();
-            Debug.Log(string.Format("Troll h = {0}", h));
             var rigidBody = GetComponent<Rigidbody>();
 
             bool isUnderHorizontalSpeedLimit = h * rigidBody.velocity.x < MaxHorizontalSpeed;
