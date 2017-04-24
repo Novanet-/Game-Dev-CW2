@@ -5156,7 +5156,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -32553,7 +32553,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19ef6e40dbd143a9b5674b282ce0b42e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ExampleMusicClip: {fileID: 8300000, guid: ebf5382ca40b38f4cb8939679fd6b427, type: 3}
+  ExampleMusicClip: {fileID: 8300000, guid: 245d8b18e4f24484288fecb2a65dd05c, type: 3}
 --- !u!114 &1533948273
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32566,6 +32566,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ExampleSoundClip: {fileID: 8300000, guid: 42b91959436fb9e4a857dca5a1d17e4b, type: 3}
+  GoatSwitchSwooshClip: {fileID: 8300000, guid: f443b1e751f33314abfb4e7007fb8ed1,
+    type: 3}
+  FollowingDrumHitClip: {fileID: 8300000, guid: d74c428ae2319204185802cfa4641399,
+    type: 3}
 --- !u!114 &1533948274
 MonoBehaviour:
   m_ObjectHideFlags: 0
