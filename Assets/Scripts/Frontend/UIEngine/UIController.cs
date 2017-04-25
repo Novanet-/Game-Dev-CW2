@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils;
+using UnityEngine.SceneManagement;
 
 namespace Frontend.UIEngine
 {
@@ -14,6 +15,8 @@ namespace Frontend.UIEngine
         [SerializeField] private GameObject _pnlCentre;
         [SerializeField] private GameObject _pnlTop;
 
+		CanvasGroup canvasGroup;
+
         #endregion Private Fields
 
         #region Private Properties
@@ -23,6 +26,9 @@ namespace Frontend.UIEngine
         private Text TxtCentre { get; set; }
         private Text TxtTop { get; set; }
 
+
+		bool FadeinFinished {get; set;}
+		bool FadeoutFinished {get; set;}
         #endregion Private Properties
 
         #region Public Methods
@@ -77,13 +83,11 @@ namespace Frontend.UIEngine
         // Update is called once per frame
         private void Update()
         {
+			
         }
 
         #endregion Private Methods
 
-        public void ClearMessage(string message, MessageLocation bottomPanel)
-        {
-            throw new NotImplementedException();
-        }
+
     }
 }

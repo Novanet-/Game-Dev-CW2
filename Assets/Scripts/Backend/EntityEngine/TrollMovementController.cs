@@ -30,21 +30,14 @@ namespace Backend.EntityEngine
             bool walkingIntoWall = clampAngle < 90;
 
             ApplyMovement(walkingIntoWall, isUnderHorizontalSpeedLimit, rigidBody, h);
-            CheckSpeeds(isAboveHorizontalSpeedLimit, rigidBody, isAboveVerticalSpeedLimit);
+            ClampSpeeds(isAboveHorizontalSpeedLimit, rigidBody, isAboveVerticalSpeedLimit);
         }
 
         private void ApplyMovement(bool walkingIntoWall, bool isUnderHorizontalSpeedLimit, [NotNull] Rigidbody rigidBody, float h)
         {
-            if (IsWallClimbing && walkingIntoWall)
+            if (isUnderHorizontalSpeedLimit)
             {
-                IsFlying = false;
-            }
-            else
-            {
-                if (isUnderHorizontalSpeedLimit)
-                {
-                    rigidBody.AddForce(Vector2.right * h * MoveForce);
-                }
+                rigidBody.AddForce(Vector2.right * h * MoveForce);
             }
         }
 
