@@ -1,5 +1,6 @@
 ﻿using JetBrains.Annotations;
 using UnityEngine;
+using System.Collections;
 
 namespace Backend.EntityEngine
 {
@@ -25,13 +26,17 @@ namespace Backend.EntityEngine
 
             float clampAngle = Vector3.Angle(HorizontalClamp, h * Vector2.right);
             bool walkingIntoWall = clampAngle < 90;
-
-            //        Debug.Log("IsWallClimbing = " + IsWallClimbing + ", ClampAngle = " + clampAngle);
-
-            CheckPlayerSpecificMovement(walkingIntoWall, isUnderHorizontalSpeedLimit, rigidBody, h);
-            CheckSpeeds(isAboveHorizontalSpeedLimit, rigidBody, isAboveVerticalSpeedLimit);
-            ApplyJumpForce(rigidBody);
+			ApplyActivePlayerMovementInput(isUnderHorizontalSpeedLimit, rigidBody, h);
+			ApplyFollowForce(isUnderHorizontalSpeedLimit, rigidBody);
+            ClampSpeeds(isAboveHorizontalSpeedLimit, rigidBody, isAboveVerticalSpeedLimit);
         }
+
+		private IEnumerator QueueJump()
+		{
+			IsJumpQueued = true;
+			yield return new WaitForSeconds(0.2f);
+			IsJumpQueued = false;
+		}
 
         #endregion Protected Methods
 
@@ -63,70 +68,49 @@ namespace Backend.EntityEngine
 
         #region Private Methods
 
-        private void ApplyActivePlayerMovementInput(bool walkingIntoWall, bool isUnderHorizontalSpeedLimit, [NotNull] Rigidbody rigidBody, float h)
+        private void ApplyActivePlayerMovementInput(bool isUnderHorizontalSpeedLimit, [NotNull] Rigidbody rigidBody, float h)
         {
             if (!IsActivePlayer) return;
-
-            if (IsWallClimbing && walkingIntoWall)
+            if (isUnderHorizontalSpeedLimit)
             {
-                IsFlying = false;
+                rigidBody.AddForce(Vector2.right * h * MoveForce);
             }
-            else
-            {
-                if (isUnderHorizontalSpeedLimit)
-                {
-                    rigidBody.AddForce(Vector2.right * h * MoveForce);
-                }
-            }
+			if (Input.GetKeyDown(KeyCode.W) && !IsJumpQueued)
+			{
+				StartCoroutine(QueueJump());
+			}
         }
 
-        private void ApplyFollowForce(bool walkingIntoWall, bool isUnderHorizontalSpeedLimit, [NotNull] Rigidbody rigidBody)
+        private void ApplyFollowForce(bool isUnderHorizontalSpeedLimit, [NotNull] Rigidbody rigidBody)
         {
             if (!_isFollowing || IsActivePlayer) return;
 
             float distance = Vector3.Distance(transform.position, _followTarget.transform.position);
             if (Mathf.Abs(distance) <= FollowDistance) return;
+            if (!isUnderHorizontalSpeedLimit) return;
 
-            if (IsWallClimbing && walkingIntoWall)
+            if (transform.position.x < _followTarget.transform.position.x)
             {
-                IsFlying = false;
+                rigidBody.AddForce(Vector2.right * MoveForce * _followForceMult);
             }
             else
             {
-                if (!isUnderHorizontalSpeedLimit) return;
-
-                if (transform.position.x < _followTarget.transform.position.x)
-                {
-                    rigidBody.AddForce(Vector2.right * MoveForce * _followForceMult);
-                }
-                else
-                {
-                    rigidBody.AddForce(Vector2.left * MoveForce * _followForceMult);
-                }
+                rigidBody.AddForce(Vector2.left * MoveForce * _followForceMult);
             }
-        }
-
-        private void CheckPlayerSpecificMovement(bool walkingIntoWall, bool isUnderHorizontalSpeedLimit, [NotNull] Rigidbody rigidBody, float h)
-        {
-            ApplyActivePlayerMovementInput(walkingIntoWall, isUnderHorizontalSpeedLimit, rigidBody, h);
-            ApplyFollowForce(walkingIntoWall, isUnderHorizontalSpeedLimit, rigidBody);
         }
 
         protected override void Start()
         {
             float mass = GetComponent<Rigidbody>().mass;
             MoveForce = mass * 400;
-            JumpForce = mass * 1000;
+			JumpForce = mass * 1000;
             MaxHorizontalSpeed = 15 / mass;
             MaxVerticalSpeed = 50 / mass;
         }
 
         protected override void Update()
         {
-            if (IsActivePlayer && !IsFlying && Input.GetKeyDown(KeyCode.W))
-            {
-                IsJumpQueued = true;
-            }
+
         }
 
         #endregion Private Methods

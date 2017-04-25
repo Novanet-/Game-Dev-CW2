@@ -20,33 +20,21 @@ namespace Backend.EntityEngine
         #region Protected Fields
 
         protected Vector3 HorizontalClamp;
-        protected bool IsJumpQueued;
-        protected float JumpForce;
         protected float MaxHorizontalSpeed;
+		protected float JumpForce;
         protected float MaxVerticalSpeed;
-        protected float MoveForce;
+		protected float MoveForce;
+		protected bool IsJumpQueued;
 
         #endregion Protected Fields
 
         #region Public Properties
 
-        protected bool IsFlying { get; set; }
-        protected bool IsWallClimbing { get; private set; }
-
         #endregion Public Properties
 
         #region Protected Methods
 
-        protected void ApplyJumpForce([NotNull] Rigidbody rigidBody)
-        {
-            if (!IsActivePlayer || !IsJumpQueued) return;
-
-            rigidBody.AddForce(_jumpDirection * JumpForce);
-            IsFlying = true;
-            IsJumpQueued = false;
-        }
-
-        protected void CheckSpeeds(bool isAboveHorizontalSpeedLimit, [NotNull] Rigidbody rigidBody,
+        protected void ClampSpeeds(bool isAboveHorizontalSpeedLimit, [NotNull] Rigidbody rigidBody,
             bool isAboveVerticalSpeedLimit)
         {
             if (isAboveHorizontalSpeedLimit)
@@ -70,49 +58,25 @@ namespace Backend.EntityEngine
 
         #region Private Methods
 
-        private void UpdateMovementConstraints([NotNull] Collision collision, float normalAngleFromUpVector, Vector2 newJumpDirection)
-        {
-            IsWallClimbing = (normalAngleFromUpVector > 45)
-                             && collision.gameObject.tag.Equals("Ground");
-
-            HorizontalClamp = IsWallClimbing ? (Vector3) (_jumpDirection * -1) : HorizontalClamp;
-            IsFlying = false;
-            _jumpDirection = newJumpDirection;
-        }
-
         private void OnCollisionEnter([NotNull] Collision collision)
         {
-            var newJumpDirection = new Vector2(collision.contacts[0].normal.x, collision.contacts[0].normal.y);
-            var upVector = Vector2.up;
-            float angle = Vector2.Angle(upVector, newJumpDirection);
-
-            UpdateMovementConstraints(collision, angle, newJumpDirection);
+			
         }
 
         private void OnCollisionExit()
         {
-            IsFlying = true;
-            IsWallClimbing = false;
+
         }
 
         private void OnCollisionStay([NotNull] Collision collision)
         {
-            var newJumpDirection = new Vector2(collision.contacts[0].normal.x, collision.contacts[0].normal.y);
-            var upVector = Vector2.up;
-            float angle = Vector2.Angle(upVector, newJumpDirection);
-
-            if (!IsWallClimbing)
-            {
-                if (newJumpDirection == Vector2.up)
-                {
-                    _jumpDirection = Vector2.up;
-                }
-            }
-            else
-            {
-                IsFlying = false;
-            }
-            UpdateMovementConstraints(collision, angle, newJumpDirection);
+			if (IsJumpQueued)
+			{
+				IsJumpQueued = false;
+				var rigidBody = GetComponent<Rigidbody>();
+				_jumpDirection = new Vector2(collision.contacts[0].normal.x, collision.contacts[0].normal.y);
+				rigidBody.AddForce(_jumpDirection * JumpForce);
+			}
         }
 
         #endregion Private Methods
