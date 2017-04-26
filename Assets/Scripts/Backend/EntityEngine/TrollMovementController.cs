@@ -9,7 +9,7 @@ namespace Backend.EntityEngine
 
         #region Public Properties
 
-        private TrollAIController TrollAI { get; set; }
+        public TrollAIController TrollAI { get; set; }
 
         #endregion Public Properties
 
@@ -48,11 +48,11 @@ namespace Backend.EntityEngine
             JumpForce = mass * 1000;
             MaxHorizontalSpeed = 15 / mass;
             MaxVerticalSpeed = 50 / mass;
-//            TrollAI = new TrollAIController(this, GameController.Instance.GoatControllerArray, _distanceThreshold);
         }
 
         protected override void Update()
         {
+			if (TrollAI == null) TrollAI = new TrollAIController(this, GameController.Instance.GoatControllerArray, _distanceThreshold);
         }
 
         #endregion Protected Methods

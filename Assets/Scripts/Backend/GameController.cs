@@ -171,6 +171,8 @@ namespace Backend
         public GameObject GoatMed;
         public GameObject GoatSmall;
         public GameObject Troll;
+		public GameObject LeftBound;
+		public GameObject RightBound;
 
         #endregion Public Fields
     }

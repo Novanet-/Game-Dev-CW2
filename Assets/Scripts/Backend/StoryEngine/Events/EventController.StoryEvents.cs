@@ -1,4 +1,6 @@
 ﻿using Constants;
+using Backend.EntityEngine;
+using System.Collections.Generic;
 
 namespace Backend.StoryEngine.Events
 {
@@ -10,7 +12,10 @@ namespace Backend.StoryEngine.Events
         {
             #region Private Fields
 
+			private readonly GameController _gameController;
+
             private readonly EventController _eventController;
+			private TrollMovementController _trollMovementController;
 
             #endregion Private Fields
 
@@ -18,7 +23,8 @@ namespace Backend.StoryEngine.Events
 
             public StoryEvents(EventController eventController)
             {
-                _eventController = eventController;
+				_eventController = eventController;
+				_gameController = GameController.Instance;
             }
 
             #endregion Public Constructors
@@ -102,14 +108,29 @@ namespace Backend.StoryEngine.Events
                 _eventController.StoryController.DisplayStoryMessage(StoryMessage.YouAndYourBrothersMustWorkTogether, 0f, 4f);
             }
 
+
+
             public void ForInTheShadows()
-            {
+            {				
                 _eventController.StoryController.DisplayStoryMessage(StoryMessage.ForInTheShadows, 0f, 4f);
             }
 
             public void AreCreaturesWhoWishYouHarm()
             {
-                _eventController.StoryController.DisplayStoryMessage(StoryMessage.AreCreaturesWhoWishYouHarm, 0f, 4f);
+				var goatTriggerDict = new Dictionary<GoatMovementController, string>()
+				{
+					{_gameController.GoatControllerArray[0], "Are creatures you must run from"},
+					{_gameController.GoatControllerArray[1], "Are creatures who you must face"},
+					{_gameController.GoatControllerArray[2], "Are creatures who you must fight"},
+
+				};
+
+				_trollMovementController = _gameController.Hooks.Troll.GetComponent<TrollMovementController>();
+
+				var triggeringGoat = _trollMovementController.TrollAI.GetClosestGoat();
+				var trollMessage = goatTriggerDict[triggeringGoat];
+
+                _eventController.StoryController.DisplayStoryMessage(trollMessage, 0f, 4f);
             }
 
             public void RunFromThemMyChildren()

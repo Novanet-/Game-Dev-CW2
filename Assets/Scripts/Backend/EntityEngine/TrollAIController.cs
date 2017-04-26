@@ -47,8 +47,14 @@ namespace Backend.EntityEngine
             //            GoatMovementController closestGoat = GetClosestGoat();
             //            _closestGoatTransform = closestGoat.transform;
 
-            IEnumerable<GoatMovementController> goatsByDistanceAscending = SortGoatsByDistanceAscending();
-            IEnumerable<GoatMovementController> goatsByMassDescending = SortGoatsByMassDescending();
+			var hooks = GameController.Instance.Hooks;
+			var leftBoundX = hooks.LeftBound.transform.position.x;
+			var rightBoundX = hooks.RightBound.transform.position.x;
+
+			IEnumerable<GoatMovementController> goatsByDistanceAscending = SortGoatsByDistanceAscending().Where(goat => goat.transform.position.x > leftBoundX && goat.transform.position.x < rightBoundX);
+			IEnumerable<GoatMovementController> goatsByMassDescending = SortGoatsByMassDescending().Where(goat => goat.transform.position.x > leftBoundX && goat.transform.position.x < rightBoundX);
+
+			if (!goatsByDistanceAscending.Any()) return 0;
 
             GoatMovementController closestGoat = goatsByDistanceAscending.First();
             GoatMovementController heaviestGoat = goatsByMassDescending.First();
@@ -63,7 +69,7 @@ namespace Backend.EntityEngine
 
         #region Private Methods
 
-        private static float TransformDistance([NotNull] Transform troll, [NotNull] Transform goat)
+        public static float TransformDistance([NotNull] Transform troll, [NotNull] Transform goat)
         {
             if (troll == null) throw new ArgumentNullException("troll");
             if (goat == null) throw new ArgumentNullException("goat");
@@ -74,7 +80,7 @@ namespace Backend.EntityEngine
         }
 
         [NotNull]
-        private GoatMovementController GetClosestGoat()
+        public GoatMovementController GetClosestGoat()
         {
             return GoatControllerArray.MinElement(goat => TransformDistance(_trollTransform, goat.gameObject.transform));
         }
