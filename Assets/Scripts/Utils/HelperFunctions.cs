@@ -85,5 +85,10 @@ namespace Utils
 
             throw new InvalidOperationException("MinElement: No elements in sequence.");
         }
+
+        public static int Mod(int x, int m)
+        {
+            return (x % m + m) % m;
+        }
     }
 }

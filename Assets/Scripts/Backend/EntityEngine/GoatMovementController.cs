@@ -1,6 +1,8 @@
-﻿using JetBrains.Annotations;
+﻿using System.Collections;
+using System.Linq;
+using JetBrains.Annotations;
+using ProBuilder2.Common;
 using UnityEngine;
-using System.Collections;
 
 namespace Backend.EntityEngine
 {
@@ -9,40 +11,14 @@ namespace Backend.EntityEngine
         #region Public Fields
 
         [HideInInspector] public bool IsFollowing = true;
-        [SerializeField] private float _followForceMult = 1.0f;
 
         #endregion Public Fields
-
-        #region Protected Methods
-
-        protected override void FixedUpdate()
-        {
-            float h = Input.GetAxis("Horizontal");
-            var rigidBody = GetComponent<Rigidbody>();
-
-            bool isUnderHorizontalSpeedLimit = h * rigidBody.velocity.x < MaxHorizontalSpeed;
-            bool isAboveHorizontalSpeedLimit = Mathf.Abs(rigidBody.velocity.x) > MaxHorizontalSpeed;
-            bool isAboveVerticalSpeedLimit = rigidBody.velocity.y > MaxVerticalSpeed;
-
-            float clampAngle = Vector3.Angle(HorizontalClamp, h * Vector2.right);
-            bool walkingIntoWall = clampAngle < 90;
-			ApplyActivePlayerMovementInput(isUnderHorizontalSpeedLimit, rigidBody, h);
-			ApplyFollowForce(isUnderHorizontalSpeedLimit, rigidBody);
-            ClampSpeeds(isAboveHorizontalSpeedLimit, rigidBody, isAboveVerticalSpeedLimit);
-        }
-
-		private IEnumerator QueueJump()
-		{
-			IsJumpQueued = true;
-			yield return new WaitForSeconds(0.2f);
-			IsJumpQueued = false;
-		}
-
-        #endregion Protected Methods
 
         #region Private Fields
 
         private const float FollowDistance = 10;
+        [SerializeField] private float _fadeTime = 10f;
+        [SerializeField] private float _followForceMult = 1.0f;
 
         private GoatMovementController _followTarget;
 
@@ -64,7 +40,46 @@ namespace Backend.EntityEngine
             _followTarget = goatToFollow;
         }
 
+        public void KillGoat()
+        {
+            Debug.Log("Kill Goat");
+            StartCoroutine(DeathAnimation(_fadeTime));
+        }
+
         #endregion Public Methods
+
+        #region Protected Methods
+
+        protected override void FixedUpdate()
+        {
+            float h = Input.GetAxis("Horizontal");
+            var rigidBody = GetComponent<Rigidbody>();
+
+            bool isUnderHorizontalSpeedLimit = h * rigidBody.velocity.x < MaxHorizontalSpeed;
+            bool isAboveHorizontalSpeedLimit = Mathf.Abs(rigidBody.velocity.x) > MaxHorizontalSpeed;
+            bool isAboveVerticalSpeedLimit = rigidBody.velocity.y > MaxVerticalSpeed;
+
+            float clampAngle = Vector3.Angle(HorizontalClamp, h * Vector2.right);
+            bool walkingIntoWall = clampAngle < 90;
+            ApplyActivePlayerMovementInput(isUnderHorizontalSpeedLimit, rigidBody, h);
+            ApplyFollowForce(isUnderHorizontalSpeedLimit, rigidBody);
+            ClampSpeeds(isAboveHorizontalSpeedLimit, rigidBody, isAboveVerticalSpeedLimit);
+        }
+
+        protected override void Start()
+        {
+            float mass = GetComponent<Rigidbody>().mass;
+            MoveForce = mass * 400;
+            JumpForce = mass * 1000;
+            MaxHorizontalSpeed = 15 / mass;
+            MaxVerticalSpeed = 50 / mass;
+        }
+
+        protected override void Update()
+        {
+        }
+
+        #endregion Protected Methods
 
         #region Private Methods
 
@@ -75,10 +90,10 @@ namespace Backend.EntityEngine
             {
                 rigidBody.AddForce(Vector2.right * h * MoveForce);
             }
-			if (Input.GetKeyDown(KeyCode.W) && !IsJumpQueued)
-			{
-				StartCoroutine(QueueJump());
-			}
+            if (Input.GetKeyDown(KeyCode.W) && !IsJumpQueued)
+            {
+                StartCoroutine(QueueJump());
+            }
         }
 
         private void ApplyFollowForce(bool isUnderHorizontalSpeedLimit, [NotNull] Rigidbody rigidBody)
@@ -99,18 +114,29 @@ namespace Backend.EntityEngine
             }
         }
 
-        protected override void Start()
+        private IEnumerator DeathAnimation(float fadeTime)
         {
-            float mass = GetComponent<Rigidbody>().mass;
-            MoveForce = mass * 400;
-			JumpForce = mass * 1000;
-            MaxHorizontalSpeed = 15 / mass;
-            MaxVerticalSpeed = 50 / mass;
+            Debug.Log("Death Animation");
+            Vector3 goatScale = gameObject.transform.localScale;
+            while (goatScale.x > 0.1 && goatScale.y > 0.1)
+            {
+                gameObject.transform.localScale = new Vector3(Mathf.Max(goatScale.x -= Time.deltaTime / fadeTime, 0), Mathf.Max(goatScale.y -= Time.deltaTime / fadeTime, 0),
+                    goatScale.z);
+                goatScale = gameObject.transform.localScale;
+                yield return null;
+            }
+
+            gameObject.transform.position = new Vector3(9999f, 9999f, 9999f);
+            GameController.Instance.GoatControllerArray = GameController.Instance.GoatControllerArray.Where(goat => goat != this).ToArray();
+            GameController.Instance.ChangeCurrentTarget(true);
+            Destroy(this);
         }
 
-        protected override void Update()
+        private IEnumerator QueueJump()
         {
-
+            IsJumpQueued = true;
+            yield return new WaitForSeconds(0.2f);
+            IsJumpQueued = false;
         }
 
         #endregion Private Methods
