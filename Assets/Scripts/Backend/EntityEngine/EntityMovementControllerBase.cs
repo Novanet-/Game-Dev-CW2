@@ -54,27 +54,21 @@ namespace Backend.EntityEngine
 
 		protected abstract void Update();
 
+		protected virtual void OnCollisionEnter([NotNull] Collision collision)
+		{
+
+		}
+
 		#endregion Protected Methods
 
 		#region Private Methods
 
-		private void OnCollisionEnter([NotNull] Collision collision)
-		{
-		    if (gameObject.tag.Equals("Player"))
-		    {
-		        if (collision.gameObject.tag.Equals("Troll"))
-		        {
-		            gameObject.GetComponent<GoatMovementController>().KillGoat();
-		        }
-		    }
-		}
-
-		private void OnCollisionExit()
+		protected virtual void OnCollisionExit([NotNull] Collision collision)
 		{
 
 		}
 
-		private void OnCollisionStay([NotNull] Collision collision)
+		protected virtual void OnCollisionStay([NotNull] Collision collision)
 		{
 			if (IsJumpQueued)
 			{

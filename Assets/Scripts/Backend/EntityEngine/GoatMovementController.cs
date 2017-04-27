@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Linq;
 using JetBrains.Annotations;
-using ProBuilder2.Common;
 using UnityEngine;
+using Backend.StoryEngine;
 
 namespace Backend.EntityEngine
 {
@@ -23,6 +23,7 @@ namespace Backend.EntityEngine
         private GoatMovementController _followTarget;
 
         private bool _isFollowing;
+		private bool _isDying;
 
         #endregion Private Fields
 
@@ -43,7 +44,8 @@ namespace Backend.EntityEngine
         public void KillGoat()
         {
             Debug.Log("Kill Goat");
-            StartCoroutine(DeathAnimation(_fadeTime));
+//            StartCoroutine(DeathAnimation(_fadeTime));
+			StartCoroutine(DeathAnimation(_fadeTime));
         }
 
         #endregion Public Methods
@@ -52,7 +54,7 @@ namespace Backend.EntityEngine
 
         protected override void FixedUpdate()
         {
-            float h = Input.GetAxis("Horizontal");
+			float h = GameController.Instance.GameEnded ? 0 : Input.GetAxis("Horizontal");
             var rigidBody = GetComponent<Rigidbody>();
 
             bool isUnderHorizontalSpeedLimit = h * rigidBody.velocity.x < MaxHorizontalSpeed;
@@ -77,6 +79,7 @@ namespace Backend.EntityEngine
 
         protected override void Update()
         {
+			
         }
 
         #endregion Protected Methods
@@ -86,6 +89,7 @@ namespace Backend.EntityEngine
         private void ApplyActivePlayerMovementInput(bool isUnderHorizontalSpeedLimit, [NotNull] Rigidbody rigidBody, float h)
         {
             if (!IsActivePlayer) return;
+
             if (isUnderHorizontalSpeedLimit)
             {
                 rigidBody.AddForce(Vector2.right * h * MoveForce);
@@ -98,7 +102,7 @@ namespace Backend.EntityEngine
 
         private void ApplyFollowForce(bool isUnderHorizontalSpeedLimit, [NotNull] Rigidbody rigidBody)
         {
-            if (!_isFollowing || IsActivePlayer) return;
+			if (!_isFollowing || IsActivePlayer || _followTarget == null) return;
 
             float distance = Vector3.Distance(transform.position, _followTarget.transform.position);
             if (Mathf.Abs(distance) <= FollowDistance) return;
@@ -118,27 +122,67 @@ namespace Backend.EntityEngine
         {
             Debug.Log("Death Animation");
             Vector3 goatScale = gameObject.transform.localScale;
-            while (goatScale.x > 0.1 && goatScale.y > 0.1)
+			float originalMass = gameObject.GetComponent<Rigidbody>().mass;
+			float goatMass = gameObject.GetComponent<Rigidbody>().mass;
+            while (goatScale.x > 0.1f && goatScale.y > 0.1f)
             {
-                gameObject.transform.localScale = new Vector3(Mathf.Max(goatScale.x -= Time.deltaTime / fadeTime, 0), Mathf.Max(goatScale.y -= Time.deltaTime / fadeTime, 0),
-                    goatScale.z);
-                goatScale = gameObject.transform.localScale;
+				if (_isDying)
+				{
+					float inc = Time.deltaTime / fadeTime;
+					gameObject.transform.localScale = new Vector3(Mathf.Max(goatScale.x -= inc, 0f), Mathf.Max(goatScale.y -= inc, 0f),
+						goatScale.z);
+					gameObject.GetComponent<Rigidbody>().mass = Mathf.Max(goatMass -= inc, 0f);
+					goatScale = gameObject.transform.localScale;
+					goatMass = gameObject.GetComponent<Rigidbody>().mass;
+
+					float mass = GetComponent<Rigidbody>().mass;
+//					float massDiff = originalMass - mass;
+//					MoveForce -= massDiff * 400;
+//					JumpForce -= massDiff * 1000;
+				}
                 yield return null;
             }
 
+			var deadMass = gameObject.GetComponent<Rigidbody>().mass;
+			StoryController.Instance.Events.Story.GoatDied(deadMass);
             gameObject.transform.position = new Vector3(9999f, 9999f, 9999f);
-            GameController.Instance.GoatControllerArray = GameController.Instance.GoatControllerArray.Where(goat => goat != this).ToArray();
+			GameController.Instance.GoatControllerArray = GameController.Instance.GoatControllerArray.Where(goat => goat != this).ToArray();
             GameController.Instance.ChangeCurrentTarget(true);
+			GameController.Instance.ChangeCurrentTarget(true);
             Destroy(this);
+            if (GameController.Instance.GoatControllerArray.Length <= 0)
+            {
+                GameController.Instance.EndGame();
+            }
         }
 
         private IEnumerator QueueJump()
         {
             IsJumpQueued = true;
             yield return new WaitForSeconds(0.2f);
+
             IsJumpQueued = false;
         }
 
+		protected override void OnCollisionEnter([NotNull] Collision collision) {
+			if (collision.gameObject.tag.Equals("Troll") && gameObject.GetComponent<Rigidbody>().mass < 3f)
+				_isDying = true;
+		}
+
+		protected override void OnCollisionStay([NotNull] Collision collision)
+		{
+			base.OnCollisionStay(collision);
+			if (collision.gameObject.tag.Equals("Troll") && gameObject.GetComponent<Rigidbody>().mass < 3f)
+			{
+				gameObject.GetComponent<GoatMovementController>().KillGoat();
+			}
+		}
+
+		protected override void OnCollisionExit([NotNull] Collision collision)
+		{
+			if (collision.gameObject.tag.Equals("Troll") && gameObject.GetComponent<Rigidbody>().mass < 3f)
+				_isDying = false;
+		}
         #endregion Private Methods
     }
 }

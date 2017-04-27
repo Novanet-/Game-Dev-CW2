@@ -61,7 +61,8 @@ namespace ProCore.ProBuilder.API_Examples.Misc
 				// achromatic (grey)
 				return new Color(v, v, v, 1f);
 			}
-			h /= 60;			// sector 0 to 5
+
+		    h /= 60;			// sector 0 to 5
 			i = (int)Mathf.Floor( h );
 			f = h - i;			// factorial part of h
 			p = v * ( 1 - s );

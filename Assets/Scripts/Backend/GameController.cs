@@ -1,180 +1,186 @@
 ﻿using System;
+using System.Linq;
 using Backend.EntityEngine;
 using Backend.StoryEngine;
 using com.kleberswf.lib.core;
 using Frontend.SoundEngine;
 using Frontend;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Backend
 {
-	public class GameController : Singleton<GameController>
-	{
-		#region Public Fields
+    public class GameController : Singleton<GameController>
+    {
+        #region Public Fields
 
-		public float GravityStrength;
-		public Hooks Hooks = new Hooks();
+        public float GravityStrength;
+        public Hooks Hooks = new Hooks();
 
-		#endregion Public Fields
+        #endregion Public Fields
 
-		#region Private Fields
+        #region Private Fields
 
-		[SerializeField] private GameObject _storyControllerObject;
-		[SerializeField] private float _timeLeft;
+        [SerializeField] private GameObject _storyControllerObject;
+        [SerializeField] private float _timeLeft;
 
-		#endregion Private Fields
+        #endregion Private Fields
 
-		#region Public Properties
+        #region Public Properties
 
-		private bool TimerStarted { get; set; }
+        private bool TimerStarted { get; set; }
 
-		#endregion Public Properties
+        #endregion Public Properties
 
-		#region Private Properties
+		public bool GameEnded {get; set;}
 
-		private GoatMovementController CurrentGoat
-		{
-			get { return GoatControllerArray[CurrentGoatIndex]; }
-		}
+        #region Private Properties
 
-		private int CurrentGoatIndex { get; set; }
-		private bool GlobalFollowingEnabled { get; set; }
-		internal GoatMovementController[] GoatControllerArray { get; set; }
-		private StoryController StoryController { get; set; }
+        [NotNull] private GoatMovementController CurrentGoat
+        {
+            get { return GoatControllerArray[CurrentGoatIndex]; }
+        }
 
-		#endregion Private Properties
+        private int CurrentGoatIndex { get; set; }
+        private bool GlobalFollowingEnabled { get; set; }
+        internal GoatMovementController[] GoatControllerArray { get; set; }
+        private StoryController StoryController { get; set; }
 
-		#region Public Methods
+        #endregion Private Properties
 
-		public static void EndGame()
-		{
-			Application.Quit();
-		}
+        #region Public Methods
 
-		public void StartGameTimer()
-		{
-			TimerStarted = true;
-		}
+        public static void QuitGame()
+        {
+            Application.Quit();
+        }
 
-		#endregion Public Methods
+        public void StartGameTimer()
+        {
+            TimerStarted = true;
+        }
 
-		#region Private Methods
+        #endregion Public Methods
 
-		public void ChangeCurrentTarget(bool isRight)
-		{
-		    int newIndexUnbound = isRight ? CurrentGoatIndex + 1 : CurrentGoatIndex - 1;
-		    int newIndex = Utils.HelperFunctions.Mod(newIndexUnbound, GoatControllerArray.Length);
-			SetCurrentTarget(newIndex);
-		}
+        #region Private Methods
 
-		private void DisableFollowing()
-		{
-			foreach (var goatController in GoatControllerArray)
-			{
-				if (goatController != CurrentGoat) goatController.DisableFollowing();
-			}
-		}
+        public void ChangeCurrentTarget(bool isRight)
+        {
+            if (GoatControllerArray.Length <= 1) return;
 
-		private void EnableFollowing()
-		{
-			foreach (var goatController in GoatControllerArray)
-			{
-				if (goatController != CurrentGoat) goatController.EnableFollowing(CurrentGoat);
-			}
-		}
+            int newIndexUnbound = isRight ? CurrentGoatIndex + 1 : CurrentGoatIndex - 1;
+            int newIndex = Utils.HelperFunctions.Mod(newIndexUnbound, GoatControllerArray.Length);
+            SetCurrentTarget(newIndex);
+        }
 
-		private void SetCurrentGoatAsActivePlayer()
-		{
-			foreach (var goatController in GoatControllerArray)
-			{
-				goatController.IsActivePlayer = goatController == CurrentGoat;
-			}
-		}
+        private void DisableFollowing()
+        {
+            foreach (GoatMovementController goatController in GoatControllerArray.Where(goatController => goatController != CurrentGoat))
+            {
+                goatController.DisableFollowing();
+            }
+        }
 
-		private void SetCurrentTarget(int newIndex)
-		{
-			DisableFollowing();
+        private void EnableFollowing()
+        {
+            foreach (GoatMovementController goatController in GoatControllerArray.Where(goatController => goatController != CurrentGoat))
+            {
+                goatController.EnableFollowing(CurrentGoat);
+            }
+        }
 
-			CurrentGoatIndex = newIndex;
-			SetCurrentGoatAsActivePlayer();
+        private void SetCurrentGoatAsActivePlayer()
+        {
+            foreach (GoatMovementController goatController in GoatControllerArray)
+            {
+                goatController.IsActivePlayer = goatController == CurrentGoat;
+            }
+        }
 
-			Hooks.Camera.GetComponent<CameraController>().CurrentTarget = CurrentGoat.transform;
-			SoundController.Instance.PlaySingle(Sounds.Instance.GoatSwitchSwooshClip, 0.2f);
+        private void SetCurrentTarget(int newIndex)
+        {
+            DisableFollowing();
+
+            CurrentGoatIndex = newIndex;
+            SetCurrentGoatAsActivePlayer();
+
+            Hooks.Camera.GetComponent<CameraController>().CurrentTarget = CurrentGoat.transform;
+            SoundController.Instance.PlaySingle(Sounds.Instance.GoatSwitchSwooshClip, 0.2f);
 
 
-			if (GlobalFollowingEnabled) EnableFollowing();
-		}
+            if (GlobalFollowingEnabled) EnableFollowing();
+        }
 
-		private void Start()
-		{
-			Physics.gravity = new Vector3(0f, -GravityStrength, 0f);
-			GoatControllerArray = new[]
-			{
-				Hooks.GoatSmall.GetComponent<GoatMovementController>(),
-				Hooks.GoatMed.GetComponent<GoatMovementController>(),
-				Hooks.GoatLarge.GetComponent<GoatMovementController>()
-			};
-			StoryController = _storyControllerObject.GetComponent<StoryController>();
-			GlobalFollowingEnabled = true;
-			CurrentGoatIndex = 0;
+        private void Start()
+        {
+            Physics.gravity = new Vector3(0f, -GravityStrength, 0f);
+            GoatControllerArray = new[]
+            {
+                Hooks.GoatSmall.GetComponent<GoatMovementController>(),
+                Hooks.GoatMed.GetComponent<GoatMovementController>(),
+                Hooks.GoatLarge.GetComponent<GoatMovementController>()
+            };
+            StoryController = _storyControllerObject.GetComponent<StoryController>();
+            GlobalFollowingEnabled = true;
+            CurrentGoatIndex = 0;
 
-			SetCurrentGoatAsActivePlayer();
-			EnableFollowing();
-			SoundController.Instance.PlayMusic(Music.Instance.ExampleMusicClip);
-		}
+            SetCurrentGoatAsActivePlayer();
+            EnableFollowing();
+            SoundController.Instance.PlayMusic(Music.Instance.ExampleMusicClip);
+        }
 
-		private void Update()
-		{
-			if (Input.GetKeyDown(KeyCode.E))
-			{
-				ChangeCurrentTarget(true);
-			}
-			else if (Input.GetKeyDown(KeyCode.Q))
-			{
-				ChangeCurrentTarget(false);
-			}
-
-			if (Input.GetKeyDown(KeyCode.F))
-			{
-				SoundController.Instance.PlaySingle(Sounds.Instance.FollowingDrumHitClip, 0.6f);
-				if (GlobalFollowingEnabled)
-				{
-					DisableFollowing();
-					GlobalFollowingEnabled = false;
+        private void Update()
+        {
+			if (!GameEnded) {
+				if (Input.GetKeyDown(KeyCode.E)) {
+					ChangeCurrentTarget(true);
+				} else if (Input.GetKeyDown(KeyCode.Q)) {
+					ChangeCurrentTarget(false);
 				}
-				else
-				{
-					EnableFollowing();
-					GlobalFollowingEnabled = true;
-				}
-			}
-
-			if (TimerStarted)
-			{
-				_timeLeft -= Time.deltaTime;
-				if (_timeLeft < 0)
-				{
-					StoryController.Events.Game.EndGame();
+            	
+				if (Input.GetKeyDown(KeyCode.F)) {
+					SoundController.Instance.PlaySingle(Sounds.Instance.FollowingDrumHitClip, 0.6f);
+					if (GlobalFollowingEnabled) {
+						DisableFollowing();
+						GlobalFollowingEnabled = false;
+					} else {
+						EnableFollowing();
+						GlobalFollowingEnabled = true;
+					}
 				}
 			}
-		}
 
-		#endregion Private Methods
-	}
+            if (TimerStarted)
+            {
+                _timeLeft -= Time.deltaTime;
+                if (_timeLeft < 0)
+                {
+                    StoryController.Events.Game.QuitGame();
+                }
+            }
+        }
 
-	[Serializable]
-	public class Hooks
-	{
-		#region Public Fields
+        #endregion Private Methods
 
-		public GameObject Camera;
-		public GameObject GoatLarge;
-		public GameObject GoatMed;
-		public GameObject GoatSmall;
-		public GameObject Troll;
-		public GameObject LeftBound;
-		public GameObject RightBound;
+        public void EndGame()
+        {
+            StoryController.Events.Game.EndGame();
+        }
+    }
 
-		#endregion Public Fields
-	}
+    [Serializable]
+    public class Hooks
+    {
+        #region Public Fields
+
+        public GameObject Camera;
+        public GameObject GoatLarge;
+        public GameObject GoatMed;
+        public GameObject GoatSmall;
+        public GameObject Troll;
+        public GameObject LeftBound;
+        public GameObject RightBound;
+
+        #endregion Public Fields
+    }
 }

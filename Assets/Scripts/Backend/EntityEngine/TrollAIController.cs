@@ -44,36 +44,37 @@ namespace Backend.EntityEngine
 
         public float NextMove()
         {
-            //            GoatMovementController closestGoat = GetClosestGoat();
-            //            _closestGoatTransform = closestGoat.transform;
 
             Hooks hooks = GameController.Instance.Hooks;
             GoatControllerArray = GameController.Instance.GoatControllerArray;
-            float leftBoundX = hooks.LeftBound.transform.position.x;
-            float rightBoundX = hooks.RightBound.transform.position.x;
+            if (hooks.LeftBound != null && hooks.RightBound != null)
+            {
+                float leftBoundX = hooks.LeftBound.transform.position.x;
+                float rightBoundX = hooks.RightBound.transform.position.x;
 
-            Func<GoatMovementController, bool> goatIsValidTarget =
-                goat =>
-                {
-                    bool goatWithinTrollTerritory = (goat.transform.position.x > leftBoundX && goat.transform.position.x < rightBoundX);
-                    bool goatIsWithinDistanceThreshold = Vector3.Distance(_trollTransform.position, goat.transform.position) <= _distanceThreshold;
+                Func<GoatMovementController, bool> goatIsValidTarget =
+                    goat =>
+                    {
+                        bool goatWithinTrollTerritory = (goat.transform.position.x > leftBoundX && goat.transform.position.x < rightBoundX);
+                        bool goatIsWithinDistanceThreshold = Vector3.Distance(_trollTransform.position, goat.transform.position) <= _distanceThreshold;
 
-                    return goatWithinTrollTerritory || goatIsWithinDistanceThreshold;
-                };
+                        return goatWithinTrollTerritory || goatIsWithinDistanceThreshold;
+                    };
 
-            IEnumerable<GoatMovementController> goatsByDistanceAscending = SortGoatsByDistanceAscending().Where(goatIsValidTarget);
-            IEnumerable<GoatMovementController> goatsByMassDescending = SortGoatsByMassDescending().Where(goatIsValidTarget);
+                IEnumerable<GoatMovementController> goatsByDistanceAscending = SortGoatsByDistanceAscending().Where(goatIsValidTarget);
+                IEnumerable<GoatMovementController> goatsByMassDescending = SortGoatsByMassDescending().Where(goatIsValidTarget);
 
-            if (!goatsByDistanceAscending.Any()) return 0;
+                if (!goatsByDistanceAscending.Any()) return 0;
 
-            GoatMovementController closestGoat = goatsByDistanceAscending.First();
-            GoatMovementController heaviestGoat = goatsByMassDescending.First();
+                GoatMovementController closestGoat = goatsByDistanceAscending.First();
+                GoatMovementController heaviestGoat = goatsByMassDescending.First();
 
-            GoatMovementController targetGoat = heaviestGoat;
+                GoatMovementController targetGoat = heaviestGoat;
 
-//            bool isGoatOutsideThreshold = Vector3.Distance(_trollTransform.position, targetGoat.transform.position) > _distanceThreshold;
-//            return isGoatOutsideThreshold ? 0 : NextMoveDirection(targetGoat);
-            return NextMoveDirection(targetGoat);
+                return NextMoveDirection(targetGoat);
+            }
+
+            return 0f;
         }
 
         #endregion Public Methods

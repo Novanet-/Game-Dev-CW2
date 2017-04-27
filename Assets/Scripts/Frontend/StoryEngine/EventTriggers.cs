@@ -43,6 +43,7 @@ namespace Frontend.StoryEngine
                 {"AndLeaveTheDarkBehind", _storyEvents.AndLeaveTheDarkBehind},
                 {"ANewDawnAwaitsYou", _storyEvents.ANewDawnAwaitsYou},
                 {"RiseUpAndShine", _storyEvents.RiseUpAndShine},
+				{"JourneysEnd", _storyEvents.JourneysEnd},
 
 
                 {"WASDToMove", _gameEvents.WASDToMove},

@@ -1,4 +1,6 @@
-﻿namespace Backend.StoryEngine.Events
+﻿using JetBrains.Annotations;
+
+namespace Backend.StoryEngine.Events
 {
     public partial class EventController
     {
@@ -17,7 +19,7 @@
 
         #region Public Constructors
 
-        public EventController(StoryController storyController)
+        public EventController([NotNull] StoryController storyController)
         {
             StoryController = storyController;
             Story = new StoryEvents(this);

@@ -1,34 +1,36 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using com.kleberswf.lib.core;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Utils;
-using UnityEngine.SceneManagement;
 
 namespace Frontend.UIEngine
 {
-    public class UIController : MonoBehaviour
+    public class UIController : Singleton<UIController>
     {
         #region Private Fields
 
         [SerializeField] private GameObject _pnlBottom;
         [SerializeField] private GameObject _pnlCentre;
         [SerializeField] private GameObject _pnlTop;
+        [SerializeField] private GameObject _pnlAll;
 
-		CanvasGroup canvasGroup;
+        private CanvasGroup canvasGroup;
 
         #endregion Private Fields
 
         #region Private Properties
 
+        private bool FadeinFinished { get; set; }
+        private bool FadeoutFinished { get; set; }
         private Dictionary<MessageLocation, Text> TextBoxDictionary { get; set; }
         private Text TxtBottom { get; set; }
         private Text TxtCentre { get; set; }
         private Text TxtTop { get; set; }
 
-
-		bool FadeinFinished {get; set;}
-		bool FadeoutFinished {get; set;}
         #endregion Private Properties
 
         #region Public Methods
@@ -52,9 +54,63 @@ namespace Frontend.UIEngine
             if (message != null) targetTextController.SetText(message);
         }
 
+        public void FadeOutGame()
+        {
+            StartCoroutine(FadeOutCoroutine());
+        }
+
         #endregion Public Methods
 
         #region Private Methods
+
+        private IEnumerator FadeOutCoroutine()
+        {
+//            yield return new WaitForSeconds(4f);
+//
+//            _pnlTop.GetComponent<Image>().CrossFadeAlpha(0f, 0.01f, false);
+//            _pnlCentre.GetComponent<Image>().CrossFadeAlpha(0f, 0.01f, false);
+//            _pnlBottom.GetComponent<Image>().CrossFadeAlpha(0f, 0.01f, false);
+//
+//            _pnlTop.GetComponent<CanvasGroup>().alpha = 1f;
+//            _pnlCentre.GetComponent<CanvasGroup>().alpha = 1f;
+//            _pnlBottom.GetComponent<CanvasGroup>().alpha = 1f;
+//
+//            _pnlTop.GetComponent<Image>().enabled = true;
+//            _pnlCentre.GetComponent<Image>().enabled = true;
+//            _pnlBottom.GetComponent<Image>().enabled = true;
+//
+//            _pnlTop.GetComponent<Image>().color = Color.black;
+//            _pnlCentre.GetComponent<Image>().color = Color.black;
+//            _pnlBottom.GetComponent<Image>().color = Color.black;
+//
+//            _pnlTop.GetComponent<CanvasGroup>().alpha = 1f;
+//            _pnlCentre.GetComponent<CanvasGroup>().alpha = 1f;
+//            _pnlBottom.GetComponent<CanvasGroup>().alpha = 1f;
+//
+//            _pnlTop.GetComponent<Image>().CrossFadeAlpha(1f, 5f, false);
+//            _pnlCentre.GetComponent<Image>().CrossFadeAlpha(1f, 5f, false);
+//            _pnlBottom.GetComponent<Image>().CrossFadeAlpha(1f, 5f, false);
+//
+//            yield return new WaitForSeconds(5f);
+//
+//            _pnlTop.GetComponent<CanvasGroup>().alpha = 1f;
+//            _pnlCentre.GetComponent<CanvasGroup>().alpha = 1f;
+//            _pnlBottom.GetComponent<CanvasGroup>().alpha = 1f;
+
+//            SceneManager.LoadSceneAsync("TitleScene");
+
+            yield return new WaitForSeconds(2f);
+
+            _pnlAll.GetComponent<Image>().CrossFadeAlpha(0f, 0.01f, false);
+            _pnlAll.GetComponent<CanvasGroup>().alpha = 1f;
+            _pnlAll.GetComponent<Image>().enabled = true;
+            _pnlAll.GetComponent<Image>().color = Color.black;
+            _pnlAll.GetComponent<Image>().CrossFadeAlpha(1f, 5f, false);
+
+            yield return new WaitForSeconds(5f);
+
+            SceneManager.LoadSceneAsync("TitleScene");
+        }
 
         // Use this for initialization
         private void Start()
@@ -83,11 +139,8 @@ namespace Frontend.UIEngine
         // Update is called once per frame
         private void Update()
         {
-			
         }
 
         #endregion Private Methods
-
-
     }
 }
