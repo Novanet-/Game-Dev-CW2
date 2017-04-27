@@ -48,6 +48,7 @@ namespace Backend.EntityEngine
             //            _closestGoatTransform = closestGoat.transform;
 
             Hooks hooks = GameController.Instance.Hooks;
+            GoatControllerArray = GameController.Instance.GoatControllerArray;
             float leftBoundX = hooks.LeftBound.transform.position.x;
             float rightBoundX = hooks.RightBound.transform.position.x;
 

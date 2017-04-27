@@ -12,10 +12,10 @@ namespace Backend.StoryEngine.Events
         {
             #region Private Fields
 
-			private readonly GameController _gameController;
+            private GameController _gameController;
 
             private readonly EventController _eventController;
-			private TrollMovementController _trollMovementController;
+            private TrollMovementController _trollMovementController;
 
             #endregion Private Fields
 
@@ -23,8 +23,8 @@ namespace Backend.StoryEngine.Events
 
             public StoryEvents(EventController eventController)
             {
-				_eventController = eventController;
-				_gameController = GameController.Instance;
+                _eventController = eventController;
+                _gameController = GameController.Instance;
             }
 
             #endregion Public Constructors
@@ -38,7 +38,6 @@ namespace Backend.StoryEngine.Events
                 _eventController.StoryController.DisplayStoryMessage(StoryMessage.Example3, 12f, 16f);
                 _eventController.StoryController.DisplayStoryMessage(StoryMessage.Example4, 18f, 22f);
                 _eventController.Game.Tutorial();
-
             }
 
             public void Example1()
@@ -109,26 +108,26 @@ namespace Backend.StoryEngine.Events
             }
 
 
-
             public void ForInTheShadows()
-            {				
+            {
                 _eventController.StoryController.DisplayStoryMessage(StoryMessage.ForInTheShadows, 0f, 4f);
             }
 
             public void AreCreaturesWhoWishYouHarm()
             {
-				var goatTriggerDict = new Dictionary<GoatMovementController, string>()
-				{
-					{_gameController.GoatControllerArray[0], "Are creatures you must run from"},
-					{_gameController.GoatControllerArray[1], "Are creatures who you must face"},
-					{_gameController.GoatControllerArray[2], "Are creatures who you must fight"},
+                _gameController = GameController.Instance;
 
-				};
+                var goatTriggerDict = new Dictionary<GoatMovementController, string>()
+                {
+                    {_gameController.GoatControllerArray[0], "Are creatures you must run from"},
+                    {_gameController.GoatControllerArray[1], "Are creatures who you must face"},
+                    {_gameController.GoatControllerArray[2], "Are creatures who you must fight"},
+                };
 
-				_trollMovementController = _gameController.Hooks.Troll.GetComponent<TrollMovementController>();
+                _trollMovementController = _gameController.Hooks.Troll.GetComponent<TrollMovementController>();
 
-				var triggeringGoat = _trollMovementController.TrollAI.GetClosestGoat();
-				var trollMessage = goatTriggerDict[triggeringGoat];
+                var triggeringGoat = _trollMovementController.TrollAI.GetClosestGoat();
+                var trollMessage = goatTriggerDict[triggeringGoat];
 
                 _eventController.StoryController.DisplayStoryMessage(trollMessage, 0f, 4f);
             }
