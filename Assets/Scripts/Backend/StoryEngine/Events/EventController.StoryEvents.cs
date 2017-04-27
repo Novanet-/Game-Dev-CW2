@@ -122,13 +122,13 @@ namespace Backend.StoryEngine.Events
 
                 var goatTriggerDict = new Dictionary<GoatMovementController, string>();
 
-                goatTriggerDict.Add(_gameController.GoatControllerArray[0], "Are creatures you must run from");
+				goatTriggerDict.Add(_gameController.GoatControllerArray[0], "...is a creature you cannot defeat yourself!");
 
                 if (_gameController.GoatControllerArray.Length > 1)
-                    goatTriggerDict.Add(_gameController.GoatControllerArray[1], "Are creatures who you must face");
+					goatTriggerDict.Add(_gameController.GoatControllerArray[1], "...is a creature stronger than you are!");
 
                 if (_gameController.GoatControllerArray.Length > 2)
-                    goatTriggerDict.Add(_gameController.GoatControllerArray[2], "Are creatures who you must fight");
+					goatTriggerDict.Add(_gameController.GoatControllerArray[2], "...is a creature you are strong enough to defeat!");
 
                 _trollMovementController = _gameController.Hooks.Troll.GetComponent<TrollMovementController>();
 
