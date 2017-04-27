@@ -22,5 +22,6 @@
         public const string AndLeaveTheDarkBehind = "And leave the dark behind";
         public const string ANewDawnAwaitsYou = "A new dawn awaits you";
         public const string RiseUpAndShine = "Rise up and shine";
+        public const string AllIsLost = "All is Lost";
     }
 }

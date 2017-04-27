@@ -1,6 +1,7 @@
 ﻿using Constants;
 using Backend.EntityEngine;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 
 namespace Backend.StoryEngine.Events
 {
@@ -21,7 +22,7 @@ namespace Backend.StoryEngine.Events
 
             #region Public Constructors
 
-            public StoryEvents(EventController eventController)
+            public StoryEvents([NotNull] EventController eventController)
             {
                 _eventController = eventController;
                 _gameController = GameController.Instance;
@@ -117,19 +118,25 @@ namespace Backend.StoryEngine.Events
             {
                 _gameController = GameController.Instance;
 
-                var goatTriggerDict = new Dictionary<GoatMovementController, string>()
-                {
-                    {_gameController.GoatControllerArray[0], "Are creatures you must run from"},
-                    {_gameController.GoatControllerArray[1], "Are creatures who you must face"},
-                    {_gameController.GoatControllerArray[2], "Are creatures who you must fight"},
-                };
+                var goatTriggerDict = new Dictionary<GoatMovementController, string>();
+
+                goatTriggerDict.Add(_gameController.GoatControllerArray[0], "Are creatures you must run from");
+
+                if (_gameController.GoatControllerArray.Length > 1)
+                    goatTriggerDict.Add(_gameController.GoatControllerArray[1], "Are creatures who you must face");
+
+                if (_gameController.GoatControllerArray.Length > 2)
+                    goatTriggerDict.Add(_gameController.GoatControllerArray[2], "Are creatures who you must fight");
 
                 _trollMovementController = _gameController.Hooks.Troll.GetComponent<TrollMovementController>();
 
-                var triggeringGoat = _trollMovementController.TrollAI.GetClosestGoat();
-                var trollMessage = goatTriggerDict[triggeringGoat];
+                if (_trollMovementController.TrollAI != null)
+                {
+                    var triggeringGoat = _trollMovementController.TrollAI.GetClosestGoat();
+                    var trollMessage = goatTriggerDict[triggeringGoat];
 
-                _eventController.StoryController.DisplayStoryMessage(trollMessage, 0f, 4f);
+                    _eventController.StoryController.DisplayStoryMessage(trollMessage, 0f, 4f);
+                }
             }
 
             public void RunFromThemMyChildren()
@@ -150,6 +157,11 @@ namespace Backend.StoryEngine.Events
             public void RiseUpAndShine()
             {
                 _eventController.StoryController.DisplayStoryMessage(StoryMessage.RiseUpAndShine, 0f, 4f);
+            }
+
+            public void AllIsLost()
+            {
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.AllIsLost, 0f, 4f);
             }
         }
 

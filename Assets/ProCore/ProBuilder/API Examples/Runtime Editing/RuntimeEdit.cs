@@ -201,7 +201,8 @@ namespace ProCore.ProBuilder.API_Examples.Runtime_Editing
 
 				return hitpb.FaceWithTriangle(tri, out currentSelection.face);
 			}
-			return false;
+
+		    return false;
 		}
 
 		void RefreshSelectedFacePreview()

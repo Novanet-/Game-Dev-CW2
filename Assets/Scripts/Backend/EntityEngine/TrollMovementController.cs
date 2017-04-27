@@ -44,7 +44,7 @@ namespace Backend.EntityEngine
 		protected override void Start()
 		{
 			float mass = GetComponent<Rigidbody>().mass;
-			MoveForce = mass * 400;
+			MoveForce = mass * 800;
 			JumpForce = mass * 1000;
 			MaxHorizontalSpeed = 15 / mass;
 			MaxVerticalSpeed = 50 / mass;

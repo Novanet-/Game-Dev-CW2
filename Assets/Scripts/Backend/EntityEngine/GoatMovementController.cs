@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Linq;
 using JetBrains.Annotations;
-using ProBuilder2.Common;
 using UnityEngine;
 
 namespace Backend.EntityEngine
@@ -86,6 +85,7 @@ namespace Backend.EntityEngine
         private void ApplyActivePlayerMovementInput(bool isUnderHorizontalSpeedLimit, [NotNull] Rigidbody rigidBody, float h)
         {
             if (!IsActivePlayer) return;
+
             if (isUnderHorizontalSpeedLimit)
             {
                 rigidBody.AddForce(Vector2.right * h * MoveForce);
@@ -127,15 +127,20 @@ namespace Backend.EntityEngine
             }
 
             gameObject.transform.position = new Vector3(9999f, 9999f, 9999f);
-            GameController.Instance.GoatControllerArray = GameController.Instance.GoatControllerArray.Where(goat => goat != this).ToArray();
             GameController.Instance.ChangeCurrentTarget(true);
+            GameController.Instance.GoatControllerArray = GameController.Instance.GoatControllerArray.Where(goat => goat != this).ToArray();
             Destroy(this);
+            if (GameController.Instance.GoatControllerArray.Length <= 0)
+            {
+                GameController.Instance.EndGame();
+            }
         }
 
         private IEnumerator QueueJump()
         {
             IsJumpQueued = true;
             yield return new WaitForSeconds(0.2f);
+
             IsJumpQueued = false;
         }
 

@@ -1,4 +1,6 @@
 ﻿using Constants;
+using Frontend.UIEngine;
+using JetBrains.Annotations;
 
 namespace Backend.StoryEngine.Events
 {
@@ -16,7 +18,7 @@ namespace Backend.StoryEngine.Events
 
             #region Public Constructors
 
-            public GameEvents(EventController eventController)
+            public GameEvents([NotNull] EventController eventController)
             {
                 _eventController = eventController;
             }
@@ -40,9 +42,9 @@ namespace Backend.StoryEngine.Events
                 _eventController.StoryController.StartTimer();
             }
 
-            public void EndGame()
+            public void QuitGame()
             {
-                _eventController.StoryController.EndGame();
+                _eventController.StoryController.QuitGame();
 
             }
 
@@ -68,6 +70,12 @@ namespace Backend.StoryEngine.Events
             public void FollowToggle()
             {
                 _eventController.StoryController.DisplayGameMessage(GameMessage.FollowToggle, 0f, 4f);
+            }
+
+            public void EndGame()
+            {
+                _eventController.StoryController.DisplayCentreMessage(StoryMessage.AllIsLost, 0f, 2f);
+                UIController.Instance.FadeOutGame();
             }
         }
 

@@ -38,7 +38,8 @@ namespace com.kleberswf.lib.core {
 
 		private static void CreateInstance() {
 			if (Destroyed) return;
-			var type = typeof (T);
+
+		    var type = typeof (T);
 			var objects = FindObjectsOfType<T>();
 			if (objects.Length > 0) {
 				if (objects.Length > 1) {
@@ -46,7 +47,8 @@ namespace com.kleberswf.lib.core {
 					                 "\". Keeping the first one. Destroying the others.");
 					for (var i = 1; i < objects.Length; i++) Destroy(objects[i].gameObject);
 				}
-				_instance = objects[0];
+
+			    _instance = objects[0];
 				_instance.gameObject.SetActive(true);
 				Instantiated = true;
 				Destroyed = false;
@@ -87,7 +89,8 @@ namespace com.kleberswf.lib.core {
 				}
 				return;
 			}
-			if (Persistent) DontDestroyOnLoad(gameObject);
+
+		    if (Persistent) DontDestroyOnLoad(gameObject);
 			if (GetInstanceID() != _instance.GetInstanceID()) Destroy(gameObject);
 		}
 

@@ -14,20 +14,31 @@ namespace Frontend.UIEngine
         [SerializeField] private float _defaultMaxAlpha = 0.8f;
         private CanvasGroup _parentCanvasGroup;
         private GameObject _parentPanel;
+        private StoryController _storyController;
         [SerializeField] private string _targetTextString;
 
         private string _textboxName;
-        private StoryController _storyController;
 
         #endregion Private Fields
 
-        #region Private Methods
+        #region Public Methods
 
         public void SetText(string newText)
         {
-//            Debug.Log(string.Format("Setting {0} textbox to {1} at {2}", _parentPanel.name, newText, Mathf.Round(Time.time)));
             _targetTextString = newText;
             SetBusy(true);
+        }
+
+        #endregion Public Methods
+
+        #region Private Methods
+
+        private void SetBusy(bool isBusy)
+        {
+            if (_textboxName.Equals("txtTop"))
+                _storyController.StoryBusy = isBusy;
+            else
+                _storyController.GameBusy = isBusy;
         }
 
         // Use this for initialization
@@ -45,13 +56,12 @@ namespace Frontend.UIEngine
         private void Update()
         {
             bool textNeedsUpdate = !_currentText.text.Equals(_targetTextString);
-//        if (string.IsNullOrEmpty(_currentText.text) && string.IsNullOrEmpty(_targetTextString)) textNeedsUpdate = false;
+            //        if (string.IsNullOrEmpty(_currentText.text) && string.IsNullOrEmpty(_targetTextString)) textNeedsUpdate = false;
 
             if (textNeedsUpdate)
             {
                 StartCoroutine(HelperFunctions.FadeOut(_parentCanvasGroup, _defaultFadeSpeed));
                 SetBusy(true);
-                
             }
             else if (_parentCanvasGroup.alpha < _defaultMaxAlpha)
             {
@@ -69,17 +79,6 @@ namespace Frontend.UIEngine
                 _currentText.text = _targetTextString;
                 _parentCanvasGroup.alpha = 0;
             }
-
-
-//        Debug.Log(string.Format("Current Text: {0}, Target Text: {1}", _currentText.text, _targetTextString));
-        }
-
-        private void SetBusy(bool isBusy)
-        {
-            if (_textboxName.Equals("txtTop"))
-                _storyController.StoryBusy = isBusy;
-            else
-                _storyController.GameBusy = isBusy;
         }
 
         #endregion Private Methods
