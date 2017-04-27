@@ -32,6 +32,8 @@ namespace Backend
 
         #endregion Public Properties
 
+		public bool GameEnded {get; set;}
+
         #region Private Properties
 
         [NotNull] private GoatMovementController CurrentGoat
@@ -129,29 +131,24 @@ namespace Backend
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                ChangeCurrentTarget(true);
-            }
-            else if (Input.GetKeyDown(KeyCode.Q))
-            {
-                ChangeCurrentTarget(false);
-            }
-
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                SoundController.Instance.PlaySingle(Sounds.Instance.FollowingDrumHitClip, 0.6f);
-                if (GlobalFollowingEnabled)
-                {
-                    DisableFollowing();
-                    GlobalFollowingEnabled = false;
-                }
-                else
-                {
-                    EnableFollowing();
-                    GlobalFollowingEnabled = true;
-                }
-            }
+			if (!GameEnded) {
+				if (Input.GetKeyDown(KeyCode.E)) {
+					ChangeCurrentTarget(true);
+				} else if (Input.GetKeyDown(KeyCode.Q)) {
+					ChangeCurrentTarget(false);
+				}
+            	
+				if (Input.GetKeyDown(KeyCode.F)) {
+					SoundController.Instance.PlaySingle(Sounds.Instance.FollowingDrumHitClip, 0.6f);
+					if (GlobalFollowingEnabled) {
+						DisableFollowing();
+						GlobalFollowingEnabled = false;
+					} else {
+						EnableFollowing();
+						GlobalFollowingEnabled = true;
+					}
+				}
+			}
 
             if (TimerStarted)
             {

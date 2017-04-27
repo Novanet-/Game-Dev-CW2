@@ -2,6 +2,8 @@
 using Backend.EntityEngine;
 using System.Collections.Generic;
 using JetBrains.Annotations;
+using UnityEngine;
+using Frontend.UIEngine;
 
 namespace Backend.StoryEngine.Events
 {
@@ -163,6 +165,33 @@ namespace Backend.StoryEngine.Events
             {
                 _eventController.StoryController.DisplayStoryMessage(StoryMessage.AllIsLost, 0f, 4f);
             }
+
+			public void JourneysEnd() 
+			{
+				GameController.Instance.GameEnded = true;
+				_eventController.StoryController.DisplayCentreMessage(StoryMessage.JourneysEnd, 0f, 6f);
+				UIController.Instance.FadeOutGame();
+			}
+
+			public void GoatDied(float goatMass)
+			{
+				var goatMassDict = new Dictionary<float, string>() {
+					{ 1, "You have lost your little brother" },
+					{ 2, "You have lost your brother" },
+					{ 3, "You have lost your large brother" }
+				};
+
+				goatMass = Mathf.Ceil(goatMass);
+				var targetMessage = goatMassDict[goatMass];
+
+				_eventController.StoryController.DisplayStoryMessage(targetMessage, 0f, 4f);
+			}
+
+			public void TrollDied() {
+				var targetMessage = StoryMessage.TrollDied;
+
+				_eventController.StoryController.DisplayStoryMessage(targetMessage, 0f, 4f);
+			}
         }
 
         #endregion Public Classes

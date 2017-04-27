@@ -23,5 +23,7 @@
         public const string ANewDawnAwaitsYou = "A new dawn awaits you";
         public const string RiseUpAndShine = "Rise up and shine";
         public const string AllIsLost = "All is Lost";
+		public const string JourneysEnd = "Journey's End";
+		public const string TrollDied = "You have defeated the troll";
     }
 }

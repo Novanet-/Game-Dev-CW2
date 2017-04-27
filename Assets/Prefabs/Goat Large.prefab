@@ -123,7 +123,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsActivePlayer: 0
   IsFollowing: 1
-  _fadeTime: 3
+  _fadeTime: 2
   _followForceMult: 1.2
 --- !u!114 &114984005619397502
 MonoBehaviour:

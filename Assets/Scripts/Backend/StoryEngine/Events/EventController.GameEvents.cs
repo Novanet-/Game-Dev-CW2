@@ -74,6 +74,7 @@ namespace Backend.StoryEngine.Events
 
             public void EndGame()
             {
+				GameController.Instance.GameEnded = true;
                 _eventController.StoryController.DisplayCentreMessage(StoryMessage.AllIsLost, 0f, 2f);
                 UIController.Instance.FadeOutGame();
             }
