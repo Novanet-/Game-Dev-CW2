@@ -47,22 +47,32 @@ namespace Backend.EntityEngine
             //            GoatMovementController closestGoat = GetClosestGoat();
             //            _closestGoatTransform = closestGoat.transform;
 
-			var hooks = GameController.Instance.Hooks;
-			var leftBoundX = hooks.LeftBound.transform.position.x;
-			var rightBoundX = hooks.RightBound.transform.position.x;
+            Hooks hooks = GameController.Instance.Hooks;
+            float leftBoundX = hooks.LeftBound.transform.position.x;
+            float rightBoundX = hooks.RightBound.transform.position.x;
 
-			IEnumerable<GoatMovementController> goatsByDistanceAscending = SortGoatsByDistanceAscending().Where(goat => goat.transform.position.x > leftBoundX && goat.transform.position.x < rightBoundX);
-			IEnumerable<GoatMovementController> goatsByMassDescending = SortGoatsByMassDescending().Where(goat => goat.transform.position.x > leftBoundX && goat.transform.position.x < rightBoundX);
+            Func<GoatMovementController, bool> goatIsValidTarget =
+                goat =>
+                {
+                    bool goatWithinTrollTerritory = (goat.transform.position.x > leftBoundX && goat.transform.position.x < rightBoundX);
+                    bool goatIsWithinDistanceThreshold = Vector3.Distance(_trollTransform.position, goat.transform.position) <= _distanceThreshold;
 
-			if (!goatsByDistanceAscending.Any()) return 0;
+                    return goatWithinTrollTerritory || goatIsWithinDistanceThreshold;
+                };
+
+            IEnumerable<GoatMovementController> goatsByDistanceAscending = SortGoatsByDistanceAscending().Where(goatIsValidTarget);
+            IEnumerable<GoatMovementController> goatsByMassDescending = SortGoatsByMassDescending().Where(goatIsValidTarget);
+
+            if (!goatsByDistanceAscending.Any()) return 0;
 
             GoatMovementController closestGoat = goatsByDistanceAscending.First();
             GoatMovementController heaviestGoat = goatsByMassDescending.First();
 
             GoatMovementController targetGoat = heaviestGoat;
 
-            bool isGoatOutsideThreshold = Vector3.Distance(_trollTransform.position, targetGoat.transform.position) > _distanceThreshold;
-            return isGoatOutsideThreshold ? 0 : NextMoveDirection(targetGoat);
+//            bool isGoatOutsideThreshold = Vector3.Distance(_trollTransform.position, targetGoat.transform.position) > _distanceThreshold;
+//            return isGoatOutsideThreshold ? 0 : NextMoveDirection(targetGoat);
+            return NextMoveDirection(targetGoat);
         }
 
         #endregion Public Methods

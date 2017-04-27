@@ -122,6 +122,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsActivePlayer: 0
+  _distanceThreshold: 50
 --- !u!114 &114869675725686172
 MonoBehaviour:
   m_ObjectHideFlags: 1
