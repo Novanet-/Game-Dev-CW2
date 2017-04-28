@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -44,6 +46,49 @@ namespace Utils
         internal static IEnumerator Delay(float delay)
         {
             yield return new WaitForSeconds(delay);
+        }
+
+        public static T MinElement<T>(this IEnumerable<T> source, Func<T, float> selector)
+        {
+            if (source == null)
+            {
+                throw new ArgumentNullException("source");
+            }
+
+            float minValue = 0;
+            T minElement = default(T);
+            bool hasValue = false;
+
+            foreach (T s in source)
+            {
+                float x = selector(s);
+                if (hasValue)
+                {
+                    if (x < minValue)
+                    {
+                        minValue = x;
+                        minElement = s;
+                    }
+                }
+                else
+                {
+                    minValue = x;
+                    minElement = s;
+                    hasValue = true;
+                }
+            }
+
+            if (hasValue)
+            {
+                return minElement;
+            }
+
+            throw new InvalidOperationException("MinElement: No elements in sequence.");
+        }
+
+        public static int Mod(int x, int m)
+        {
+            return (x % m + m) % m;
         }
     }
 }

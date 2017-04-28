@@ -7,6 +7,8 @@ namespace Frontend.SoundEngine
         public static Sounds Instance { get; set; }
 
         [SerializeField] public AudioClip ExampleSoundClip;
+        [SerializeField] public AudioClip GoatSwitchSwooshClip;
+        [SerializeField] public AudioClip FollowingDrumHitClip;
 
         private void Awake()
         {

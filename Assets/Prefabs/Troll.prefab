@@ -23,10 +23,11 @@ GameObject:
   - component: {fileID: 65348773693919784}
   - component: {fileID: 23216702539920576}
   - component: {fileID: 54142440282320894}
-  - component: {fileID: 114291884285798764}
+  - component: {fileID: 114574366690507566}
+  - component: {fileID: 114869675725686172}
   m_Layer: 10
   m_Name: Troll
-  m_TagString: Player
+  m_TagString: Troll
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -38,7 +39,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1100359597751406}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 500.7, y: 16, z: 0}
   m_LocalScale: {x: 2.2, y: 2.2, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -109,7 +110,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114291884285798764
+--- !u!114 &114574366690507566
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -120,3 +121,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e475f8dfaa0d40d48b561714731f1802, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsActivePlayer: 0
+  _distanceThreshold: 50
+--- !u!114 &114869675725686172
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1100359597751406}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: 0
+  eraseRenderer: 0
+  originalLayer: 0
+  originalMaterials: []

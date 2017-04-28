@@ -1,4 +1,9 @@
 ﻿using Constants;
+using Backend.EntityEngine;
+using System.Collections.Generic;
+using JetBrains.Annotations;
+using UnityEngine;
+using Frontend.UIEngine;
 
 namespace Backend.StoryEngine.Events
 {
@@ -10,15 +15,19 @@ namespace Backend.StoryEngine.Events
         {
             #region Private Fields
 
+            private GameController _gameController;
+
             private readonly EventController _eventController;
+            private TrollMovementController _trollMovementController;
 
             #endregion Private Fields
 
             #region Public Constructors
 
-            public StoryEvents(EventController eventController)
+            public StoryEvents([NotNull] EventController eventController)
             {
                 _eventController = eventController;
+                _gameController = GameController.Instance;
             }
 
             #endregion Public Constructors
@@ -32,7 +41,6 @@ namespace Backend.StoryEngine.Events
                 _eventController.StoryController.DisplayStoryMessage(StoryMessage.Example3, 12f, 16f);
                 _eventController.StoryController.DisplayStoryMessage(StoryMessage.Example4, 18f, 22f);
                 _eventController.Game.Tutorial();
-
             }
 
             public void Example1()
@@ -102,6 +110,7 @@ namespace Backend.StoryEngine.Events
                 _eventController.StoryController.DisplayStoryMessage(StoryMessage.YouAndYourBrothersMustWorkTogether, 0f, 4f);
             }
 
+
             public void ForInTheShadows()
             {
                 _eventController.StoryController.DisplayStoryMessage(StoryMessage.ForInTheShadows, 0f, 4f);
@@ -109,7 +118,27 @@ namespace Backend.StoryEngine.Events
 
             public void AreCreaturesWhoWishYouHarm()
             {
-                _eventController.StoryController.DisplayStoryMessage(StoryMessage.AreCreaturesWhoWishYouHarm, 0f, 4f);
+                _gameController = GameController.Instance;
+
+                var goatTriggerDict = new Dictionary<GoatMovementController, string>();
+
+				goatTriggerDict.Add(_gameController.GoatControllerArray[0], "...is a creature you cannot defeat yourself!");
+
+                if (_gameController.GoatControllerArray.Length > 1)
+					goatTriggerDict.Add(_gameController.GoatControllerArray[1], "...is a creature stronger than you are!");
+
+                if (_gameController.GoatControllerArray.Length > 2)
+					goatTriggerDict.Add(_gameController.GoatControllerArray[2], "...is a creature you are strong enough to defeat!");
+
+                _trollMovementController = _gameController.Hooks.Troll.GetComponent<TrollMovementController>();
+
+                if (_trollMovementController.TrollAI != null)
+                {
+                    var triggeringGoat = _trollMovementController.TrollAI.GetClosestGoat();
+                    var trollMessage = goatTriggerDict[triggeringGoat];
+
+                    _eventController.StoryController.DisplayStoryMessage(trollMessage, 0f, 4f);
+                }
             }
 
             public void RunFromThemMyChildren()
@@ -131,6 +160,38 @@ namespace Backend.StoryEngine.Events
             {
                 _eventController.StoryController.DisplayStoryMessage(StoryMessage.RiseUpAndShine, 0f, 4f);
             }
+
+            public void AllIsLost()
+            {
+                _eventController.StoryController.DisplayStoryMessage(StoryMessage.AllIsLost, 0f, 4f);
+            }
+
+			public void JourneysEnd() 
+			{
+				GameController.Instance.GameEnded = true;
+				_eventController.StoryController.DisplayCentreMessage(StoryMessage.JourneysEnd, 0f, 6f);
+				UIController.Instance.FadeOutGame();
+			}
+
+			public void GoatDied(float goatMass)
+			{
+				var goatMassDict = new Dictionary<float, string>() {
+					{ 1, "You have lost your little brother" },
+					{ 2, "You have lost your brother" },
+					{ 3, "You have lost your large brother" }
+				};
+
+				goatMass = Mathf.Ceil(goatMass);
+				var targetMessage = goatMassDict[goatMass];
+
+				_eventController.StoryController.DisplayStoryMessage(targetMessage, 0f, 4f);
+			}
+
+			public void TrollDied() {
+				var targetMessage = StoryMessage.TrollDied;
+
+				_eventController.StoryController.DisplayStoryMessage(targetMessage, 0f, 4f);
+			}
         }
 
         #endregion Public Classes
