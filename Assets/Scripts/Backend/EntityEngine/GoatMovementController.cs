@@ -6,126 +6,126 @@ using Backend.StoryEngine;
 
 namespace Backend.EntityEngine
 {
-    public class GoatMovementController : EntityMovementControllerBase
-    {
-        #region Public Fields
+	public class GoatMovementController : EntityMovementControllerBase
+	{
+		#region Public Fields
 
-        [HideInInspector] public bool IsFollowing = true;
+		[HideInInspector] public bool IsFollowing = true;
 
-        #endregion Public Fields
+		#endregion Public Fields
 
-        #region Private Fields
+		#region Private Fields
 
-        private const float FollowDistance = 10;
-        [SerializeField] private float _fadeTime = 10f;
-        [SerializeField] private float _followForceMult = 1.0f;
+		private const float FollowDistance = 10;
+		[SerializeField] private float _fadeTime = 10f;
+		[SerializeField] private float _followForceMult = 1.0f;
 
-        private GoatMovementController _followTarget;
+		private GoatMovementController _followTarget;
 
-        private bool _isFollowing;
+		private bool _isFollowing;
 		private bool _isDying;
 
-        #endregion Private Fields
+		#endregion Private Fields
 
-        #region Public Methods
+		#region Public Methods
 
-        public void DisableFollowing()
-        {
-            _isFollowing = false;
-            _followTarget = null;
-        }
+		public void DisableFollowing()
+		{
+			_isFollowing = false;
+			_followTarget = null;
+		}
 
-        public void EnableFollowing([NotNull] GoatMovementController goatToFollow)
-        {
-            _isFollowing = true;
-            _followTarget = goatToFollow;
-        }
+		public void EnableFollowing([NotNull] GoatMovementController goatToFollow)
+		{
+			_isFollowing = true;
+			_followTarget = goatToFollow;
+		}
 
-        public void KillGoat()
-        {
-            Debug.Log("Kill Goat");
+		public void KillGoat()
+		{
+			Debug.Log("Kill Goat");
 //            StartCoroutine(DeathAnimation(_fadeTime));
 			StartCoroutine(DeathAnimation(_fadeTime));
-        }
+		}
 
-        #endregion Public Methods
+		#endregion Public Methods
 
-        #region Protected Methods
+		#region Protected Methods
 
-        protected override void FixedUpdate()
-        {
+		protected override void FixedUpdate()
+		{
 			float h = GameController.Instance.GameEnded ? 0 : Input.GetAxis("Horizontal");
-            var rigidBody = GetComponent<Rigidbody>();
+			var rigidBody = GetComponent<Rigidbody>();
 
-            bool isUnderHorizontalSpeedLimit = h * rigidBody.velocity.x < MaxHorizontalSpeed;
-            bool isAboveHorizontalSpeedLimit = Mathf.Abs(rigidBody.velocity.x) > MaxHorizontalSpeed;
-            bool isAboveVerticalSpeedLimit = rigidBody.velocity.y > MaxVerticalSpeed;
+			bool isUnderHorizontalSpeedLimit = h * rigidBody.velocity.x < MaxHorizontalSpeed;
+			bool isAboveHorizontalSpeedLimit = Mathf.Abs(rigidBody.velocity.x) > MaxHorizontalSpeed;
+			bool isAboveVerticalSpeedLimit = rigidBody.velocity.y > MaxVerticalSpeed;
 
-            float clampAngle = Vector3.Angle(HorizontalClamp, h * Vector2.right);
-            bool walkingIntoWall = clampAngle < 90;
-            ApplyActivePlayerMovementInput(isUnderHorizontalSpeedLimit, rigidBody, h);
-            ApplyFollowForce(isUnderHorizontalSpeedLimit, rigidBody);
-            ClampSpeeds(isAboveHorizontalSpeedLimit, rigidBody, isAboveVerticalSpeedLimit);
-        }
+			float clampAngle = Vector3.Angle(HorizontalClamp, h * Vector2.right);
+			bool walkingIntoWall = clampAngle < 90;
+			ApplyActivePlayerMovementInput(isUnderHorizontalSpeedLimit, rigidBody, h);
+			ApplyFollowForce(isUnderHorizontalSpeedLimit, rigidBody);
+			ClampSpeeds(isAboveHorizontalSpeedLimit, rigidBody, isAboveVerticalSpeedLimit);
+		}
 
-        protected override void Start()
-        {
-            float mass = GetComponent<Rigidbody>().mass;
-            MoveForce = mass * 400;
-            JumpForce = mass * 1000;
-            MaxHorizontalSpeed = 15 / mass;
-            MaxVerticalSpeed = 50 / mass;
-        }
+		protected override void Start()
+		{
+			float mass = GetComponent<Rigidbody>().mass;
+			MoveForce = mass * 400;
+			JumpForce = mass * 1000;
+			MaxHorizontalSpeed = 15 / mass;
+			MaxVerticalSpeed = 50 / mass;
+		}
 
-        protected override void Update()
-        {
+		protected override void Update()
+		{
 			
-        }
+		}
 
-        #endregion Protected Methods
+		#endregion Protected Methods
 
-        #region Private Methods
+		#region Private Methods
 
-        private void ApplyActivePlayerMovementInput(bool isUnderHorizontalSpeedLimit, [NotNull] Rigidbody rigidBody, float h)
-        {
-            if (!IsActivePlayer) return;
+		private void ApplyActivePlayerMovementInput(bool isUnderHorizontalSpeedLimit, [NotNull] Rigidbody rigidBody, float h)
+		{
+			if (!IsActivePlayer) return;
 
-            if (isUnderHorizontalSpeedLimit)
-            {
-                rigidBody.AddForce(Vector2.right * h * MoveForce);
-            }
-            if (Input.GetKeyDown(KeyCode.W) && !IsJumpQueued)
-            {
-                StartCoroutine(QueueJump());
-            }
-        }
+			if (isUnderHorizontalSpeedLimit)
+			{
+				rigidBody.AddForce(Vector2.right * h * MoveForce);
+			}
+			if (Input.GetKeyDown(KeyCode.W) && !IsJumpQueued)
+			{
+				StartCoroutine(QueueJump());
+			}
+		}
 
-        private void ApplyFollowForce(bool isUnderHorizontalSpeedLimit, [NotNull] Rigidbody rigidBody)
-        {
+		private void ApplyFollowForce(bool isUnderHorizontalSpeedLimit, [NotNull] Rigidbody rigidBody)
+		{
 			if (!_isFollowing || IsActivePlayer || _followTarget == null) return;
 
-            float distance = Vector3.Distance(transform.position, _followTarget.transform.position);
-            if (Mathf.Abs(distance) <= FollowDistance) return;
-            if (!isUnderHorizontalSpeedLimit) return;
+			float distance = Vector3.Distance(transform.position, _followTarget.transform.position);
+			if (Mathf.Abs(distance) <= FollowDistance) return;
+			if (!isUnderHorizontalSpeedLimit) return;
 
-            if (transform.position.x < _followTarget.transform.position.x)
-            {
-                rigidBody.AddForce(Vector2.right * MoveForce * _followForceMult);
-            }
-            else
-            {
-                rigidBody.AddForce(Vector2.left * MoveForce * _followForceMult);
-            }
-        }
+			if (transform.position.x < _followTarget.transform.position.x)
+			{
+				rigidBody.AddForce(Vector2.right * MoveForce * _followForceMult);
+			}
+			else
+			{
+				rigidBody.AddForce(Vector2.left * MoveForce * _followForceMult);
+			}
+		}
 
-        private IEnumerator DeathAnimation(float fadeTime)
-        {
-            Debug.Log("Death Animation");
-            Vector3 goatScale = gameObject.transform.localScale;
+		private IEnumerator DeathAnimation(float fadeTime)
+		{
+			Debug.Log("Death Animation");
+			Vector3 goatScale = gameObject.transform.localScale;
 			float originalMass = gameObject.GetComponent<Rigidbody>().mass;
 			float goatMass = gameObject.GetComponent<Rigidbody>().mass;
-            while (goatScale.x > 0.1f && goatScale.y > 0.1f)
-            {
+			while (goatScale.x > 0.1f && goatScale.y > 0.1f)
+			{
 				if (_isDying)
 				{
 					float inc = Time.deltaTime / fadeTime;
@@ -140,29 +140,29 @@ namespace Backend.EntityEngine
 //					MoveForce -= massDiff * 400;
 //					JumpForce -= massDiff * 1000;
 				}
-                yield return null;
-            }
+				yield return null;
+			}
 
 			var deadMass = gameObject.GetComponent<Rigidbody>().mass;
 			StoryController.Instance.Events.Story.GoatDied(deadMass);
-            gameObject.transform.position = new Vector3(9999f, 9999f, 9999f);
+			gameObject.transform.position = new Vector3(9999f, 9999f, 9999f);
 			GameController.Instance.GoatControllerArray = GameController.Instance.GoatControllerArray.Where(goat => goat != this).ToArray();
-            GameController.Instance.ChangeCurrentTarget(true);
 			GameController.Instance.ChangeCurrentTarget(true);
-            Destroy(this);
-            if (GameController.Instance.GoatControllerArray.Length <= 0)
-            {
-                GameController.Instance.EndGame();
-            }
-        }
+			GameController.Instance.ChangeCurrentTarget(true);
+			Destroy(this);
+			if (GameController.Instance.GoatControllerArray.Length <= 0)
+			{
+				GameController.Instance.EndGame();
+			}
+		}
 
-        private IEnumerator QueueJump()
-        {
-            IsJumpQueued = true;
-            yield return new WaitForSeconds(0.2f);
+		private IEnumerator QueueJump()
+		{
+			IsJumpQueued = true;
+			yield return new WaitForSeconds(0.2f);
 
-            IsJumpQueued = false;
-        }
+			IsJumpQueued = false;
+		}
 
 		protected override void OnCollisionEnter([NotNull] Collision collision) {
 			if (collision.gameObject.tag.Equals("Troll") && gameObject.GetComponent<Rigidbody>().mass < 3f)
@@ -183,6 +183,6 @@ namespace Backend.EntityEngine
 			if (collision.gameObject.tag.Equals("Troll") && gameObject.GetComponent<Rigidbody>().mass < 3f)
 				_isDying = false;
 		}
-        #endregion Private Methods
-    }
+		#endregion Private Methods
+	}
 }
